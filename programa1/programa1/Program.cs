@@ -17,10 +17,6 @@ namespace programa1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            if (0 == 0)
-            {
-                System.OutOfMemoryException();
-            }
         }
     }
 }
