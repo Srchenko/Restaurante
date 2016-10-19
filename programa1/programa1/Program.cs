@@ -17,7 +17,7 @@ namespace programa1
             //Maxi me succiona el seba
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Principal());
         }
     }
 }
