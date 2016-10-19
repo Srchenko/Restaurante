@@ -14,7 +14,7 @@ namespace programa1
         [STAThread]
         static void Main()
         {
-            //Maxi cagóna
+            //Maxi me succiona el escroto
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
