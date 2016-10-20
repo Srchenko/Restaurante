@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "programa1", "programa1\programa1.csproj", "{FA4F288D-5358-45E1-85A0-FE675EF35EE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Principal", "programa1\Principal.csproj", "{FA4F288D-5358-45E1-85A0-FE675EF35EE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABM_Mozos", "ABM_Mozos\ABM_Mozos.csproj", "{DAD2D295-8A9E-4630-93A4-99CB4B4BC1A5}"
 EndProject
