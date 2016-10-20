@@ -15,7 +15,7 @@ namespace programa1
         public Principal()
         {
             InitializeComponent();
-            pictureBox1.Image = Image.FromFile(@"C:\Users\Seba\Source\Repos\Restaurante\Cafe.jpg");
+            pictureBox1.Image = Image.FromFile(@"C:\Users\Srchenko\Source\Repos\Restaurante\Cafe.jpg");
         }
 
         private void button1_Click(object sender, EventArgs e)
