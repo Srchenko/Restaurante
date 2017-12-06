@@ -30,15 +30,15 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.aBMMozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aBMMesasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mozosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aBMMozosToolStripMenuItem,
-            this.aBMMesasToolStripMenuItem});
+            this.aBMMozosToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(659, 24);
@@ -47,15 +47,24 @@
             // 
             // aBMMozosToolStripMenuItem
             // 
+            this.aBMMozosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mozosToolStripMenuItem,
+            this.mozosToolStripMenuItem1});
             this.aBMMozosToolStripMenuItem.Name = "aBMMozosToolStripMenuItem";
-            this.aBMMozosToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
-            this.aBMMozosToolStripMenuItem.Text = "ABM Mozos";
+            this.aBMMozosToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
+            this.aBMMozosToolStripMenuItem.Text = "Archivo";
             // 
-            // aBMMesasToolStripMenuItem
+            // mozosToolStripMenuItem
             // 
-            this.aBMMesasToolStripMenuItem.Name = "aBMMesasToolStripMenuItem";
-            this.aBMMesasToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
-            this.aBMMesasToolStripMenuItem.Text = "ABM Mesas";
+            this.mozosToolStripMenuItem.Name = "mozosToolStripMenuItem";
+            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mozosToolStripMenuItem.Text = "Mesas";
+            // 
+            // mozosToolStripMenuItem1
+            // 
+            this.mozosToolStripMenuItem1.Name = "mozosToolStripMenuItem1";
+            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.mozosToolStripMenuItem1.Text = "Mozos";
             // 
             // Principal
             // 
@@ -79,7 +88,8 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem aBMMozosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aBMMesasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mozosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mozosToolStripMenuItem1;
     }
 }
 
