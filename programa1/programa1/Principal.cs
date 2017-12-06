@@ -27,7 +27,7 @@ namespace programa1
             if (this.MdiChildren.OfType<Mesas>().Count() == 0)
             {
                 Mesas hijo = new Mesas();
-                hijo.MdiParent = this;
+                hijo.MdiParent = this.MdiParent;
                 hijo.Show();
             }
         }
@@ -37,7 +37,7 @@ namespace programa1
             if (this.MdiChildren.OfType<Mozos>().Count() == 0)
             {
                 Mozos hijo = new Mozos();
-                hijo.MdiParent = this;
+                hijo.MdiParent = this.MdiParent;
                 hijo.Show();
             }
         }

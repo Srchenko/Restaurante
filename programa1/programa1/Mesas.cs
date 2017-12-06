@@ -16,5 +16,10 @@ namespace programa1
         {
             InitializeComponent();
         }
+
+        private void Mesas_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

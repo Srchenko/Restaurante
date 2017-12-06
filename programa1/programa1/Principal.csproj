@@ -66,6 +66,12 @@
     <Compile Include="Mesas.Designer.cs">
       <DependentUpon>Mesas.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Mesas.resx">
+      <DependentUpon>Mesas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mozos.resx">
+      <DependentUpon>Mozos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
