@@ -19,7 +19,6 @@
             }
             base.Dispose(disposing);
         }
-        ///seba puto
         #region Windows Form Designer generated code
 
         /// <summary>
