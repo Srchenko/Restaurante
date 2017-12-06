@@ -21,5 +21,25 @@ namespace programa1
         {
 
         }
+
+        private void mozosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.MdiChildren.OfType<Mesas>().Count() == 0)
+            {
+                Mesas hijo = new Mesas();
+                hijo.MdiParent = this;
+                hijo.Show();
+            }
+        }
+
+        private void mozosToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (this.MdiChildren.OfType<Mozos>().Count() == 0)
+            {
+                Mozos hijo = new Mozos();
+                hijo.MdiParent = this;
+                hijo.Show();
+            }
+        }
     }
 }
