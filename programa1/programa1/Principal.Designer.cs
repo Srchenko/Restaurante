@@ -53,6 +53,7 @@
             this.aBMMozosToolStripMenuItem.Name = "aBMMozosToolStripMenuItem";
             this.aBMMozosToolStripMenuItem.Size = new System.Drawing.Size(60, 20);
             this.aBMMozosToolStripMenuItem.Text = "Archivo";
+            this.aBMMozosToolStripMenuItem.Click += new System.EventHandler(this.aBMMozosToolStripMenuItem_Click);
             // 
             // mozosToolStripMenuItem
             // 

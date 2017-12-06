@@ -14,7 +14,7 @@ namespace programa1
     {
         public Principal()
         {
-            
+            InitializeComponent();
         }
 
         private void Principal_Load(object sender, EventArgs e)
@@ -40,6 +40,11 @@ namespace programa1
                 hijo.MdiParent = this;
                 hijo.Show();
             }
+        }
+
+        private void aBMMozosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
