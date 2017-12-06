@@ -29,15 +29,25 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.aBMMozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aBMMozosToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(837, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // aBMMozosToolStripMenuItem
+            // 
+            this.aBMMozosToolStripMenuItem.Name = "aBMMozosToolStripMenuItem";
+            this.aBMMozosToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.aBMMozosToolStripMenuItem.Text = "ABM Mozos";
             // 
             // Principal
             // 
@@ -50,6 +60,8 @@
             this.Name = "Principal";
             this.Text = "Pantalla Principal";
             this.Load += new System.EventHandler(this.Principal_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -58,6 +70,7 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem aBMMozosToolStripMenuItem;
     }
 }
 
