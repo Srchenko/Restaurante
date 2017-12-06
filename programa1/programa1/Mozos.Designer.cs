@@ -1,6 +1,6 @@
 ﻿namespace programa1
 {
-    partial class Prueba2
+    partial class Mozos
     {
         /// <summary>
         /// Required designer variable.
@@ -19,6 +19,8 @@
             }
             base.Dispose(disposing);
         }
+
+
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -29,7 +31,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Prueba2";
+            this.Text = "Form1";
         }
 
         #endregion

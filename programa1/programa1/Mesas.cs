@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace programa1
 {
-    public partial class Prueba2 : Form
+    public partial class Mesas : Form
     {
-        public Prueba2()
+        public Mesas()
         {
             InitializeComponent();
         }

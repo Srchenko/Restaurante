@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Prueba1.cs">
+    <Compile Include="Mozos.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Prueba1.Designer.cs">
-      <DependentUpon>Prueba1.cs</DependentUpon>
+    <Compile Include="Mozos.Designer.cs">
+      <DependentUpon>Mozos.cs</DependentUpon>
     </Compile>
     <Compile Include="Principal.cs">
       <SubType>Form</SubType>
@@ -60,11 +60,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Prueba2.cs">
+    <Compile Include="Mesas.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Prueba2.Designer.cs">
-      <DependentUpon>Prueba2.cs</DependentUpon>
+    <Compile Include="Mesas.Designer.cs">
+      <DependentUpon>Mesas.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
