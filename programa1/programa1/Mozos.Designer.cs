@@ -179,6 +179,7 @@
             // txt_fecha_nacimiento
             // 
             this.txt_fecha_nacimiento.Location = new System.Drawing.Point(117, 55);
+            this.txt_fecha_nacimiento.MaxLength = 10;
             this.txt_fecha_nacimiento.Name = "txt_fecha_nacimiento";
             this.txt_fecha_nacimiento.Size = new System.Drawing.Size(129, 20);
             this.txt_fecha_nacimiento.TabIndex = 13;
@@ -228,7 +229,7 @@
             this.lbl_fecha_nacimiento_ejemplo.Name = "lbl_fecha_nacimiento_ejemplo";
             this.lbl_fecha_nacimiento_ejemplo.Size = new System.Drawing.Size(80, 13);
             this.lbl_fecha_nacimiento_ejemplo.TabIndex = 18;
-            this.lbl_fecha_nacimiento_ejemplo.Text = "Ej: 10/10/2010";
+            this.lbl_fecha_nacimiento_ejemplo.Text = "Ej: 30/10/2010";
             // 
             // Mozos
             // 
