@@ -47,6 +47,7 @@
             this.txt_telefono = new System.Windows.Forms.TextBox();
             this.dgv_mozos = new System.Windows.Forms.DataGridView();
             this.idmozo = new System.Windows.Forms.Label();
+            this.lbl_fecha_nacimiento_ejemplo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -126,6 +127,7 @@
             this.txt_nombre.Name = "txt_nombre";
             this.txt_nombre.Size = new System.Drawing.Size(193, 20);
             this.txt_nombre.TabIndex = 7;
+            this.txt_nombre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_nombre_KeyDown);
             this.txt_nombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_nombre_KeyPress_1);
             // 
             // txt_apellido
@@ -135,6 +137,7 @@
             this.txt_apellido.Name = "txt_apellido";
             this.txt_apellido.Size = new System.Drawing.Size(193, 20);
             this.txt_apellido.TabIndex = 8;
+            this.txt_apellido.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_apellido_KeyDown);
             this.txt_apellido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_apellido_KeyPress_1);
             // 
             // txt_dni
@@ -200,6 +203,7 @@
             // 
             this.dgv_mozos.AllowUserToAddRows = false;
             this.dgv_mozos.AllowUserToDeleteRows = false;
+            this.dgv_mozos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_mozos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_mozos.Location = new System.Drawing.Point(11, 161);
             this.dgv_mozos.Name = "dgv_mozos";
@@ -217,11 +221,21 @@
             this.idmozo.Size = new System.Drawing.Size(0, 13);
             this.idmozo.TabIndex = 17;
             // 
+            // lbl_fecha_nacimiento_ejemplo
+            // 
+            this.lbl_fecha_nacimiento_ejemplo.AutoSize = true;
+            this.lbl_fecha_nacimiento_ejemplo.Location = new System.Drawing.Point(114, 78);
+            this.lbl_fecha_nacimiento_ejemplo.Name = "lbl_fecha_nacimiento_ejemplo";
+            this.lbl_fecha_nacimiento_ejemplo.Size = new System.Drawing.Size(80, 13);
+            this.lbl_fecha_nacimiento_ejemplo.TabIndex = 18;
+            this.lbl_fecha_nacimiento_ejemplo.Text = "Ej: 10/10/2010";
+            // 
             // Mozos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(839, 375);
+            this.Controls.Add(this.lbl_fecha_nacimiento_ejemplo);
             this.Controls.Add(this.idmozo);
             this.Controls.Add(this.dgv_mozos);
             this.Controls.Add(this.txt_telefono);
@@ -241,6 +255,7 @@
             this.Controls.Add(this.b_modificar);
             this.Controls.Add(this.b_agregar);
             this.Name = "Mozos";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mozos";
             ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).EndInit();
             this.ResumeLayout(false);
@@ -268,5 +283,6 @@
         private System.Windows.Forms.TextBox txt_telefono;
         private System.Windows.Forms.DataGridView dgv_mozos;
         private System.Windows.Forms.Label idmozo;
+        private System.Windows.Forms.Label lbl_fecha_nacimiento_ejemplo;
     }
 }
