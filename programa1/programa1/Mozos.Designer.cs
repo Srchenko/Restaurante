@@ -229,7 +229,7 @@
             this.lbl_fecha_nacimiento_ejemplo.Name = "lbl_fecha_nacimiento_ejemplo";
             this.lbl_fecha_nacimiento_ejemplo.Size = new System.Drawing.Size(80, 13);
             this.lbl_fecha_nacimiento_ejemplo.TabIndex = 18;
-            this.lbl_fecha_nacimiento_ejemplo.Text = "Ej: 30/10/2010";
+            this.lbl_fecha_nacimiento_ejemplo.Text = "Ej: 30/10/1990";
             // 
             // Mozos
             // 

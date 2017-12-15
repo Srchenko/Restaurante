@@ -83,6 +83,16 @@ namespace programa1
                 {
                     error += "Ingrese fecha válida (dd/mm/aaaa). ";
                 }
+                else
+                {
+                    DateTime fechanacimiento = DateTime.Parse(txt_fecha_nacimiento.Text);
+                    DateTime hoy = DateTime.Today;
+                    int edad = hoy.Year - fechanacimiento.Year;
+                    if (edad < 18)
+                    {
+                        error += "El mozo debe tener más de 18 años. ";
+                    }
+                }
 
                 if (txt_direccion.Text.Length < 3)
                 {
@@ -149,7 +159,7 @@ namespace programa1
                 SqlDataReader datos3 = comando3.ExecuteReader();
                 if (datos3.Read())
                 {
-                    MessageBox.Show("Esta persona ya existe.");
+                    MessageBox.Show("Esta persona ya existe.", "Atención");
                     datos3.Close();
                     conexion.Close();
                     return;
@@ -175,7 +185,7 @@ namespace programa1
                 conexion.Close();
                 cargarGridMozos();
                 limpiarTexto();
-                MessageBox.Show("Se ingresó el dato.");
+                MessageBox.Show("Se ingresó el dato.", "Atención");
             }
             catch (Exception ex)
             {
