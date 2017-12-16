@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comandas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Comandas.Designer.cs">
+      <DependentUpon>Comandas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mozos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     <Compile Include="Mesas.Designer.cs">
       <DependentUpon>Mesas.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Comandas.resx">
+      <DependentUpon>Comandas.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Mesas.resx">
       <DependentUpon>Mesas.cs</DependentUpon>
     </EmbeddedResource>

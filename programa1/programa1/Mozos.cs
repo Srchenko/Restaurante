@@ -120,7 +120,6 @@ namespace programa1
             cargarGridMozos();
             //idmozo vamos a usarlo para la modificacion y la eliminacion de mozos... a este numero, el usuario no necesitara verlo
             idmozo.Visible = false;
-            lbl_fecha_nacimiento_ejemplo.Font = new System.Drawing.Font(lbl_fecha_nacimiento_ejemplo.Font, FontStyle.Italic);
         }
 
         private void label1_Click(object sender, EventArgs e)

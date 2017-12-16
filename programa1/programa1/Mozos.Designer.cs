@@ -225,6 +225,7 @@
             // lbl_fecha_nacimiento_ejemplo
             // 
             this.lbl_fecha_nacimiento_ejemplo.AutoSize = true;
+            this.lbl_fecha_nacimiento_ejemplo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_fecha_nacimiento_ejemplo.Location = new System.Drawing.Point(114, 78);
             this.lbl_fecha_nacimiento_ejemplo.Name = "lbl_fecha_nacimiento_ejemplo";
             this.lbl_fecha_nacimiento_ejemplo.Size = new System.Drawing.Size(80, 13);

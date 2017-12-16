@@ -115,6 +115,7 @@
             this.mesa1_alpha.TabIndex = 0;
             this.mesa1_alpha.Text = "MESA Nº 1\r\nALPHA\r\n1 Persona";
             this.mesa1_alpha.UseVisualStyleBackColor = false;
+            this.mesa1_alpha.Click += new System.EventHandler(this.mesa1_alpha_Click);
             // 
             // mesa2_beta
             // 
@@ -127,6 +128,7 @@
             this.mesa2_beta.TabIndex = 1;
             this.mesa2_beta.Text = "MESA Nº 2\r\nBETA\r\n69 Personas";
             this.mesa2_beta.UseVisualStyleBackColor = false;
+            this.mesa2_beta.Click += new System.EventHandler(this.mesa2_beta_Click);
             // 
             // Principal
             // 
