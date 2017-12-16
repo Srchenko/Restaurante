@@ -19,33 +19,33 @@ namespace programa1
         public Principal()
         {
             InitializeComponent();
-            cambiar_color_boton();
+            //cambiar_color_boton();
         }
 
-        public void cambiar_color_boton()
-        {
-            foreach (Control c in this.tabla_mesas.Controls)
-            {
-                if (c is Button)
-                {
-                    conexion.Open();
-                    SqlCommand comando = new SqlCommand("SELECT estado FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
-                    comando.Parameters.Add("@n_mesa", SqlDbType.Int);
-                    comando.Parameters["@n_mesa"].Value = c.TabIndex + 1;
-                    SqlDataReader datos = comando.ExecuteReader();
-                    if (datos.Read())
-                    {
-                        c.BackColor = Color.Firebrick;
-                    }
-                    else
-                    {
-                        c.BackColor = Color.ForestGreen;
-                    }
-                    datos.Close();
-                    conexion.Close();
-                }
-            }
-        }
+        //public void cambiar_color_boton()
+        //{
+        //    foreach (Control c in this.tabla_mesas.Controls)
+        //    {
+        //        if (c is Button)
+        //        {
+        //            conexion.Open();
+        //            SqlCommand comando = new SqlCommand("SELECT estado FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
+        //            comando.Parameters.Add("@n_mesa", SqlDbType.Int);
+        //            comando.Parameters["@n_mesa"].Value = c.TabIndex + 1;
+        //            SqlDataReader datos = comando.ExecuteReader();
+        //            if (datos.Read())
+        //            {
+        //                c.BackColor = Color.Firebrick;
+        //            }
+        //            else
+        //            {
+        //                c.BackColor = Color.ForestGreen;
+        //            }
+        //            datos.Close();
+        //            conexion.Close();
+        //        }
+        //    }
+        //}
 
         private void Principal_Load(object sender, EventArgs e)
         {
