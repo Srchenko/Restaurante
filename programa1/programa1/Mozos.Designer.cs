@@ -256,6 +256,7 @@
             this.Controls.Add(this.b_eliminar);
             this.Controls.Add(this.b_modificar);
             this.Controls.Add(this.b_agregar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Mozos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mozos";

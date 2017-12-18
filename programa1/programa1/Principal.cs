@@ -21,7 +21,7 @@ namespace programa1
             InitializeComponent();
             cambiar_color_boton();
         }
-
+        //se cambian los colores de los botones de la tabla para indicar si estan libres u ocupados, de color verde o rojo respectivamente
         public void cambiar_color_boton()
         {
             foreach (Control c in this.tabla_mesas.Controls)
@@ -47,6 +47,7 @@ namespace programa1
             }
         }
 
+        //metodo que se va a usar en un formulario hijo al cerrarlo para hacer visibles los botones de la tabla del formulario padre
         public void tabla_visible_si()
         {
             tabla_mesas.Visible = true;
@@ -66,7 +67,7 @@ namespace programa1
                 hijo.Show();
             }
         }
-
+        //no se puede abrir mas de un mismo formulario hijo... al abrirlo se esconde la tabla de botones
         private void mozosToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             if (this.MdiChildren.OfType<Mozos>().Count() == 0)
@@ -83,15 +84,7 @@ namespace programa1
 
         }
 
-        private void mesa1_alpha_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void mesa2_beta_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void mesa1_alpha_Click_1(object sender, EventArgs e)
         {
