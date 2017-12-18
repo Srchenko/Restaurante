@@ -19,33 +19,38 @@ namespace programa1
         public Principal()
         {
             InitializeComponent();
-            //cambiar_color_boton();
+            cambiar_color_boton();
         }
 
-        //public void cambiar_color_boton()
-        //{
-        //    foreach (Control c in this.tabla_mesas.Controls)
-        //    {
-        //        if (c is Button)
-        //        {
-        //            conexion.Open();
-        //            SqlCommand comando = new SqlCommand("SELECT estado FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
-        //            comando.Parameters.Add("@n_mesa", SqlDbType.Int);
-        //            comando.Parameters["@n_mesa"].Value = c.TabIndex + 1;
-        //            SqlDataReader datos = comando.ExecuteReader();
-        //            if (datos.Read())
-        //            {
-        //                c.BackColor = Color.Firebrick;
-        //            }
-        //            else
-        //            {
-        //                c.BackColor = Color.ForestGreen;
-        //            }
-        //            datos.Close();
-        //            conexion.Close();
-        //        }
-        //    }
-        //}
+        public void cambiar_color_boton()
+        {
+            foreach (Control c in this.tabla_mesas.Controls)
+            {
+                if (c is Button)
+                {
+                    conexion.Open();
+                    SqlCommand comando = new SqlCommand("SELECT estado FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
+                    comando.Parameters.Add("@n_mesa", SqlDbType.Int);
+                    comando.Parameters["@n_mesa"].Value = c.TabIndex + 1;
+                    SqlDataReader datos = comando.ExecuteReader();
+                    if (datos.Read())
+                    {
+                       c.BackColor = Color.Firebrick;
+                    }
+                    else
+                    {
+                       c.BackColor = Color.ForestGreen;
+                    }
+                    datos.Close();
+                    conexion.Close();
+                }
+            }
+        }
+
+        public void tabla_visible_si()
+        {
+            tabla_mesas.Visible = true;
+        }
 
         private void Principal_Load(object sender, EventArgs e)
         {
@@ -66,6 +71,7 @@ namespace programa1
         {
             if (this.MdiChildren.OfType<Mozos>().Count() == 0)
             {
+                tabla_mesas.Visible = false;
                 Mozos hijo = new Mozos();
                 hijo.MdiParent = this;
                 hijo.Show();
@@ -83,6 +89,16 @@ namespace programa1
         }
 
         private void mesa2_beta_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mesa1_alpha_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mesa2_beta_Click_1(object sender, EventArgs e)
         {
 
         }

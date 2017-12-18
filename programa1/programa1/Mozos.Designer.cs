@@ -259,6 +259,8 @@
             this.Name = "Mozos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mozos";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Mozos_FormClosed);
+            this.Load += new System.EventHandler(this.Mozos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

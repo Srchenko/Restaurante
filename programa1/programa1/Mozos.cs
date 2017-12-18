@@ -402,5 +402,17 @@ namespace programa1
                 e.SuppressKeyPress = true;
             }
         }
+
+        private void Mozos_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Mozos_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Principal padre = this.MdiParent as Principal;
+            padre.cambiar_color_boton();
+            padre.tabla_visible_si();
+        }
     }
 }
