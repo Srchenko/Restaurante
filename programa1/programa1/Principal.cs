@@ -88,12 +88,16 @@ namespace programa1
 
         private void mesa1_alpha_Click_1(object sender, EventArgs e)
         {
-
+            Comandas hijo = new Comandas();
+            hijo.MdiParent = this;
+            hijo.Show();
         }
 
         private void mesa2_beta_Click_1(object sender, EventArgs e)
         {
-
+            Comandas hijo = new Comandas();
+            hijo.MdiParent = this;
+            hijo.Show();
         }
     }
 }

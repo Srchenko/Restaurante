@@ -236,7 +236,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(839, 375);
+            this.ClientSize = new System.Drawing.Size(844, 381);
             this.Controls.Add(this.lbl_fecha_nacimiento_ejemplo);
             this.Controls.Add(this.idmozo);
             this.Controls.Add(this.dgv_mozos);
