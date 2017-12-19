@@ -44,10 +44,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(844, 381);
             this.Controls.Add(this.lbl_numero_mesa);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Comandas";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Comandas";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Comandas_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -118,7 +118,6 @@
             this.l_DNI.Size = new System.Drawing.Size(26, 13);
             this.l_DNI.TabIndex = 6;
             this.l_DNI.Text = "DNI";
-            this.l_DNI.Click += new System.EventHandler(this.l_DNI_Click);
             // 
             // txt_nombre
             // 
@@ -191,6 +190,7 @@
             this.txt_direccion.Name = "txt_direccion";
             this.txt_direccion.Size = new System.Drawing.Size(185, 20);
             this.txt_direccion.TabIndex = 14;
+            this.txt_direccion.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_direccion_KeyDown);
             // 
             // txt_telefono
             // 
@@ -199,6 +199,7 @@
             this.txt_telefono.Name = "txt_telefono";
             this.txt_telefono.Size = new System.Drawing.Size(141, 20);
             this.txt_telefono.TabIndex = 15;
+            this.txt_telefono.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_telefono_KeyDown);
             // 
             // dgv_mozos
             // 
@@ -212,7 +213,6 @@
             this.dgv_mozos.Size = new System.Drawing.Size(815, 209);
             this.dgv_mozos.TabIndex = 16;
             this.dgv_mozos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_mozos_CellClick);
-            this.dgv_mozos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_mozos_CellContentClick);
             // 
             // idmozo
             // 
@@ -261,7 +261,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mozos";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Mozos_FormClosed);
-            this.Load += new System.EventHandler(this.Mozos_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

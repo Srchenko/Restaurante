@@ -16,6 +16,8 @@ namespace programa1
     {
         SqlConnection conexion = new SqlConnection("Data Source=SRCHENKO-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
 
+        int id_mozo=0;
+
         public void cargarGridMozos()
         {
             try
@@ -44,7 +46,7 @@ namespace programa1
             txt_fecha_nacimiento.Text = "";
             txt_direccion.Text = "";
             txt_telefono.Text = "";
-            idmozo.Text = "";
+            id_mozo = 0;
         }
         //Se evita que se mueva la ventana del formulario
         protected override void WndProc(ref Message mensaje)
@@ -134,8 +136,6 @@ namespace programa1
         {
             InitializeComponent();
             cargarGridMozos();
-            //idmozo vamos a usarlo para la modificacion y la eliminacion de mozos... a este numero, el usuario no necesitara verlo
-            idmozo.Visible = false;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -151,11 +151,6 @@ namespace programa1
         private void b_limpiar_campos_Click(object sender, EventArgs e)
         {
             limpiarTexto();
-        }
-
-        private void dgv_mozos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void b_agregar_Click(object sender, EventArgs e)
@@ -228,7 +223,7 @@ namespace programa1
                 String cadena = datos["fecha_nac"].ToString();
                 String[] linea = cadena.Split(' ');
                 txt_fecha_nacimiento.Text = linea[0];
-                idmozo.Text = datos["id_mozo"].ToString();
+                id_mozo = Convert.ToInt32(datos["id_mozo"]);
             }
             datos.Close();
 
@@ -237,7 +232,7 @@ namespace programa1
 
         private void b_modificar_Click(object sender, EventArgs e)
         {
-            if (idmozo.Text.Length != 0)
+            if (id_mozo!=0)
             {
 
                 try
@@ -251,7 +246,7 @@ namespace programa1
                     //al modificar el dni, se intenta que este no sea el mismo que los otros mozos
                     SqlCommand comando4 = new SqlCommand("SELECT * FROM Mozos WHERE id_mozo=@ID", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
-                    comando4.Parameters["@ID"].Value = idmozo.Text;
+                    comando4.Parameters["@ID"].Value = id_mozo;
                     SqlDataReader datos4 = comando4.ExecuteReader();
                     int dnior = 0;
                     if (datos4.Read())
@@ -281,7 +276,7 @@ namespace programa1
                     string sql = "UPDATE Mozos SET nombre=@Nombre, apellido=@Apellido,  dni=@DNI, fecha_nac=@Fecha, telefono=@Telefono, direccion=@Direccion WHERE id_mozo=@ID";
                     SqlCommand comando = new SqlCommand(sql, conexion);
                     comando.Parameters.Add("@ID", SqlDbType.Int);
-                    comando.Parameters["@ID"].Value = idmozo.Text;
+                    comando.Parameters["@ID"].Value = id_mozo;
                     comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
                     comando.Parameters["@Nombre"].Value = txt_nombre.Text;
                     comando.Parameters.Add("@Apellido", SqlDbType.VarChar);
@@ -315,7 +310,7 @@ namespace programa1
 
         private void b_eliminar_Click(object sender, EventArgs e)
         {
-            if (idmozo.Text.Length != 0) 
+            if (id_mozo != 0) 
             {
                 //Se pregunta si de verdad quiere eliminar a un mozo... caso contrario es muy probable que alguien termine despedido si le pifio a esta opcion
                 if (MessageBox.Show("¿Está seguro?", "Eliminar", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -327,7 +322,7 @@ namespace programa1
                         string sql = "UPDATE Mozos SET baja=1 WHERE id_mozo=@ID";
                         SqlCommand comando = new SqlCommand(sql, conexion);
                         comando.Parameters.Add("@ID", SqlDbType.Int);
-                        comando.Parameters["@ID"].Value = idmozo.Text;
+                        comando.Parameters["@ID"].Value = id_mozo;
                         comando.ExecuteNonQuery();
 
                         conexion.Close();
@@ -382,11 +377,11 @@ namespace programa1
             }
         }
 
-        //se evita que se pongan mas espacios innecesarios si alguien tiene nombre o apellido compuesto
+        //se evita que se pongan mas espacios innecesarios si alguien tiene nombre o apellido compuesto... tambien, por las dudas, para el telefono y direccion
         private int contador = 0;
-        private void txt_nombre_KeyDown(object sender, KeyEventArgs e)
+
+        private void no_mas_espacios(KeyEventArgs e)
         {
-            
             if (e.KeyCode == Keys.Space)
             {
                 contador++;
@@ -400,28 +395,17 @@ namespace programa1
             {
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void txt_nombre_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            no_mas_espacios(e);
         }
 
         private void txt_apellido_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space)
-            {
-                contador++;
-            }
-            else
-            {
-                contador = 0;
-            }
-
-            if (contador > 1)
-            {
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void Mozos_Load(object sender, EventArgs e)
-        {
-
+            no_mas_espacios(e);
         }
         //al cerrar el formulario hijo, se hacen visibles los botones de la tabla del formulario padre
         private void Mozos_FormClosed(object sender, FormClosedEventArgs e)
@@ -429,6 +413,16 @@ namespace programa1
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
+        }
+
+        private void txt_telefono_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
+        }
+
+        private void txt_direccion_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
         }
     }
 }

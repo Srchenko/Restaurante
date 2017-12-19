@@ -21,6 +21,15 @@ namespace programa1
             InitializeComponent();
             cambiar_color_boton();
         }
+
+        private void abrir_comanda(int valor)
+        {
+            Comandas hijo = new Comandas(valor);
+            hijo.MdiParent = this;
+            tabla_mesas.Visible = false;
+            hijo.Show();
+        }
+
         //se cambian los colores de los botones de la tabla para indicar si estan libres u ocupados, de color verde o rojo respectivamente
         public void cambiar_color_boton()
         {
@@ -88,16 +97,12 @@ namespace programa1
 
         private void mesa1_alpha_Click_1(object sender, EventArgs e)
         {
-            Comandas hijo = new Comandas();
-            hijo.MdiParent = this;
-            hijo.Show();
+            abrir_comanda(mesa1_alpha.TabIndex + 1);
         }
 
         private void mesa2_beta_Click_1(object sender, EventArgs e)
         {
-            Comandas hijo = new Comandas();
-            hijo.MdiParent = this;
-            hijo.Show();
+            abrir_comanda(mesa2_beta.TabIndex + 1);
         }
     }
 }
