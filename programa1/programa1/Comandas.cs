@@ -7,11 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace programa1
 {
     public partial class Comandas : Form
     {
+        SqlConnection conexion = new SqlConnection("Data Source=SRCHENKO-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
+
         //Se evita que se mueva la ventana del formulario
         protected override void WndProc(ref Message mensaje)
         {
@@ -30,13 +33,38 @@ namespace programa1
             base.WndProc(ref mensaje);
         }
 
+        public void cargarListaMozos()
+        {
+            try
+            {
+                conexion.Open();
+                SqlCommand comando = new SqlCommand("SELECT id_mozo, CONCAT(nombre,' ',apellido) AS NombreCompleto FROM Mozos WHERE baja=0", conexion);
+                DataTable tabla_mozos = new DataTable();
+                SqlDataAdapter sqldat = new SqlDataAdapter(comando);
+                sqldat.Fill(tabla_mozos);
+                lista_mozos.DisplayMember = "NombreCompleto";
+                lista_mozos.ValueMember = "id_mozo";
+                lista_mozos.DataSource = tabla_mozos;
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
+        }
 
-        int generar_valor =0;
+        int generar_valor = 0;
         public Comandas(int valor)
         {
             InitializeComponent();
+            cargarListaMozos();
+            dgv_comandas_detalle.AllowUserToResizeRows = false;
+            dgv_comandas_detalle.AllowUserToResizeColumns = false;
+            foreach (DataGridViewColumn columna in dgv_comandas_detalle.Columns)
+            {
+                columna.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
             generar_valor = valor;
-            lbl_numero_mesa.Text = generar_valor.ToString();
         }
 
         //al cerrar el formulario hijo, se hacen visibles los botones de la tabla del formulario padre
@@ -45,6 +73,10 @@ namespace programa1
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
+        }
+
+        private void dgv_comandas_detalle_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
         }
     }
 }
