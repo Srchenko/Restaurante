@@ -46,6 +46,11 @@ namespace programa1
                 lista_mozos.ValueMember = "id_mozo";
                 lista_mozos.DataSource = tabla_mozos;
                 conexion.Close();
+                for (int i = 1; i <= 15; i++)
+                {
+                    dgv_comandas_detalle.Rows.Add();
+                }
+                    
             }
             catch (AccessViolationException Exception)
             {
@@ -58,12 +63,7 @@ namespace programa1
         {
             InitializeComponent();
             cargarListaMozos();
-            dgv_comandas_detalle.AllowUserToResizeRows = false;
-            dgv_comandas_detalle.AllowUserToResizeColumns = false;
-            foreach (DataGridViewColumn columna in dgv_comandas_detalle.Columns)
-            {
-                columna.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+
             generar_valor = valor;
         }
 
@@ -77,6 +77,26 @@ namespace programa1
 
         private void dgv_comandas_detalle_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
         {
+        }
+
+        private void bt_modificar_salir_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bt_finalizar_comanda_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bt_calcular_subtotal_productos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bt_calcular_total_comanda_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
