@@ -33,12 +33,13 @@
             this.bt_modificar_salir = new System.Windows.Forms.Button();
             this.bt_finalizar_comanda = new System.Windows.Forms.Button();
             this.dgv_comandas_detalle = new System.Windows.Forms.DataGridView();
-            this.Columna_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bt_calcular_subtotal_productos = new System.Windows.Forms.Button();
             this.bt_calcular_total_comanda = new System.Windows.Forms.Button();
             this.valor_total_comanda = new System.Windows.Forms.Label();
+            this.Columna_Producto = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Columna_Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Modificar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             this.lista_mozos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.lista_mozos.FormattingEnabled = true;
             this.lista_mozos.Location = new System.Drawing.Point(12, 36);
+            this.lista_mozos.MaxDropDownItems = 20;
             this.lista_mozos.Name = "lista_mozos";
             this.lista_mozos.Size = new System.Drawing.Size(317, 21);
             this.lista_mozos.TabIndex = 0;
@@ -88,7 +90,9 @@
             this.dgv_comandas_detalle.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Columna_Producto,
             this.Columna_Cantidad,
-            this.Columna_Subtotal});
+            this.Columna_Subtotal,
+            this.Columna_Modificar});
+            this.dgv_comandas_detalle.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgv_comandas_detalle.Location = new System.Drawing.Point(353, 9);
             this.dgv_comandas_detalle.Name = "dgv_comandas_detalle";
             this.dgv_comandas_detalle.RowHeadersVisible = false;
@@ -96,34 +100,7 @@
             this.dgv_comandas_detalle.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgv_comandas_detalle.Size = new System.Drawing.Size(480, 355);
             this.dgv_comandas_detalle.TabIndex = 4;
-            // 
-            // Columna_Producto
-            // 
-            this.Columna_Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Columna_Producto.HeaderText = "Producto";
-            this.Columna_Producto.MaxInputLength = 50;
-            this.Columna_Producto.Name = "Columna_Producto";
-            this.Columna_Producto.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Columna_Producto.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Columna_Producto.Width = 300;
-            // 
-            // Columna_Cantidad
-            // 
-            this.Columna_Cantidad.HeaderText = "Cantidad";
-            this.Columna_Cantidad.MaxInputLength = 2;
-            this.Columna_Cantidad.Name = "Columna_Cantidad";
-            this.Columna_Cantidad.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Columna_Cantidad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Columna_Cantidad.Width = 60;
-            // 
-            // Columna_Subtotal
-            // 
-            this.Columna_Subtotal.HeaderText = "Subtotal";
-            this.Columna_Subtotal.Name = "Columna_Subtotal";
-            this.Columna_Subtotal.ReadOnly = true;
-            this.Columna_Subtotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Columna_Subtotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Columna_Subtotal.Width = 117;
+            this.dgv_comandas_detalle.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_comandas_detalle_EditingControlShowing);
             // 
             // bt_calcular_subtotal_productos
             // 
@@ -153,6 +130,41 @@
             this.valor_total_comanda.Size = new System.Drawing.Size(37, 13);
             this.valor_total_comanda.TabIndex = 7;
             this.valor_total_comanda.Text = "$ 0.00";
+            // 
+            // Columna_Producto
+            // 
+            this.Columna_Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Columna_Producto.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            this.Columna_Producto.HeaderText = "Producto";
+            this.Columna_Producto.Name = "Columna_Producto";
+            this.Columna_Producto.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Columna_Producto.Width = 300;
+            // 
+            // Columna_Cantidad
+            // 
+            this.Columna_Cantidad.HeaderText = "Cantidad";
+            this.Columna_Cantidad.MaxInputLength = 2;
+            this.Columna_Cantidad.Name = "Columna_Cantidad";
+            this.Columna_Cantidad.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Columna_Cantidad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Columna_Cantidad.Width = 60;
+            // 
+            // Columna_Subtotal
+            // 
+            this.Columna_Subtotal.HeaderText = "Subtotal";
+            this.Columna_Subtotal.Name = "Columna_Subtotal";
+            this.Columna_Subtotal.ReadOnly = true;
+            this.Columna_Subtotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Columna_Subtotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Columna_Subtotal.Width = 117;
+            // 
+            // Columna_Modificar
+            // 
+            this.Columna_Modificar.HeaderText = "Para Modificar";
+            this.Columna_Modificar.Name = "Columna_Modificar";
+            this.Columna_Modificar.ReadOnly = true;
+            this.Columna_Modificar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Columna_Modificar.Visible = false;
             // 
             // Comandas
             // 
@@ -185,11 +197,12 @@
         private System.Windows.Forms.Button bt_modificar_salir;
         private System.Windows.Forms.Button bt_finalizar_comanda;
         private System.Windows.Forms.DataGridView dgv_comandas_detalle;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Producto;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Cantidad;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal;
         private System.Windows.Forms.Button bt_calcular_subtotal_productos;
         private System.Windows.Forms.Button bt_calcular_total_comanda;
         private System.Windows.Forms.Label valor_total_comanda;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Columna_Producto;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Cantidad;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Modificar;
     }
 }

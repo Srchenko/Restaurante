@@ -33,6 +33,7 @@ namespace programa1
             base.WndProc(ref mensaje);
         }
 
+        //se ponen los nombres de todos los mozos en un combobox
         public void cargarListaMozos()
         {
             try
@@ -46,11 +47,6 @@ namespace programa1
                 lista_mozos.ValueMember = "id_mozo";
                 lista_mozos.DataSource = tabla_mozos;
                 conexion.Close();
-                for (int i = 1; i <= 15; i++)
-                {
-                    dgv_comandas_detalle.Rows.Add();
-                }
-                    
             }
             catch (AccessViolationException Exception)
             {
@@ -58,12 +54,31 @@ namespace programa1
             }
         }
 
+        //se pone el listado de productos en los combobox de la tabla
+        public void cargarListaProductos()
+        {
+            for (int i = 1; i <= 15; i++)
+            {
+                dgv_comandas_detalle.Rows.Add();
+            }
+            conexion.Open();
+            SqlCommand comando = new SqlCommand("SELECT id_producto, descripcion FROM Productos WHERE baja=0", conexion);
+            DataTable tabla_productos = new DataTable();
+            SqlDataAdapter sqldat = new SqlDataAdapter(comando);
+            sqldat.Fill(tabla_productos);
+            Columna_Producto.DisplayMember = "descripcion";
+            Columna_Producto.ValueMember = "id_producto";
+            Columna_Producto.DataSource = tabla_productos;
+            conexion.Close();
+        }
+
         int generar_valor = 0;
         public Comandas(int valor)
         {
             InitializeComponent();
             cargarListaMozos();
-
+            cargarListaProductos();
+            //el valor de la mesa que viene del form padre
             generar_valor = valor;
         }
 
@@ -81,7 +96,7 @@ namespace programa1
 
         private void bt_modificar_salir_Click(object sender, EventArgs e)
         {
-
+            dgv_comandas_detalle.ClearSelection();
         }
 
         private void bt_finalizar_comanda_Click(object sender, EventArgs e)
@@ -97,6 +112,47 @@ namespace programa1
         private void bt_calcular_total_comanda_Click(object sender, EventArgs e)
         {
 
+        }
+
+        //se ponen varios controles y/o ayudas cuando el usuario quiere poner el producto correcto en los combobox de la tabla
+        //tambien se crea un nuevo evento para que en la columna de cantidad se pongan solo numeros
+        private void dgv_comandas_detalle_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dgv_comandas_detalle.CurrentCell.ColumnIndex == 0)
+            {
+                ((ComboBox)e.Control).DropDownStyle = ComboBoxStyle.DropDown;
+                ((ComboBox)e.Control).AutoCompleteMode = AutoCompleteMode.Suggest;
+
+                if (e.Control is ComboBox)
+                {
+                    ComboBox comboBox = (ComboBox)e.Control;
+                    if (dgv_comandas_detalle.CurrentCell.Value == null
+                        || string.IsNullOrEmpty(dgv_comandas_detalle.CurrentCell.Value.ToString())
+                        || string.IsNullOrEmpty(comboBox.SelectedText)
+                        )
+                    {
+                        comboBox.SelectedIndex = -1;
+                    }
+                }
+            }
+            
+            if (dgv_comandas_detalle.CurrentCell.ColumnIndex == 1)
+            {
+                e.Control.KeyPress -= new KeyPressEventHandler(columna2_cantidad_KeyPress);
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(columna2_cantidad_KeyPress);
+                }
+            }
+        }
+
+        private void columna2_cantidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != (char)Keys.Back))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
