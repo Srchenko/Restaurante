@@ -206,28 +206,36 @@ namespace programa1
 
         private void dgv_mozos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los mozos
-            int campa = Convert.ToInt32(this.dgv_mozos.CurrentRow.Cells["id_mozo"].Value);
-            conexion.Open();
-            SqlCommand comando = new SqlCommand("SELECT * FROM Mozos WHERE id_mozo=@ID ", conexion);
-            comando.Parameters.Add("@ID", SqlDbType.VarChar);
-            comando.Parameters["@ID"].Value = campa;
-            SqlDataReader datos = comando.ExecuteReader();
-            if (datos.Read())
+            try
             {
-                txt_nombre.Text = datos["nombre"].ToString();
-                txt_apellido.Text = datos["apellido"].ToString();
-                txt_dni.Text = datos["dni"].ToString();
-                txt_telefono.Text = datos["telefono"].ToString();
-                txt_direccion.Text = datos["direccion"].ToString();
-                String cadena = datos["fecha_nac"].ToString();
-                String[] linea = cadena.Split(' ');
-                txt_fecha_nacimiento.Text = linea[0];
-                id_mozo = Convert.ToInt32(datos["id_mozo"]);
-            }
-            datos.Close();
+                //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los mozos
+                int campa = Convert.ToInt32(this.dgv_mozos.CurrentRow.Cells["id_mozo"].Value);
+                conexion.Open();
+                SqlCommand comando = new SqlCommand("SELECT * FROM Mozos WHERE id_mozo=@ID ", conexion);
+                comando.Parameters.Add("@ID", SqlDbType.VarChar);
+                comando.Parameters["@ID"].Value = campa;
+                SqlDataReader datos = comando.ExecuteReader();
+                if (datos.Read())
+                {
+                    txt_nombre.Text = datos["nombre"].ToString();
+                    txt_apellido.Text = datos["apellido"].ToString();
+                    txt_dni.Text = datos["dni"].ToString();
+                    txt_telefono.Text = datos["telefono"].ToString();
+                    txt_direccion.Text = datos["direccion"].ToString();
+                    String cadena = datos["fecha_nac"].ToString();
+                    String[] linea = cadena.Split(' ');
+                    txt_fecha_nacimiento.Text = linea[0];
+                    id_mozo = Convert.ToInt32(datos["id_mozo"]);
+                }
+                datos.Close();
 
-            conexion.Close();
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
+            
         }
 
         private void b_modificar_Click(object sender, EventArgs e)

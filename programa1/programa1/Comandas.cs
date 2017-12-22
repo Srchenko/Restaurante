@@ -61,18 +61,27 @@ namespace programa1
             {
                 dgv_comandas_detalle.Rows.Add();
             }
-            conexion.Open();
-            SqlCommand comando = new SqlCommand("SELECT id_producto, descripcion FROM Productos WHERE baja=0", conexion);
-            DataTable tabla_productos = new DataTable();
-            SqlDataAdapter sqldat = new SqlDataAdapter(comando);
-            sqldat.Fill(tabla_productos);
-            Columna_Producto.DisplayMember = "descripcion";
-            Columna_Producto.ValueMember = "id_producto";
-            Columna_Producto.DataSource = tabla_productos;
-            conexion.Close();
+            try
+            {
+                conexion.Open();
+                SqlCommand comando = new SqlCommand("SELECT id_producto, descripcion FROM Productos WHERE baja=0", conexion);
+                DataTable tabla_productos = new DataTable();
+                SqlDataAdapter sqldat = new SqlDataAdapter(comando);
+                sqldat.Fill(tabla_productos);
+                Columna_Producto.DisplayMember = "descripcion";
+                Columna_Producto.ValueMember = "id_producto";
+                Columna_Producto.DataSource = tabla_productos;
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
         }
 
         int generar_valor = 0;
+        int id_comanda_general = 0;
+        
         public Comandas(int valor)
         {
             InitializeComponent();
@@ -80,6 +89,22 @@ namespace programa1
             cargarListaProductos();
             //el valor de la mesa que viene del form padre
             generar_valor = valor;
+            verificar_comanda_existente();
+        }
+
+        public void verificar_comanda_existente()
+        {
+            conexion.Open();
+            SqlCommand comando3 = new SqlCommand("SELECT id_comanda, id_mozo FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
+            comando3.Parameters.Add("@n_mesa", SqlDbType.Int);
+            comando3.Parameters["@n_mesa"].Value = generar_valor;
+            SqlDataReader datos2 = comando3.ExecuteReader();
+            if (datos2.Read())
+            {
+                id_comanda_general = Convert.ToInt32(datos2["id_comanda"]);
+                lista_mozos.SelectedValue = Convert.ToInt32(datos2["id_mozo"]);
+            }
+            conexion.Close();
         }
 
         //al cerrar el formulario hijo, se hacen visibles los botones de la tabla del formulario padre
@@ -94,9 +119,72 @@ namespace programa1
         {
         }
 
+        private void comanda_general()
+        {
+            try
+            {
+                conexion.Open();
+                if (id_comanda_general==0)
+                {
+                    SqlCommand comando2 = new SqlCommand("INSERT INTO Comandas_Cabecera(id_mozo, numero_mesa, estado, baja) VALUES (@IDmozo,@NumeroMesa,0,0)", conexion);
+                    comando2.Parameters.Add("@IDmozo", SqlDbType.Int);
+                    comando2.Parameters["@IDmozo"].Value = lista_mozos.SelectedValue;
+                    comando2.Parameters.Add("@NumeroMesa", SqlDbType.Int);
+                    comando2.Parameters["@NumeroMesa"].Value = generar_valor;
+                    comando2.ExecuteNonQuery();
+
+                    SqlCommand comando3 = new SqlCommand("SELECT id_comanda FROM Comandas_Cabecera WHERE id_mozo=@idmozo AND numero_mesa=@n_mesa AND estado=0", conexion);
+                    comando3.Parameters.Add("@idmozo", SqlDbType.Int);
+                    comando3.Parameters["@idmozo"].Value = lista_mozos.SelectedValue;
+                    comando3.Parameters.Add("@n_mesa", SqlDbType.Int);
+                    comando3.Parameters["@n_mesa"].Value = generar_valor;
+                    SqlDataReader datos2 = comando3.ExecuteReader();
+                    if (datos2.Read())
+                    {
+                        id_comanda_general = Convert.ToInt32(datos2["id_comanda"]);
+                    }
+
+                }
+                else
+                {
+                    SqlCommand comando4 = new SqlCommand("UPDATE Comandas SET id_mozo=@idmozo WHERE id_comanda=@idcomanda", conexion);
+                    comando4.Parameters.Add("@idmozo", SqlDbType.Int);
+                    comando4.Parameters["@idmozo"].Value = lista_mozos.SelectedValue;
+                    comando4.Parameters.Add("@id_comanda", SqlDbType.Int);
+                    comando4.Parameters["@id_comanda"].Value = id_comanda_general;
+                    comando4.ExecuteNonQuery();
+                }
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
+        }
+
         private void bt_modificar_salir_Click(object sender, EventArgs e)
         {
             dgv_comandas_detalle.ClearSelection();
+            comanda_general();
+            try
+            {
+
+                foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
+                {
+                
+                    if (!(string.IsNullOrEmpty(fila.Cells["Columna_Producto"].Value.ToString())) && !(string.IsNullOrEmpty(fila.Cells["Columna_Cantidad"].Value.ToString())))
+                    {
+                        if (!(string.IsNullOrEmpty(fila.Cells["Columna_Modificar"].Value.ToString())))
+                        {
+
+                        }
+                    }
+                }
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
         }
 
         private void bt_finalizar_comanda_Click(object sender, EventArgs e)
