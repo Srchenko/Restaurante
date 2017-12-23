@@ -39,7 +39,6 @@
             this.Columna_Producto = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Columna_Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Columna_Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Modificar = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID_Renglon = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).BeginInit();
             this.SuspendLayout();
@@ -92,7 +91,6 @@
             this.Columna_Producto,
             this.Columna_Cantidad,
             this.Columna_Subtotal,
-            this.Columna_Modificar,
             this.ID_Renglon});
             this.dgv_comandas_detalle.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgv_comandas_detalle.Location = new System.Drawing.Point(353, 9);
@@ -160,14 +158,6 @@
             this.Columna_Subtotal.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Columna_Subtotal.Width = 117;
             // 
-            // Columna_Modificar
-            // 
-            this.Columna_Modificar.HeaderText = "Para Modificar";
-            this.Columna_Modificar.Name = "Columna_Modificar";
-            this.Columna_Modificar.ReadOnly = true;
-            this.Columna_Modificar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Columna_Modificar.Visible = false;
-            // 
             // ID_Renglon
             // 
             this.ID_Renglon.HeaderText = "ID";
@@ -213,7 +203,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn Columna_Producto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Cantidad;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Modificar;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID_Renglon;
     }
 }
