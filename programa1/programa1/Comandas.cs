@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace programa1
 {
@@ -81,6 +82,7 @@ namespace programa1
 
         int generar_valor = 0;
         int id_comanda_general = 0;
+        bool tabla_vacia=true;
         
         public Comandas(int valor)
         {
@@ -104,7 +106,21 @@ namespace programa1
             {
                 id_comanda_general = Convert.ToInt32(datos["id_comanda"]);
                 lista_mozos.SelectedValue = Convert.ToInt32(datos["id_mozo"]);
-            }
+                SqlCommand comando2 = new SqlCommand("SELECT id_renglon, id_producto, cantidad, subtotal FROM Comandas_Detalle WHERE id_comanda=@IDcomanda and baja=0", conexion);
+                comando2.Parameters.Add("@IDcomanda", SqlDbType.Int);
+                comando2.Parameters["@IDcomanda"].Value = id_comanda_general;
+                SqlDataReader datos2 = comando2.ExecuteReader();
+                int fila = 0;
+                while(datos2.Read())
+                {
+                    dgv_comandas_detalle.Rows[fila].Cells["Columna_Producto"].Value = datos2["id_producto"];
+                    dgv_comandas_detalle.Rows[fila].Cells["Columna_Cantidad"].Value = datos2["cantidad"];
+                    dgv_comandas_detalle.Rows[fila].Cells["Columna_Subtotal"].Value = datos2["subtotal"];
+                    dgv_comandas_detalle.Rows[fila].Cells["ID_Renglon"].Value = datos2["id_renglon"];
+                    fila = fila + 1;
+                }
+                datos2.Close();
+            }    
             datos.Close();
             conexion.Close();
         }
@@ -131,9 +147,13 @@ namespace programa1
                 //si la comanda apenas entra en curso, se agrega a la tabla de comandas de la base de datos
                 if (id_comanda_general==0)
                 {
-                    SqlCommand comando2 = new SqlCommand("INSERT INTO Comandas_Cabecera(id_mozo, numero_mesa, estado, baja) VALUES (@IDmozo,@NumeroMesa,0,0)", conexion);
+                    SqlCommand comando2 = new SqlCommand("INSERT INTO Comandas_Cabecera(id_mozo, fecha, hora, numero_mesa, estado, baja) VALUES (@IDmozo,@Fecha,@Hora,@NumeroMesa,0,0)", conexion);
                     comando2.Parameters.Add("@IDmozo", SqlDbType.Int);
                     comando2.Parameters["@IDmozo"].Value = Convert.ToInt32(lista_mozos.SelectedValue);
+                    comando2.Parameters.Add("@Fecha", SqlDbType.Date);
+                    comando2.Parameters["@Fecha"].Value = DateTime.Now;
+                    comando2.Parameters.Add("@Hora", SqlDbType.Time);
+                    comando2.Parameters["@Hora"].Value = DateTime.Now.TimeOfDay;
                     comando2.Parameters.Add("@NumeroMesa", SqlDbType.Int);
                     comando2.Parameters["@NumeroMesa"].Value = generar_valor;
                     comando2.ExecuteNonQuery();
@@ -154,9 +174,13 @@ namespace programa1
                 // si la comanda existe y esta en curso, se modifica la misma con los datos nuevos
                 else
                 {
-                    SqlCommand comando4 = new SqlCommand("UPDATE Comandas SET id_mozo=@idmozo WHERE id_comanda=@idcomanda", conexion);
+                    SqlCommand comando4 = new SqlCommand("UPDATE Comandas_Cabecera SET id_mozo=@idmozo, fecha=@Fecha, hora=@Hora, WHERE id_comanda=@idcomanda", conexion);
                     comando4.Parameters.Add("@idmozo", SqlDbType.Int);
                     comando4.Parameters["@idmozo"].Value = Convert.ToInt32(lista_mozos.SelectedValue);
+                    comando4.Parameters.Add("@Fecha", SqlDbType.Date);
+                    comando4.Parameters["@Fecha"].Value = DateTime.Now;
+                    comando4.Parameters.Add("@Hora", SqlDbType.Time);
+                    comando4.Parameters["@Hora"].Value = DateTime.Now.TimeOfDay;
                     comando4.Parameters.Add("@id_comanda", SqlDbType.Int);
                     comando4.Parameters["@id_comanda"].Value = id_comanda_general;
                     comando4.ExecuteNonQuery();
@@ -190,8 +214,8 @@ namespace programa1
                             comando.Parameters["@IDproducto"].Value = Convert.ToInt32(fila.Cells["Columna_Producto"].Value);
                             comando.Parameters.Add("@cantidad", SqlDbType.Int);
                             comando.Parameters["@cantidad"].Value = Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value);
-                            comando.Parameters.Add("@subtotal", SqlDbType.Int);
-                            comando.Parameters["@subtotal"].Value = Convert.ToInt32(fila.Cells["Columna_Subtotal"].Value);
+                            comando.Parameters.Add("@subtotal", SqlDbType.Float);
+                            comando.Parameters["@subtotal"].Value = (float)(fila.Cells["Columna_Subtotal"].Value ?? 0);
                             comando.ExecuteNonQuery();
                         }
                         //si la columna id renglon no esta vacia, significa que existe en la base de datos, por lo tanto se modifica con los nuevos datos
@@ -206,8 +230,8 @@ namespace programa1
                             comando2.Parameters["@IDproducto"].Value = Convert.ToInt32(fila.Cells["Columna_Producto"].Value);
                             comando2.Parameters.Add("@cantidad", SqlDbType.Int);
                             comando2.Parameters["@cantidad"].Value = Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value);
-                            comando2.Parameters.Add("@subtotal", SqlDbType.Int);
-                            comando2.Parameters["@subtotal"].Value = Convert.ToInt32(fila.Cells["Columna_Subtotal"].Value);
+                            comando2.Parameters.Add("@subtotal", SqlDbType.Float);
+                            comando2.Parameters["@subtotal"].Value = (float)(fila.Cells["Columna_Subtotal"].Value ?? 0);
                             comando2.ExecuteNonQuery();
                         }
                     }
@@ -242,6 +266,7 @@ namespace programa1
                 if ((string.IsNullOrEmpty(fila.Cells["Columna_Producto"].Value.ToString()) && !string.IsNullOrEmpty(fila.Cells["Columna_Cantidad"].Value.ToString())) || (!string.IsNullOrEmpty(fila.Cells["Columna_Producto"].Value.ToString()) && string.IsNullOrEmpty(fila.Cells["Columna_Cantidad"].Value.ToString())))
                 {
                         dato = false;
+                        MessageBox.Show("Si usted completa la celda de Producto o de Cantidad, complete la que falta.", "Atención");
                 }
                 
             }
@@ -252,7 +277,43 @@ namespace programa1
 
         private void calcular_subtotales()
         {
+            conexion.Open();
+            SqlCommand comando;
+            SqlDataReader datos;
+            float precio=0;
+            float acumulador = 0;
+            foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
+            {
+                if (!(string.IsNullOrEmpty(fila.Cells["Columna_Producto"].Value.ToString())) && !(string.IsNullOrEmpty(fila.Cells["Columna_Cantidad"].Value.ToString())))
+                {
+                    comando = new SqlCommand("SELECT precio FROM Productos WHERE id_producto=@IDproducto", conexion);
+                    comando.Parameters.Add("@IDproducto", SqlDbType.Int);
+                    comando.Parameters["@IDproducto"].Value = Convert.ToInt32(fila.Cells["Columna_Producto"].Value);
+                    datos = comando.ExecuteReader();
+                    if (datos.Read())
+                    {
+                        precio = (float)(datos["precio"] ?? 0);
+                        fila.Cells["Columna_Subtotal"].Value = Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio;
+                        acumulador = acumulador + (Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio);
+                    }
+                    datos.Close();
+                }
+                else
+                {
+                    fila.Cells["Columna_Subtotal"].Value = null;
+                }
+            }
+            valor_total_comanda.Text = "Total a pagar $ " + acumulador;
+            if (acumulador != 0)
+            {
+                tabla_vacia = false;
+            }
+            else
+            {
+                tabla_vacia = true;
+            }
 
+            conexion.Close();
         }
 
         private void bt_modificar_salir_Click(object sender, EventArgs e)
@@ -260,7 +321,12 @@ namespace programa1
             dgv_comandas_detalle.ClearSelection();
             if (revisar_tabla() == false)
             {
-                //MessageBox.Show("Si usted completa la celda de Producto o de Cantidad, complete la que falta.", "Atención");
+                return;
+            }
+            calcular_subtotales();
+            if (tabla_vacia == true)
+            {
+                MessageBox.Show("Por lo menos debe existir una fila con el Producto y su Cantidad completos.", "Atención");
                 return;
             }
             comanda_general();
@@ -270,18 +336,40 @@ namespace programa1
 
         private void bt_finalizar_comanda_Click(object sender, EventArgs e)
         {
-
+            dgv_comandas_detalle.ClearSelection();
+            if (revisar_tabla() == false)
+            {
+                return;
+            }
+            calcular_subtotales();
+            if (tabla_vacia == true)
+            {
+                MessageBox.Show("Por lo menos debe existir una fila con el Producto y su Cantidad completos.", "Atención");
+                return;
+            }
+            comanda_general();
+            renglones_comanda();
+            conexion.Open();
+            SqlCommand comando = new SqlCommand("UPDATE Comandas_Cabecera SET estado=1, WHERE id_comanda=@idcomanda", conexion);
+            comando.Parameters.Add("@id_comanda", SqlDbType.Int);
+            comando.Parameters["@id_comanda"].Value = id_comanda_general;
+            conexion.Close();
+            Principal padre = this.MdiParent as Principal;
+            padre.cambiar_color_boton();
+            padre.tabla_visible_si();
+            this.Close();
         }
 
         private void bt_calcular_subtotal_productos_Click(object sender, EventArgs e)
         {
-            
+            dgv_comandas_detalle.ClearSelection();
+            if (revisar_tabla() == false)
+            {
+                return;
+            }
+            calcular_subtotales();
         }
 
-        private void bt_calcular_total_comanda_Click(object sender, EventArgs e)
-        {
-
-        }
 
         //se ponen varios controles y/o ayudas cuando el usuario quiere poner el producto correcto en los combobox de la tabla
         //tambien se crea un nuevo evento para que en la columna de cantidad se pongan solo numeros

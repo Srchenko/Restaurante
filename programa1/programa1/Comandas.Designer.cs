@@ -33,13 +33,12 @@
             this.bt_modificar_salir = new System.Windows.Forms.Button();
             this.bt_finalizar_comanda = new System.Windows.Forms.Button();
             this.dgv_comandas_detalle = new System.Windows.Forms.DataGridView();
-            this.bt_calcular_subtotal_productos = new System.Windows.Forms.Button();
-            this.bt_calcular_total_comanda = new System.Windows.Forms.Button();
-            this.valor_total_comanda = new System.Windows.Forms.Label();
             this.Columna_Producto = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Columna_Cantidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Columna_Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID_Renglon = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bt_calcular_subtotal_productos = new System.Windows.Forms.Button();
+            this.valor_total_comanda = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,35 +101,6 @@
             this.dgv_comandas_detalle.TabIndex = 4;
             this.dgv_comandas_detalle.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_comandas_detalle_EditingControlShowing);
             // 
-            // bt_calcular_subtotal_productos
-            // 
-            this.bt_calcular_subtotal_productos.Location = new System.Drawing.Point(97, 296);
-            this.bt_calcular_subtotal_productos.Name = "bt_calcular_subtotal_productos";
-            this.bt_calcular_subtotal_productos.Size = new System.Drawing.Size(125, 30);
-            this.bt_calcular_subtotal_productos.TabIndex = 5;
-            this.bt_calcular_subtotal_productos.Text = "Calcular Subtotales";
-            this.bt_calcular_subtotal_productos.UseVisualStyleBackColor = true;
-            this.bt_calcular_subtotal_productos.Click += new System.EventHandler(this.bt_calcular_subtotal_productos_Click);
-            // 
-            // bt_calcular_total_comanda
-            // 
-            this.bt_calcular_total_comanda.Location = new System.Drawing.Point(97, 334);
-            this.bt_calcular_total_comanda.Name = "bt_calcular_total_comanda";
-            this.bt_calcular_total_comanda.Size = new System.Drawing.Size(125, 30);
-            this.bt_calcular_total_comanda.TabIndex = 6;
-            this.bt_calcular_total_comanda.Text = "Calcular Total";
-            this.bt_calcular_total_comanda.UseVisualStyleBackColor = true;
-            this.bt_calcular_total_comanda.Click += new System.EventHandler(this.bt_calcular_total_comanda_Click);
-            // 
-            // valor_total_comanda
-            // 
-            this.valor_total_comanda.AutoSize = true;
-            this.valor_total_comanda.Location = new System.Drawing.Point(230, 342);
-            this.valor_total_comanda.Name = "valor_total_comanda";
-            this.valor_total_comanda.Size = new System.Drawing.Size(37, 13);
-            this.valor_total_comanda.TabIndex = 7;
-            this.valor_total_comanda.Text = "$ 0.00";
-            // 
             // Columna_Producto
             // 
             this.Columna_Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -166,13 +136,31 @@
             this.ID_Renglon.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.ID_Renglon.Visible = false;
             // 
+            // bt_calcular_subtotal_productos
+            // 
+            this.bt_calcular_subtotal_productos.Location = new System.Drawing.Point(97, 296);
+            this.bt_calcular_subtotal_productos.Name = "bt_calcular_subtotal_productos";
+            this.bt_calcular_subtotal_productos.Size = new System.Drawing.Size(125, 30);
+            this.bt_calcular_subtotal_productos.TabIndex = 5;
+            this.bt_calcular_subtotal_productos.Text = "Calcular Subtotales";
+            this.bt_calcular_subtotal_productos.UseVisualStyleBackColor = true;
+            this.bt_calcular_subtotal_productos.Click += new System.EventHandler(this.bt_calcular_subtotal_productos_Click);
+            // 
+            // valor_total_comanda
+            // 
+            this.valor_total_comanda.AutoSize = true;
+            this.valor_total_comanda.Location = new System.Drawing.Point(94, 329);
+            this.valor_total_comanda.Name = "valor_total_comanda";
+            this.valor_total_comanda.Size = new System.Drawing.Size(37, 13);
+            this.valor_total_comanda.TabIndex = 7;
+            this.valor_total_comanda.Text = "$ 0.00";
+            // 
             // Comandas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(844, 381);
             this.Controls.Add(this.valor_total_comanda);
-            this.Controls.Add(this.bt_calcular_total_comanda);
             this.Controls.Add(this.bt_calcular_subtotal_productos);
             this.Controls.Add(this.dgv_comandas_detalle);
             this.Controls.Add(this.bt_finalizar_comanda);
@@ -198,7 +186,6 @@
         private System.Windows.Forms.Button bt_finalizar_comanda;
         private System.Windows.Forms.DataGridView dgv_comandas_detalle;
         private System.Windows.Forms.Button bt_calcular_subtotal_productos;
-        private System.Windows.Forms.Button bt_calcular_total_comanda;
         private System.Windows.Forms.Label valor_total_comanda;
         private System.Windows.Forms.DataGridViewComboBoxColumn Columna_Producto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Cantidad;
