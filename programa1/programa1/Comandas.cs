@@ -201,7 +201,8 @@ namespace programa1
             try
             {
                 conexion.Open();
-                SqlCommand comando, comando2, comando3;
+                SqlCommand comando, comando2;
+                //SqlCommand comando3;
                 foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
                 {
 
@@ -238,17 +239,20 @@ namespace programa1
                             comando2.ExecuteNonQuery();
                         }
                     }
-                    else
-                    {
-                        //si la columna de producto y cantidad estan vacias pero proviene de un renglon existente, entonces el renglon se elimina
-                        if (fila.Cells["ID_Renglon"].Value != null)
-                        {
-                            comando3 = new SqlCommand("UPDATE Comandas_Detalle SET baja=1 WHERE WHERE id_renglon=@IDrenglon", conexion);
-                            comando3.Parameters.Add("@IDrenglon", SqlDbType.Int);
-                            comando3.Parameters["@IDrenglon"].Value = Convert.ToInt32(fila.Cells["ID_Renglon"].Value);
-                            comando3.ExecuteNonQuery();
-                        }
-                    }
+
+                    //si lo de abajo se puede hacer, lo dejo, si no, lo quito
+
+                    //else
+                    //{
+                    //   // si la columna de producto y cantidad estan vacias pero proviene de un renglon existente, entonces el renglon se elimina
+                    //    if (fila.Cells["ID_Renglon"].Value != null)
+                    //    {
+                    //        comando3 = new SqlCommand("UPDATE Comandas_Detalle SET baja=1 WHERE WHERE id_renglon=@IDrenglon", conexion);
+                    //        comando3.Parameters.Add("@IDrenglon", SqlDbType.Int);
+                    //        comando3.Parameters["@IDrenglon"].Value = Convert.ToInt32(fila.Cells["ID_Renglon"].Value);
+                    //        comando3.ExecuteNonQuery();
+                    //    }
+                    //}
                 }
                 conexion.Close();
             }
