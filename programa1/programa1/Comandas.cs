@@ -296,7 +296,7 @@ namespace programa1
                     if (datos.Read())
                     {
                         precio = Convert.ToDouble(datos["precio"]);
-                        fila.Cells["Columna_Subtotal"].Value = Convert.ToDouble(fila.Cells["Columna_Cantidad"].Value) * precio;
+                        fila.Cells["Columna_Subtotal"].Value = Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio;
                         acumulador = acumulador + (Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio);
                     }
                     datos.Close();
