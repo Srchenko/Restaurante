@@ -321,14 +321,14 @@ namespace programa1
             }
             if (acumulador == -1)
             {
-                tabla_vacia = false;
+                tabla_vacia = true;
                 valor_total_comanda.Text = "Total a pagar $ 0";
             }
             else
             {
                 acumulador = acumulador + 1;
                 valor_total_comanda.Text = "Total a pagar $ " + acumulador;
-                tabla_vacia = true;
+                tabla_vacia = false;
             }
 
             conexion.Close();
