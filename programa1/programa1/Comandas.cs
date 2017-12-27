@@ -201,15 +201,14 @@ namespace programa1
             try
             {
                 conexion.Open();
-                SqlCommand comando, comando2;
-                //SqlCommand comando3;
+                SqlCommand comando, comando2, comando3;
                 foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
                 {
 
                     if (fila.Cells["Columna_Producto"].Value != null && fila.Cells["Columna_Cantidad"].Value != null)
                     {
                         //si la columna id renglon esta vacia, significa que no existe en la base de datos, por lo tanto, se agrega
-                        if (fila.Cells["ID_Renglon"].Value == null)
+                        if (fila.Cells["ID_Renglon"].Value == null && Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) != 0)
                         {
                             comando = new SqlCommand("INSERT INTO Comandas_Detalle (id_comanda, id_producto, cantidad, subtotal, baja) VALUES (@IDcomanda,@IDproducto,@cantidad,@subtotal,0)", conexion);
                             comando.Parameters.Add("@IDcomanda", SqlDbType.Int);
@@ -223,7 +222,7 @@ namespace programa1
                             comando.ExecuteNonQuery();
                         }
                         //si la columna id renglon no esta vacia, significa que existe en la base de datos, por lo tanto se pueden modificar los datos si el usuario quiere
-                        else
+                        if(fila.Cells["ID_Renglon"].Value != null && Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) != 0)
                         {
                             comando2 = new SqlCommand("UPDATE Comandas_Detalle SET id_comanda=@IDcomanda, id_producto=@IDproducto, cantidad=@cantidad, subtotal=@subtotal WHERE id_renglon=@IDrenglon", conexion);
                             comando2.Parameters.Add("@IDrenglon", SqlDbType.Int);
@@ -238,21 +237,15 @@ namespace programa1
                             comando2.Parameters["@subtotal"].Value = Convert.ToDouble(fila.Cells["Columna_Subtotal"].Value);
                             comando2.ExecuteNonQuery();
                         }
+                        // si la columna cantidad se modifica a 0, pero esa proviene de un renglon existente, entonces el renglon se elimina
+                        if (fila.Cells["ID_Renglon"].Value != null && Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) == 0)
+                        {
+                            comando3 = new SqlCommand("UPDATE Comandas_Detalle SET baja=1, cantidad=0, subtotal=0 WHERE id_renglon=@IDrenglon", conexion);
+                            comando3.Parameters.Add("@IDrenglon", SqlDbType.Int);
+                            comando3.Parameters["@IDrenglon"].Value = Convert.ToInt32(fila.Cells["ID_Renglon"].Value);
+                            comando3.ExecuteNonQuery();
+                        }
                     }
-
-                    //si lo de abajo se puede hacer, lo dejo, si no, lo quito
-
-                    //else
-                    //{
-                    //   // si la columna de producto y cantidad estan vacias pero proviene de un renglon existente, entonces el renglon se elimina
-                    //    if (fila.Cells["ID_Renglon"].Value != null)
-                    //    {
-                    //        comando3 = new SqlCommand("UPDATE Comandas_Detalle SET baja=1 WHERE WHERE id_renglon=@IDrenglon", conexion);
-                    //        comando3.Parameters.Add("@IDrenglon", SqlDbType.Int);
-                    //        comando3.Parameters["@IDrenglon"].Value = Convert.ToInt32(fila.Cells["ID_Renglon"].Value);
-                    //        comando3.ExecuteNonQuery();
-                    //    }
-                    //}
                 }
                 conexion.Close();
             }
@@ -280,6 +273,22 @@ namespace programa1
             return dato;
         }
 
+        private bool revisar_columna_cantidad()
+        {
+            bool dato = true;
+            foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
+            {
+                //no se permite que una celda de la columna cantidad sea 0 cuando se quiera ingresar un renglon, excepto si se quiere modificar/eliminar de un renglon existente
+                if (fila.Cells["Columna_Cantidad"].Value !=null && Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value)==0 && fila.Cells["ID_Renglon"].Value==null)
+                {
+                    dato = false;
+                    MessageBox.Show("No se puede ingresar datos nuevos a la comanda con productos con una cantidad igual a 0. Usted puede modificar un renglón existente poniéndole el valor 0.", "Atención");
+                }
+
+            }
+            return dato;
+        }
+
         //se calculan los subtotales en donde haya una columna producto con su respectiva columna cantidad
 
         private void calcular_subtotales()
@@ -288,7 +297,7 @@ namespace programa1
             SqlCommand comando;
             SqlDataReader datos;
             double precio=0;
-            double acumulador = 0;
+            double acumulador = -1;
             foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
             {
                 if (fila.Cells["Columna_Producto"].Value != null && fila.Cells["Columna_Cantidad"].Value != null)
@@ -310,13 +319,15 @@ namespace programa1
                     fila.Cells["Columna_Subtotal"].Value = null;
                 }
             }
-            valor_total_comanda.Text = "Total a pagar $ " + acumulador;
-            if (acumulador != 0)
+            if (acumulador == -1)
             {
                 tabla_vacia = false;
+                valor_total_comanda.Text = "Total a pagar $ 0";
             }
             else
             {
+                acumulador = acumulador + 1;
+                valor_total_comanda.Text = "Total a pagar $ " + acumulador;
                 tabla_vacia = true;
             }
 
@@ -326,18 +337,46 @@ namespace programa1
         private void bt_modificar_salir_Click(object sender, EventArgs e)
         {
             dgv_comandas_detalle.ClearSelection();
+
             if (revisar_tabla() == false)
             {
                 return;
             }
+
+            if (revisar_columna_cantidad() == false)
+            {
+                return;
+            }
+
             calcular_subtotales();
+
             if (tabla_vacia == true)
             {
                 MessageBox.Show("Por lo menos debe existir una fila con el Producto y su Cantidad completos.", "Atención");
                 return;
             }
+
             comanda_general();
             renglones_comanda();
+
+            conexion.Open();
+
+            SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
+            comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
+            comando2.Parameters["@idcomanda"].Value = id_comanda_general;
+            SqlDataReader datos = comando2.ExecuteReader();
+            if (!datos.Read())
+            {
+                datos.Close();
+                SqlCommand comando3 = new SqlCommand("UPDATE Comandas_Cabecera SET baja=1, estado=1 WHERE id_comanda=@idcomanda", conexion);
+                comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando3.Parameters["@idcomanda"].Value = id_comanda_general;
+                comando3.ExecuteNonQuery();
+            }
+            datos.Close();
+
+            conexion.Close();
+
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
@@ -347,24 +386,51 @@ namespace programa1
         private void bt_finalizar_comanda_Click(object sender, EventArgs e)
         {
             dgv_comandas_detalle.ClearSelection();
+
             if (revisar_tabla() == false)
             {
                 return;
             }
+
+            if (revisar_columna_cantidad() == false)
+            {
+                return;
+            }
+
             calcular_subtotales();
+
             if (tabla_vacia == true)
             {
                 MessageBox.Show("Por lo menos debe existir una fila con el Producto y su Cantidad completos.", "Atención");
                 return;
             }
+
             comanda_general();
             renglones_comanda();
+
             conexion.Open();
+
             SqlCommand comando = new SqlCommand("UPDATE Comandas_Cabecera SET estado=1 WHERE id_comanda=@idcomanda", conexion);
             comando.Parameters.Add("@idcomanda", SqlDbType.Int);
             comando.Parameters["@idcomanda"].Value = id_comanda_general;
             comando.ExecuteNonQuery();
+
+            SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
+            comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
+            comando2.Parameters["@idcomanda"].Value = id_comanda_general;
+            SqlDataReader datos = comando2.ExecuteReader();
+            if (!datos.Read())
+            {
+                datos.Close();
+                SqlCommand comando3 = new SqlCommand("UPDATE Comandas_Cabecera SET baja=1 WHERE id_comanda=@idcomanda", conexion);
+                comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando3.Parameters["@idcomanda"].Value = id_comanda_general;
+                comando3.ExecuteNonQuery();
+            }
+            datos.Close();
+
             conexion.Close();
+
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
@@ -374,11 +440,14 @@ namespace programa1
         private void bt_calcular_subtotal_productos_Click(object sender, EventArgs e)
         {
             dgv_comandas_detalle.ClearSelection();
+
             if (revisar_tabla() == false)
             {
                 return;
             }
+
             calcular_subtotales();
+
         }
 
 
