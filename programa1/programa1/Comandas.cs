@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Globalization;
+using Microsoft.Office.Interop.Excel;
 
 namespace programa1
 {
@@ -41,7 +42,7 @@ namespace programa1
             {
                 conexion.Open();
                 SqlCommand comando = new SqlCommand("SELECT id_mozo, CONCAT(nombre,' ',apellido) AS NombreCompleto FROM Mozos WHERE baja=0", conexion);
-                DataTable tabla_mozos = new DataTable();
+                System.Data.DataTable tabla_mozos = new System.Data.DataTable();
                 SqlDataAdapter sqldat = new SqlDataAdapter(comando);
                 sqldat.Fill(tabla_mozos);
                 lista_mozos.DisplayMember = "NombreCompleto";
@@ -66,7 +67,7 @@ namespace programa1
             {
                 conexion.Open();
                 SqlCommand comando = new SqlCommand("SELECT id_producto, descripcion FROM Productos WHERE baja=0", conexion);
-                DataTable tabla_productos = new DataTable();
+                System.Data.DataTable tabla_productos = new System.Data.DataTable();
                 SqlDataAdapter sqldat = new SqlDataAdapter(comando);
                 sqldat.Fill(tabla_productos);
                 Columna_Producto.DisplayMember = "descripcion";
@@ -360,7 +361,7 @@ namespace programa1
             renglones_comanda();
 
             conexion.Open();
-
+            // en el caso de que se modifiquen los datos de una comanda existente en la cual todos sus productos tienen una cantidad igual a 0, entonces esa comanda no existira mas
             SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
             comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
             comando2.Parameters["@idcomanda"].Value = id_comanda_general;
@@ -409,7 +410,7 @@ namespace programa1
             renglones_comanda();
 
             conexion.Open();
-
+            // al finalizar la comanda, se pone el estado en 1, para que la mesa se quede libre para otras comandas posteriores
             SqlCommand comando = new SqlCommand("UPDATE Comandas_Cabecera SET estado=1 WHERE id_comanda=@idcomanda", conexion);
             comando.Parameters.Add("@idcomanda", SqlDbType.Int);
             comando.Parameters["@idcomanda"].Value = id_comanda_general;
@@ -426,10 +427,16 @@ namespace programa1
                 comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
                 comando3.Parameters["@idcomanda"].Value = id_comanda_general;
                 comando3.ExecuteNonQuery();
+                tabla_vacia = true;
             }
             datos.Close();
 
             conexion.Close();
+
+            if (tabla_vacia == false)
+            {
+                dgv_archivo_excel.DataSource = Exportar_Excel();
+            }
 
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
@@ -476,7 +483,7 @@ namespace programa1
             if (dgv_comandas_detalle.CurrentCell.ColumnIndex == 1)
             {
                 e.Control.KeyPress -= new KeyPressEventHandler(columna2_cantidad_KeyPress);
-                TextBox tb = e.Control as TextBox;
+                System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
                 if (tb != null)
                 {
                     tb.KeyPress += new KeyPressEventHandler(columna2_cantidad_KeyPress);
@@ -490,6 +497,12 @@ namespace programa1
             {
                 e.Handled = true;
             }
+        }
+
+        public System.Data.DataTable Exportar_Excel()
+        {
+            System.Data.DataTable tabla = new System.Data.DataTable();
+            return tabla;
         }
     }
 }

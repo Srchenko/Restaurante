@@ -39,7 +39,9 @@
             this.ID_Renglon = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bt_calcular_subtotal_productos = new System.Windows.Forms.Button();
             this.valor_total_comanda = new System.Windows.Forms.Label();
+            this.dgv_archivo_excel = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_archivo_excel)).BeginInit();
             this.SuspendLayout();
             // 
             // lista_mozos
@@ -155,11 +157,21 @@
             this.valor_total_comanda.TabIndex = 7;
             this.valor_total_comanda.Text = "Total a pagar $ 0";
             // 
+            // dgv_archivo_excel
+            // 
+            this.dgv_archivo_excel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_archivo_excel.Location = new System.Drawing.Point(12, 359);
+            this.dgv_archivo_excel.Name = "dgv_archivo_excel";
+            this.dgv_archivo_excel.Size = new System.Drawing.Size(10, 10);
+            this.dgv_archivo_excel.TabIndex = 8;
+            this.dgv_archivo_excel.Visible = false;
+            // 
             // Comandas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(844, 381);
+            this.Controls.Add(this.dgv_archivo_excel);
             this.Controls.Add(this.valor_total_comanda);
             this.Controls.Add(this.bt_calcular_subtotal_productos);
             this.Controls.Add(this.dgv_comandas_detalle);
@@ -173,6 +185,7 @@
             this.Text = "Comandas";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Comandas_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_archivo_excel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,5 +204,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Cantidad;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID_Renglon;
+        private System.Windows.Forms.DataGridView dgv_archivo_excel;
     }
 }
