@@ -464,6 +464,8 @@ namespace programa1
             if (tabla_vacia == false)
             {
                 dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
+                Exportar_Excel();
+                MessageBox.Show("Comanda finalizada. Se creará un archivo de Excel en el escritorio para que usted pueda verla completa.", "Atención");
             }
 
             Principal padre = this.MdiParent as Principal;
@@ -530,59 +532,145 @@ namespace programa1
         private System.Data.DataTable Crear_Tabla_Excel()
         {
             System.Data.DataTable tabla = new System.Data.DataTable();
-            //primero se hace la parte del encabezado
-            tabla.Columns.Add("Columna_1", typeof(string));
-            tabla.Columns.Add("Columna_2", typeof(string));
-            tabla.Columns.Add("Columna_3", typeof(string));
-            tabla.Rows.Add("Mozo", "", "Mesa");
-            conexion.Open();
-
-            SqlCommand comando = new SqlCommand("SELECT Comandas_Cabecera.id_comanda, CONCAT(Mozos.nombre,' ',Mozos.apellido) AS NombreCompleto, Comandas_Cabecera.fecha AS cc_fecha, Comandas_Cabecera.hora AS cc_hora, Comandas_Cabecera.numero_mesa AS cc_mesa FROM Comandas_Cabecera JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Cabecera.id_comanda=@idcomanda", conexion);
-            comando.Parameters.Add("@idcomanda", SqlDbType.Int);
-            comando.Parameters["@idcomanda"].Value = id_comanda_general;
-            SqlDataReader datos = comando.ExecuteReader();
-            if (datos.Read())
+            int fila = 0;
+            String[] linea;
+            String cadena;
+            TimeSpan tiempo;
+            try
             {
-                id_comanda_general = Convert.ToInt32(datos["id_comanda"]);
-                tabla.Rows.Add(datos["NombreCompleto"].ToString(), "", datos["cc_mesa"].ToString());
-                tabla.Rows.Add();
-                tabla.Rows.Add("Fecha", "", "Hora");
-                tabla.Rows.Add(datos["cc_fecha"].ToString(), "", datos["cc_hora"].ToString());
-                tabla.Rows.Add();
-                tabla.Rows.Add();
-                tabla.Rows.Add("Producto", "Cantidad", "Subtotal");
-            }
-            datos.Close();
-            //luego los productos
-            SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.id_comanda, Productos.descripcion AS p_descripcion, Comandas_Detalle.cantidad AS cd_cantidad, Comandas_Detalle.subtotal AS cd_subtotal FROM Comandas_Detalle JOIN Productos ON Comandas_Detalle.id_producto = Productos.id_producto WHERE Comandas_Detalle.id_comanda=@idcomanda", conexion);
-            comando.Parameters.Add("@idcomanda", SqlDbType.Int);
-            comando.Parameters["@idcomanda"].Value = id_comanda_general;
-            SqlDataReader datos2 = comando.ExecuteReader();
-            while (datos2.Read())
-            {
-                tabla.Rows.Add(datos["p_descripcion"].ToString(), datos["cd_cantidad"].ToString(), datos["cd_subtotal"].ToString());
-            }
-            //luego el total
-            tabla.Rows.Add();
-            tabla.Rows.Add("Total", "", precio_total.ToString());
+                //primero se hace la parte del encabezado
+                tabla.Columns.Add("Columna_1", typeof(string));
+                tabla.Columns.Add("Columna_2", typeof(string));
+                tabla.Columns.Add("Columna_3", typeof(string));
+                tabla.Rows.Add("Mozo", "", "Mesa");
+                conexion.Open();
 
+                SqlCommand comando = new SqlCommand("SELECT Comandas_Cabecera.id_comanda, CONCAT(Mozos.nombre,' ',Mozos.apellido) AS NombreCompleto, Comandas_Cabecera.fecha AS cc_fecha, Comandas_Cabecera.hora AS cc_hora, Comandas_Cabecera.numero_mesa AS cc_mesa FROM Comandas_Cabecera JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Cabecera.id_comanda=@idcomanda", conexion);
+                comando.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando.Parameters["@idcomanda"].Value = id_comanda_general;
+                SqlDataReader datos = comando.ExecuteReader();
+                if (datos.Read())
+                {
+                    tabla.Rows.Add(datos["NombreCompleto"].ToString(), "", datos["cc_mesa"].ToString());
+                    tabla.Rows.Add();
+                    tabla.Rows.Add("Fecha", "", "Hora");
+                    cadena = datos["cc_fecha"].ToString();
+                    linea = cadena.Split(' ');
+                    tiempo  = (TimeSpan)datos["cc_hora"];
+                    tabla.Rows.Add(linea[0], "", tiempo.ToString(@"hh\:mm"));
+                    tabla.Rows.Add();
+                    tabla.Rows.Add();
+                    tabla.Rows.Add("Producto", "Cantidad", "Subtotal");
+                }
+                datos.Close();
+                //luego los productos
+                SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.id_comanda, Productos.descripcion AS p_descripcion, Comandas_Detalle.cantidad AS cd_cantidad, Comandas_Detalle.subtotal AS cd_subtotal FROM Comandas_Detalle JOIN Productos ON Comandas_Detalle.id_producto = Productos.id_producto WHERE Comandas_Detalle.id_comanda=@idcomanda2", conexion);
+                comando2.Parameters.Add("@idcomanda2", SqlDbType.Int);
+                comando2.Parameters["@idcomanda2"].Value = id_comanda_general;
+                SqlDataReader datos2 = comando2.ExecuteReader();
+                while (datos2.Read())
+                {
+                    tabla.Rows.Add(datos2["p_descripcion"].ToString(), datos2["cd_cantidad"].ToString(), datos2["cd_subtotal"].ToString());
+                    fila = fila + 1;
+                }
+                datos2.Close();
+                for (int i = fila; i <= 15; i++)
+                {
+                    tabla.Rows.Add();
+                }
+                //luego el total
+                tabla.Rows.Add("Total", "", precio_total.ToString());
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
             return tabla;
         }
 
         private void Exportar_Excel()
         {
             Microsoft.Office.Interop.Excel.Application excel;
-            Microsoft.Office.Interop.Excel.Workbook workbook;
-            Microsoft.Office.Interop.Excel.Worksheet worksheet;
-            Microsoft.Office.Interop.Excel.Range range;
+            Workbook workbook;
+            Worksheet worksheet;
+            Range cell_range;
 
             try
             {
+                excel = new Microsoft.Office.Interop.Excel.Application();
+                excel.Visible = false;
+                excel.DisplayAlerts = false;
 
+                workbook = excel.Workbooks.Add(Type.Missing);
+
+                worksheet = (Worksheet)workbook.ActiveSheet;
+                worksheet.Name = "Comanda";
+
+                int fila_excel = 0;
+                foreach (DataRow fila_tabla in Crear_Tabla_Excel().Rows)
+                {
+                    fila_excel = fila_excel + 1;
+                    for (int i = 1; i <= Crear_Tabla_Excel().Columns.Count; i++)
+                    {
+                        worksheet.Cells[fila_excel, i] = fila_tabla[i - 1].ToString();
+                    }
+                }
+                
+                worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[3, 3]].Merge();
+                worksheet.Range[worksheet.Cells[6, 1], worksheet.Cells[7, 3]].Merge();
+                worksheet.Range[worksheet.Cells[1, 2], worksheet.Cells[2, 2]].Merge();
+                worksheet.Range[worksheet.Cells[4, 2], worksheet.Cells[5, 2]].Merge();
+                worksheet.Range[worksheet.Cells[24, 1], worksheet.Cells[24, 3]].Merge();
+
+                worksheet.Cells[1, 1].Font.Bold = true;
+                worksheet.Cells[1, 3].Font.Bold = true;
+                worksheet.Cells[4, 1].Font.Bold = true;
+                worksheet.Cells[4, 3].Font.Bold = true;
+                worksheet.Cells[8, 1].Font.Bold = true;
+                worksheet.Cells[8, 2].Font.Bold = true;
+                worksheet.Cells[8, 3].Font.Bold = true;
+                worksheet.Cells[25, 1].Font.Bold = true;
+
+                cell_range = worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[fila_excel, Crear_Tabla_Excel().Columns.Count]];
+                cell_range.EntireColumn.AutoFit();
+                Borders border = cell_range.Borders;
+                border.LineStyle = XlLineStyle.xlContinuous;
+                border.Weight = 2d;
+
+                worksheet.Cells[1, 1].Borders.Weight = 3d;
+                worksheet.Cells[1, 3].Borders.Weight = 3d;
+                worksheet.Cells[4, 1].Borders.Weight = 3d;
+                worksheet.Cells[4, 3].Borders.Weight = 3d;
+                worksheet.Cells[8, 1].Borders.Weight = 3d;
+                worksheet.Cells[8, 2].Borders.Weight = 3d;
+                worksheet.Cells[8, 3].Borders.Weight = 3d;
+                worksheet.Cells[25, 1].Borders.Weight = 3d;
+                worksheet.Cells[25, 2].Borders.Weight = 3d;
+                worksheet.Cells[25, 3].Borders.Weight = 3d;
+
+                cell_range = worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[2, Crear_Tabla_Excel().Columns.Count]];
+
+                DateTime ahora = DateTime.Now;
+                int horas = 0, minutos = 0, segundos = 0, total = 0;
+                horas = (24 - ahora.Hour) - 1;
+                minutos = (60 - ahora.Minute) - 1;
+                segundos = (60 - ahora.Second - 1);
+                total = segundos + (minutos * 60) + (horas * 3600);
+
+                workbook.SaveAs("C:\\Users\\Srchenko\\Desktop\\Comanda" + DateTime.Now.ToString("ddMMyyyy") + total.ToString() + ".xlsx");
+                workbook.Close();
+                excel.Quit();
             }
             catch (AccessViolationException Exception)
             {
                 Console.WriteLine(Exception.Message);
+            }
+            finally
+            {
+                worksheet = null;
+                cell_range = null;
+                workbook = null;
             }
         }
     }
