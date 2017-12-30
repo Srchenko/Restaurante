@@ -18,7 +18,7 @@ namespace programa1
 
         int id_mozo=0;
 
-        public void cargarGridMozos()
+        private void cargarGridMozos()
         {
             try
             {
@@ -38,7 +38,7 @@ namespace programa1
             }
         }
 
-        public void limpiarTexto()
+        private void limpiarTexto()
         {
             txt_nombre.Text = "";
             txt_apellido.Text = "";
@@ -66,7 +66,7 @@ namespace programa1
             base.WndProc(ref mensaje);
         }
 
-        public bool validacion_copada()
+        private bool validacion_copada()
         {
             string error = "";
             //primero se verifica si hay textboxs vacios

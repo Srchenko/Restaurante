@@ -36,7 +36,7 @@ namespace programa1
         }
 
         //se ponen los nombres de todos los mozos en un combobox
-        public void cargarListaMozos()
+        private void cargarListaMozos()
         {
             try
             {
@@ -57,7 +57,7 @@ namespace programa1
         }
 
         //se pone el listado de productos en los combobox de la tabla
-        public void cargarListaProductos()
+        private void cargarListaProductos()
         {
             for (int i = 1; i <= 15; i++)
             {
@@ -83,6 +83,7 @@ namespace programa1
 
         int generar_valor = 0;
         int id_comanda_general = 0;
+        double precio_total = 0;
         bool tabla_vacia=true;
         
         public Comandas(int valor)
@@ -98,35 +99,42 @@ namespace programa1
         //si existe una comanda en curso, se cargan todos los datos necesarios en el combobox de mozos y la tabla de productos
         public void verificar_comanda_existente()
         {
-            conexion.Open();
-            SqlCommand comando = new SqlCommand("SELECT id_comanda, id_mozo FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
-            comando.Parameters.Add("@n_mesa", SqlDbType.Int);
-            comando.Parameters["@n_mesa"].Value = generar_valor;
-            SqlDataReader datos = comando.ExecuteReader();
-            if (datos.Read())
+            try
             {
-                id_comanda_general = Convert.ToInt32(datos["id_comanda"]);
-                lista_mozos.SelectedValue = datos["id_mozo"];
-                SqlCommand comando2 = new SqlCommand("SELECT id_renglon, id_producto, cantidad, subtotal FROM Comandas_Detalle WHERE id_comanda=@IDcomanda and baja=0", conexion);
-                comando2.Parameters.Add("@IDcomanda", SqlDbType.Int);
-                comando2.Parameters["@IDcomanda"].Value = id_comanda_general;
-                datos.Close();
-                SqlDataReader datos2 = comando2.ExecuteReader();
-                int fila = 0;
-                while(datos2.Read())
+                conexion.Open();
+                SqlCommand comando = new SqlCommand("SELECT id_comanda, id_mozo FROM Comandas_Cabecera WHERE numero_mesa=@n_mesa AND estado=0", conexion);
+                comando.Parameters.Add("@n_mesa", SqlDbType.Int);
+                comando.Parameters["@n_mesa"].Value = generar_valor;
+                SqlDataReader datos = comando.ExecuteReader();
+                if (datos.Read())
                 {
-                    dgv_comandas_detalle.Rows[fila].Cells["Columna_Producto"].Value = datos2["id_producto"];
-                    dgv_comandas_detalle.Rows[fila].Cells["Columna_Cantidad"].Value = datos2["cantidad"];
-                    dgv_comandas_detalle.Rows[fila].Cells["Columna_Subtotal"].Value = datos2["subtotal"];
-                    dgv_comandas_detalle.Rows[fila].Cells["ID_Renglon"].Value = datos2["id_renglon"];
-                    fila = fila + 1;
+                    id_comanda_general = Convert.ToInt32(datos["id_comanda"]);
+                    lista_mozos.SelectedValue = datos["id_mozo"];
+                    SqlCommand comando2 = new SqlCommand("SELECT id_renglon, id_producto, cantidad, subtotal FROM Comandas_Detalle WHERE id_comanda=@IDcomanda and baja=0", conexion);
+                    comando2.Parameters.Add("@IDcomanda", SqlDbType.Int);
+                    comando2.Parameters["@IDcomanda"].Value = id_comanda_general;
+                    datos.Close();
+                    SqlDataReader datos2 = comando2.ExecuteReader();
+                    int fila = 0;
+                    while(datos2.Read())
+                    {
+                        dgv_comandas_detalle.Rows[fila].Cells["Columna_Producto"].Value = datos2["id_producto"];
+                        dgv_comandas_detalle.Rows[fila].Cells["Columna_Cantidad"].Value = datos2["cantidad"];
+                        dgv_comandas_detalle.Rows[fila].Cells["Columna_Subtotal"].Value = datos2["subtotal"];
+                        dgv_comandas_detalle.Rows[fila].Cells["ID_Renglon"].Value = datos2["id_renglon"];
+                        fila = fila + 1;
+                    }
+                    datos2.Close();
+                    conexion.Close();
+                    calcular_subtotales();
                 }
-                datos2.Close();
+                datos.Close();
                 conexion.Close();
-                calcular_subtotales();
             }
-            datos.Close();
-            conexion.Close();
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
         }
 
         //al cerrar el formulario hijo, se hacen visibles los botones de la tabla del formulario padre
@@ -294,45 +302,54 @@ namespace programa1
 
         private void calcular_subtotales()
         {
-            conexion.Open();
-            SqlCommand comando;
-            SqlDataReader datos;
-            double precio=0;
-            double acumulador = -1;
-            foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
+            try
             {
-                if (fila.Cells["Columna_Producto"].Value != null && fila.Cells["Columna_Cantidad"].Value != null)
+                conexion.Open();
+                SqlCommand comando;
+                SqlDataReader datos;
+                double precio=0;
+                double acumulador = -1;
+                foreach (DataGridViewRow fila in dgv_comandas_detalle.Rows)
                 {
-                    comando = new SqlCommand("SELECT precio FROM Productos WHERE id_producto=@IDproducto", conexion);
-                    comando.Parameters.Add("@IDproducto", SqlDbType.Int);
-                    comando.Parameters["@IDproducto"].Value = Convert.ToInt32(fila.Cells["Columna_Producto"].Value);
-                    datos = comando.ExecuteReader();
-                    if (datos.Read())
+                    if (fila.Cells["Columna_Producto"].Value != null && fila.Cells["Columna_Cantidad"].Value != null)
                     {
-                        precio = Convert.ToDouble(datos["precio"]);
-                        fila.Cells["Columna_Subtotal"].Value = Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio;
-                        acumulador = acumulador + (Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio);
+                        comando = new SqlCommand("SELECT precio FROM Productos WHERE id_producto=@IDproducto", conexion);
+                        comando.Parameters.Add("@IDproducto", SqlDbType.Int);
+                        comando.Parameters["@IDproducto"].Value = Convert.ToInt32(fila.Cells["Columna_Producto"].Value);
+                        datos = comando.ExecuteReader();
+                        if (datos.Read())
+                        {
+                            precio = Convert.ToDouble(datos["precio"]);
+                            fila.Cells["Columna_Subtotal"].Value = Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio;
+                            acumulador = acumulador + (Convert.ToInt32(fila.Cells["Columna_Cantidad"].Value) * precio);
+                        }
+                        datos.Close();
                     }
-                    datos.Close();
+                    else
+                    {
+                        fila.Cells["Columna_Subtotal"].Value = null;
+                    }
+                }
+                if (acumulador == -1)
+                {
+                    valor_total_comanda.Text = "Total a pagar $ 0";
+                    precio_total = acumulador;
+                    tabla_vacia = true;
                 }
                 else
                 {
-                    fila.Cells["Columna_Subtotal"].Value = null;
+                    acumulador = acumulador + 1;
+                    valor_total_comanda.Text = "Total a pagar $ " + acumulador;
+                    precio_total = acumulador;
+                    tabla_vacia = false;
                 }
-            }
-            if (acumulador == -1)
-            {
-                tabla_vacia = true;
-                valor_total_comanda.Text = "Total a pagar $ 0";
-            }
-            else
-            {
-                acumulador = acumulador + 1;
-                valor_total_comanda.Text = "Total a pagar $ " + acumulador;
-                tabla_vacia = false;
-            }
 
-            conexion.Close();
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
         }
 
         private void bt_modificar_salir_Click(object sender, EventArgs e)
@@ -359,24 +376,30 @@ namespace programa1
 
             comanda_general();
             renglones_comanda();
-
-            conexion.Open();
-            // en el caso de que se modifiquen los datos de una comanda existente en la cual todos sus productos tienen una cantidad igual a 0, entonces esa comanda no existira mas
-            SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
-            comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
-            comando2.Parameters["@idcomanda"].Value = id_comanda_general;
-            SqlDataReader datos = comando2.ExecuteReader();
-            if (!datos.Read())
+            try
             {
+                conexion.Open();
+                // en el caso de que se modifiquen los datos de una comanda existente en la cual todos sus productos tienen una cantidad igual a 0, entonces esa comanda no existira mas
+                SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
+                comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando2.Parameters["@idcomanda"].Value = id_comanda_general;
+                SqlDataReader datos = comando2.ExecuteReader();
+                if (!datos.Read())
+                {
+                    datos.Close();
+                    SqlCommand comando3 = new SqlCommand("UPDATE Comandas_Cabecera SET baja=1, estado=1 WHERE id_comanda=@idcomanda", conexion);
+                    comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
+                    comando3.Parameters["@idcomanda"].Value = id_comanda_general;
+                    comando3.ExecuteNonQuery();
+                }
                 datos.Close();
-                SqlCommand comando3 = new SqlCommand("UPDATE Comandas_Cabecera SET baja=1, estado=1 WHERE id_comanda=@idcomanda", conexion);
-                comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
-                comando3.Parameters["@idcomanda"].Value = id_comanda_general;
-                comando3.ExecuteNonQuery();
-            }
-            datos.Close();
 
-            conexion.Close();
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
 
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
@@ -408,34 +431,39 @@ namespace programa1
 
             comanda_general();
             renglones_comanda();
-
-            conexion.Open();
-            // al finalizar la comanda, se pone el estado en 1, para que la mesa se quede libre para otras comandas posteriores
-            SqlCommand comando = new SqlCommand("UPDATE Comandas_Cabecera SET estado=1 WHERE id_comanda=@idcomanda", conexion);
-            comando.Parameters.Add("@idcomanda", SqlDbType.Int);
-            comando.Parameters["@idcomanda"].Value = id_comanda_general;
-            comando.ExecuteNonQuery();
-
-            SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
-            comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
-            comando2.Parameters["@idcomanda"].Value = id_comanda_general;
-            SqlDataReader datos = comando2.ExecuteReader();
-            if (!datos.Read())
+            try
             {
+                conexion.Open();
+                // al finalizar la comanda, se pone el estado en 1, para que la mesa se quede libre para otras comandas posteriores
+                SqlCommand comando = new SqlCommand("UPDATE Comandas_Cabecera SET estado=1 WHERE id_comanda=@idcomanda", conexion);
+                comando.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando.Parameters["@idcomanda"].Value = id_comanda_general;
+                comando.ExecuteNonQuery();
+
+                SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.baja FROM Comandas_Detalle JOIN Comandas_Cabecera ON Comandas_Detalle.id_comanda = Comandas_Cabecera.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.id_comanda=@idcomanda", conexion);
+                comando2.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando2.Parameters["@idcomanda"].Value = id_comanda_general;
+                SqlDataReader datos = comando2.ExecuteReader();
+                if (!datos.Read())
+                {
+                    datos.Close();
+                    SqlCommand comando3 = new SqlCommand("UPDATE Comandas_Cabecera SET baja=1 WHERE id_comanda=@idcomanda", conexion);
+                    comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
+                    comando3.Parameters["@idcomanda"].Value = id_comanda_general;
+                    comando3.ExecuteNonQuery();
+                    tabla_vacia = true;
+                }
                 datos.Close();
-                SqlCommand comando3 = new SqlCommand("UPDATE Comandas_Cabecera SET baja=1 WHERE id_comanda=@idcomanda", conexion);
-                comando3.Parameters.Add("@idcomanda", SqlDbType.Int);
-                comando3.Parameters["@idcomanda"].Value = id_comanda_general;
-                comando3.ExecuteNonQuery();
-                tabla_vacia = true;
+
+                conexion.Close();
             }
-            datos.Close();
-
-            conexion.Close();
-
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
             if (tabla_vacia == false)
             {
-                dgv_archivo_excel.DataSource = Exportar_Excel();
+                dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
             }
 
             Principal padre = this.MdiParent as Principal;
@@ -499,10 +527,63 @@ namespace programa1
             }
         }
 
-        public System.Data.DataTable Exportar_Excel()
+        private System.Data.DataTable Crear_Tabla_Excel()
         {
             System.Data.DataTable tabla = new System.Data.DataTable();
+            //primero se hace la parte del encabezado
+            tabla.Columns.Add("Columna_1", typeof(string));
+            tabla.Columns.Add("Columna_2", typeof(string));
+            tabla.Columns.Add("Columna_3", typeof(string));
+            tabla.Rows.Add("Mozo", "", "Mesa");
+            conexion.Open();
+
+            SqlCommand comando = new SqlCommand("SELECT Comandas_Cabecera.id_comanda, CONCAT(Mozos.nombre,' ',Mozos.apellido) AS NombreCompleto, Comandas_Cabecera.fecha AS cc_fecha, Comandas_Cabecera.hora AS cc_hora, Comandas_Cabecera.numero_mesa AS cc_mesa FROM Comandas_Cabecera JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Cabecera.id_comanda=@idcomanda", conexion);
+            comando.Parameters.Add("@idcomanda", SqlDbType.Int);
+            comando.Parameters["@idcomanda"].Value = id_comanda_general;
+            SqlDataReader datos = comando.ExecuteReader();
+            if (datos.Read())
+            {
+                id_comanda_general = Convert.ToInt32(datos["id_comanda"]);
+                tabla.Rows.Add(datos["NombreCompleto"].ToString(), "", datos["cc_mesa"].ToString());
+                tabla.Rows.Add();
+                tabla.Rows.Add("Fecha", "", "Hora");
+                tabla.Rows.Add(datos["cc_fecha"].ToString(), "", datos["cc_hora"].ToString());
+                tabla.Rows.Add();
+                tabla.Rows.Add();
+                tabla.Rows.Add("Producto", "Cantidad", "Subtotal");
+            }
+            datos.Close();
+            //luego los productos
+            SqlCommand comando2 = new SqlCommand("SELECT Comandas_Detalle.id_comanda, Productos.descripcion AS p_descripcion, Comandas_Detalle.cantidad AS cd_cantidad, Comandas_Detalle.subtotal AS cd_subtotal FROM Comandas_Detalle JOIN Productos ON Comandas_Detalle.id_producto = Productos.id_producto WHERE Comandas_Detalle.id_comanda=@idcomanda", conexion);
+            comando.Parameters.Add("@idcomanda", SqlDbType.Int);
+            comando.Parameters["@idcomanda"].Value = id_comanda_general;
+            SqlDataReader datos2 = comando.ExecuteReader();
+            while (datos2.Read())
+            {
+                tabla.Rows.Add(datos["p_descripcion"].ToString(), datos["cd_cantidad"].ToString(), datos["cd_subtotal"].ToString());
+            }
+            //luego el total
+            tabla.Rows.Add();
+            tabla.Rows.Add("Total", "", precio_total.ToString());
+
             return tabla;
+        }
+
+        private void Exportar_Excel()
+        {
+            Microsoft.Office.Interop.Excel.Application excel;
+            Microsoft.Office.Interop.Excel.Workbook workbook;
+            Microsoft.Office.Interop.Excel.Worksheet worksheet;
+            Microsoft.Office.Interop.Excel.Range range;
+
+            try
+            {
+
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
         }
     }
 }
