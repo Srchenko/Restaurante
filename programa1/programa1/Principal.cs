@@ -27,6 +27,7 @@ namespace programa1
             Comandas hijo = new Comandas(valor);
             hijo.MdiParent = this;
             tabla_mesas.Visible = false;
+            menuStrip1.Enabled = false;
             hijo.Show();
         }
 
@@ -62,6 +63,11 @@ namespace programa1
             tabla_mesas.Visible = true;
         }
 
+        public void menustrip_visible_si()
+        {
+            menuStrip1.Enabled = true;
+        }
+
         private void Principal_Load(object sender, EventArgs e)
         {
             
@@ -69,9 +75,11 @@ namespace programa1
 
         private void mozosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.MdiChildren.OfType<Mesas>().Count() == 0)
+            if (this.MdiChildren.OfType<Productos>().Count() == 0)
             {
-                Mesas hijo = new Mesas();
+                tabla_mesas.Visible = false;
+                menuStrip1.Enabled = false;
+                Productos hijo = new Productos();
                 hijo.MdiParent = this;
                 hijo.Show();
             }
@@ -82,6 +90,7 @@ namespace programa1
             if (this.MdiChildren.OfType<Mozos>().Count() == 0)
             {
                 tabla_mesas.Visible = false;
+                menuStrip1.Enabled = false;
                 Mozos hijo = new Mozos();
                 hijo.MdiParent = this;
                 hijo.Show();

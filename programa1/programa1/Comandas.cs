@@ -143,6 +143,7 @@ namespace programa1
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
+            padre.menustrip_visible_si();
         }
 
         private void dgv_comandas_detalle_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
@@ -404,6 +405,7 @@ namespace programa1
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
+            padre.menustrip_visible_si();
             this.Close();
         }
 
@@ -471,6 +473,7 @@ namespace programa1
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
+            padre.menustrip_visible_si();
             this.Close();
         }
 

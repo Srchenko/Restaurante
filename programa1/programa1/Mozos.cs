@@ -421,6 +421,7 @@ namespace programa1
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
             padre.tabla_visible_si();
+            padre.menustrip_visible_si();
         }
 
         private void txt_telefono_KeyDown(object sender, KeyEventArgs e)

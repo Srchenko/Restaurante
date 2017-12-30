@@ -33,8 +33,8 @@
             this.mozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mozosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabla_mesas = new System.Windows.Forms.TableLayoutPanel();
-            this.mesa1_alpha = new System.Windows.Forms.Button();
             this.mesa2_beta = new System.Windows.Forms.Button();
+            this.mesa1_alpha = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabla_mesas.SuspendLayout();
             this.SuspendLayout();
@@ -62,14 +62,14 @@
             // mozosToolStripMenuItem
             // 
             this.mozosToolStripMenuItem.Name = "mozosToolStripMenuItem";
-            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
-            this.mozosToolStripMenuItem.Text = "Mesas";
+            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mozosToolStripMenuItem.Text = "Productos";
             this.mozosToolStripMenuItem.Click += new System.EventHandler(this.mozosToolStripMenuItem_Click);
             // 
             // mozosToolStripMenuItem1
             // 
             this.mozosToolStripMenuItem1.Name = "mozosToolStripMenuItem1";
-            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(109, 22);
+            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.mozosToolStripMenuItem1.Text = "Mozos";
             this.mozosToolStripMenuItem1.Click += new System.EventHandler(this.mozosToolStripMenuItem1_Click);
             // 
@@ -94,17 +94,6 @@
             this.tabla_mesas.Size = new System.Drawing.Size(1240, 633);
             this.tabla_mesas.TabIndex = 2;
             // 
-            // mesa1_alpha
-            // 
-            this.mesa1_alpha.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa1_alpha.Location = new System.Drawing.Point(3, 3);
-            this.mesa1_alpha.Name = "mesa1_alpha";
-            this.mesa1_alpha.Size = new System.Drawing.Size(304, 120);
-            this.mesa1_alpha.TabIndex = 0;
-            this.mesa1_alpha.Text = "MESA Nº 1\r\nALPHA\r\n1 Persona";
-            this.mesa1_alpha.UseVisualStyleBackColor = true;
-            this.mesa1_alpha.Click += new System.EventHandler(this.mesa1_alpha_Click_1);
-            // 
             // mesa2_beta
             // 
             this.mesa2_beta.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -115,6 +104,17 @@
             this.mesa2_beta.Text = "MESA Nº 2\r\nBETA\r\n69 Personas";
             this.mesa2_beta.UseVisualStyleBackColor = true;
             this.mesa2_beta.Click += new System.EventHandler(this.mesa2_beta_Click_1);
+            // 
+            // mesa1_alpha
+            // 
+            this.mesa1_alpha.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa1_alpha.Location = new System.Drawing.Point(3, 3);
+            this.mesa1_alpha.Name = "mesa1_alpha";
+            this.mesa1_alpha.Size = new System.Drawing.Size(304, 120);
+            this.mesa1_alpha.TabIndex = 0;
+            this.mesa1_alpha.Text = "MESA Nº 1\r\nALPHA\r\n1 Persona";
+            this.mesa1_alpha.UseVisualStyleBackColor = true;
+            this.mesa1_alpha.Click += new System.EventHandler(this.mesa1_alpha_Click_1);
             // 
             // Principal
             // 

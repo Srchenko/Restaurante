@@ -1,6 +1,6 @@
 ﻿namespace programa1
 {
-    partial class Mesas
+    partial class Productos
     {
         /// <summary>
         /// Required designer variable.
@@ -29,13 +29,16 @@
         {
             this.SuspendLayout();
             // 
-            // Mesas
+            // Productos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "Mesas";
-            this.Text = "Mesas";
+            this.ClientSize = new System.Drawing.Size(844, 381);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "Productos";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Productos";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Productos_FormClosed);
             this.Load += new System.EventHandler(this.Mesas_Load);
             this.ResumeLayout(false);
 
