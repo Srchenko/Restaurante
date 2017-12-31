@@ -113,5 +113,95 @@ namespace programa1
         {
             abrir_comanda(mesa2_beta.TabIndex + 1);
         }
+
+        private void mesa3_gamma_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa3_gamma.TabIndex + 1);
+        }
+
+        private void mesa4_delta_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa4_delta.TabIndex + 1);
+        }
+
+        private void mesa5_epsilon_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa5_epsilon.TabIndex + 1);
+        }
+
+        private void mesa6_theta_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa6_theta.TabIndex + 1);
+        }
+
+        private void mesa7_kappa_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa7_kappa.TabIndex + 1);
+        }
+
+        private void mesa8_lambda_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa8_lambda.TabIndex + 1);
+        }
+
+        private void mesa9_sigma_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa9_sigma.TabIndex + 1);
+        }
+
+        private void mesa10_omega_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa10_omega.TabIndex + 1);
+        }
+
+        private void mesa11_minerva_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa11_minerva.TabIndex + 1);
+        }
+
+        private void mesa12_bravo_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa12_bravo.TabIndex + 1);
+        }
+
+        private void mesa13_charlie_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa13_charlie.TabIndex + 1);
+        }
+
+        private void mesa14_zeta_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa14_zeta.TabIndex + 1);
+        }
+
+        private void mesa15_cobra_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa15_cobra.TabIndex + 1);
+        }
+
+        private void mesa16_saturno_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa16_saturno.TabIndex + 1);
+        }
+
+        private void mesa17_neptuno_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa17_neptuno.TabIndex + 1);
+        }
+
+        private void mesa18_kruger_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa18_kruger.TabIndex + 1);
+        }
+
+        private void mesa19_dragon_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa19_dragon.TabIndex + 1);
+        }
+
+        private void mesa20_alba_Click(object sender, EventArgs e)
+        {
+            abrir_comanda(mesa20_alba.TabIndex + 1);
+        }
     }
 }
