@@ -48,6 +48,7 @@ namespace programa1
             txt_telefono.Text = "";
             id_mozo = 0;
         }
+
         //Se evita que se mueva la ventana del formulario
         protected override void WndProc(ref Message mensaje)
         {
