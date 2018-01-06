@@ -33,26 +33,31 @@
             this.mozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mozosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabla_mesas = new System.Windows.Forms.TableLayoutPanel();
+            this.mesa18_kruger = new System.Windows.Forms.Button();
+            this.mesa17_neptuno = new System.Windows.Forms.Button();
+            this.mesa20_alba = new System.Windows.Forms.Button();
+            this.mesa19_dragon = new System.Windows.Forms.Button();
             this.mesa2_beta = new System.Windows.Forms.Button();
             this.mesa1_alpha = new System.Windows.Forms.Button();
             this.mesa3_gamma = new System.Windows.Forms.Button();
             this.mesa4_delta = new System.Windows.Forms.Button();
             this.mesa5_epsilon = new System.Windows.Forms.Button();
-            this.mesa8_lambda = new System.Windows.Forms.Button();
-            this.mesa7_kappa = new System.Windows.Forms.Button();
-            this.mesa9_sigma = new System.Windows.Forms.Button();
             this.mesa6_theta = new System.Windows.Forms.Button();
+            this.mesa7_kappa = new System.Windows.Forms.Button();
+            this.mesa8_lambda = new System.Windows.Forms.Button();
+            this.mesa9_sigma = new System.Windows.Forms.Button();
             this.mesa10_omega = new System.Windows.Forms.Button();
-            this.mesa12_bravo = new System.Windows.Forms.Button();
-            this.mesa14_zeta = new System.Windows.Forms.Button();
             this.mesa11_minerva = new System.Windows.Forms.Button();
+            this.mesa12_bravo = new System.Windows.Forms.Button();
             this.mesa13_charlie = new System.Windows.Forms.Button();
+            this.mesa14_zeta = new System.Windows.Forms.Button();
             this.mesa15_cobra = new System.Windows.Forms.Button();
             this.mesa16_saturno = new System.Windows.Forms.Button();
-            this.mesa19_dragon = new System.Windows.Forms.Button();
-            this.mesa20_alba = new System.Windows.Forms.Button();
-            this.mesa17_neptuno = new System.Windows.Forms.Button();
-            this.mesa18_kruger = new System.Windows.Forms.Button();
+            this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preciosPorCategoríasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preciosPorCategoríasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ventasDiariasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ventasPorMozoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabla_mesas.SuspendLayout();
             this.SuspendLayout();
@@ -60,7 +65,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aBMMozosToolStripMenuItem});
+            this.aBMMozosToolStripMenuItem,
+            this.reportesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1264, 24);
@@ -80,14 +86,14 @@
             // mozosToolStripMenuItem
             // 
             this.mozosToolStripMenuItem.Name = "mozosToolStripMenuItem";
-            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.mozosToolStripMenuItem.Text = "Productos";
             this.mozosToolStripMenuItem.Click += new System.EventHandler(this.mozosToolStripMenuItem_Click);
             // 
             // mozosToolStripMenuItem1
             // 
             this.mozosToolStripMenuItem1.Name = "mozosToolStripMenuItem1";
-            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(128, 22);
+            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.mozosToolStripMenuItem1.Text = "Mozos";
             this.mozosToolStripMenuItem1.Click += new System.EventHandler(this.mozosToolStripMenuItem1_Click);
             // 
@@ -130,6 +136,50 @@
             this.tabla_mesas.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tabla_mesas.Size = new System.Drawing.Size(1240, 633);
             this.tabla_mesas.TabIndex = 2;
+            // 
+            // mesa18_kruger
+            // 
+            this.mesa18_kruger.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa18_kruger.Location = new System.Drawing.Point(313, 507);
+            this.mesa18_kruger.Name = "mesa18_kruger";
+            this.mesa18_kruger.Size = new System.Drawing.Size(304, 120);
+            this.mesa18_kruger.TabIndex = 17;
+            this.mesa18_kruger.Text = "MESA Nº 18\r\nKRUGER\r\n8 Personas";
+            this.mesa18_kruger.UseVisualStyleBackColor = true;
+            this.mesa18_kruger.Click += new System.EventHandler(this.mesa18_kruger_Click);
+            // 
+            // mesa17_neptuno
+            // 
+            this.mesa17_neptuno.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa17_neptuno.Location = new System.Drawing.Point(3, 507);
+            this.mesa17_neptuno.Name = "mesa17_neptuno";
+            this.mesa17_neptuno.Size = new System.Drawing.Size(304, 120);
+            this.mesa17_neptuno.TabIndex = 16;
+            this.mesa17_neptuno.Text = "MESA Nº 17\r\nNEPTUNO\r\n6 Personas";
+            this.mesa17_neptuno.UseVisualStyleBackColor = true;
+            this.mesa17_neptuno.Click += new System.EventHandler(this.mesa17_neptuno_Click);
+            // 
+            // mesa20_alba
+            // 
+            this.mesa20_alba.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa20_alba.Location = new System.Drawing.Point(933, 507);
+            this.mesa20_alba.Name = "mesa20_alba";
+            this.mesa20_alba.Size = new System.Drawing.Size(304, 120);
+            this.mesa20_alba.TabIndex = 19;
+            this.mesa20_alba.Text = "MESA Nº 20\r\nALBA\r\n4 Personas";
+            this.mesa20_alba.UseVisualStyleBackColor = true;
+            this.mesa20_alba.Click += new System.EventHandler(this.mesa20_alba_Click);
+            // 
+            // mesa19_dragon
+            // 
+            this.mesa19_dragon.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa19_dragon.Location = new System.Drawing.Point(623, 507);
+            this.mesa19_dragon.Name = "mesa19_dragon";
+            this.mesa19_dragon.Size = new System.Drawing.Size(304, 120);
+            this.mesa19_dragon.TabIndex = 18;
+            this.mesa19_dragon.Text = "MESA Nº 19\r\nDRAGON\r\n6 Personas";
+            this.mesa19_dragon.UseVisualStyleBackColor = true;
+            this.mesa19_dragon.Click += new System.EventHandler(this.mesa19_dragon_Click);
             // 
             // mesa2_beta
             // 
@@ -186,16 +236,16 @@
             this.mesa5_epsilon.UseVisualStyleBackColor = true;
             this.mesa5_epsilon.Click += new System.EventHandler(this.mesa5_epsilon_Click);
             // 
-            // mesa8_lambda
+            // mesa6_theta
             // 
-            this.mesa8_lambda.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa8_lambda.Location = new System.Drawing.Point(933, 129);
-            this.mesa8_lambda.Name = "mesa8_lambda";
-            this.mesa8_lambda.Size = new System.Drawing.Size(304, 120);
-            this.mesa8_lambda.TabIndex = 7;
-            this.mesa8_lambda.Text = "MESA Nº 8\r\nLAMBDA\r\n2 Personas";
-            this.mesa8_lambda.UseVisualStyleBackColor = true;
-            this.mesa8_lambda.Click += new System.EventHandler(this.mesa8_lambda_Click);
+            this.mesa6_theta.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa6_theta.Location = new System.Drawing.Point(313, 129);
+            this.mesa6_theta.Name = "mesa6_theta";
+            this.mesa6_theta.Size = new System.Drawing.Size(304, 120);
+            this.mesa6_theta.TabIndex = 5;
+            this.mesa6_theta.Text = "MESA Nº 6\r\nTHETA\r\n4 Personas";
+            this.mesa6_theta.UseVisualStyleBackColor = true;
+            this.mesa6_theta.Click += new System.EventHandler(this.mesa6_theta_Click);
             // 
             // mesa7_kappa
             // 
@@ -208,6 +258,17 @@
             this.mesa7_kappa.UseVisualStyleBackColor = true;
             this.mesa7_kappa.Click += new System.EventHandler(this.mesa7_kappa_Click);
             // 
+            // mesa8_lambda
+            // 
+            this.mesa8_lambda.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa8_lambda.Location = new System.Drawing.Point(933, 129);
+            this.mesa8_lambda.Name = "mesa8_lambda";
+            this.mesa8_lambda.Size = new System.Drawing.Size(304, 120);
+            this.mesa8_lambda.TabIndex = 7;
+            this.mesa8_lambda.Text = "MESA Nº 8\r\nLAMBDA\r\n2 Personas";
+            this.mesa8_lambda.UseVisualStyleBackColor = true;
+            this.mesa8_lambda.Click += new System.EventHandler(this.mesa8_lambda_Click);
+            // 
             // mesa9_sigma
             // 
             this.mesa9_sigma.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -218,17 +279,6 @@
             this.mesa9_sigma.Text = "MESA Nº 9\r\nSIGMA\r\n7 Personas";
             this.mesa9_sigma.UseVisualStyleBackColor = true;
             this.mesa9_sigma.Click += new System.EventHandler(this.mesa9_sigma_Click);
-            // 
-            // mesa6_theta
-            // 
-            this.mesa6_theta.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa6_theta.Location = new System.Drawing.Point(313, 129);
-            this.mesa6_theta.Name = "mesa6_theta";
-            this.mesa6_theta.Size = new System.Drawing.Size(304, 120);
-            this.mesa6_theta.TabIndex = 5;
-            this.mesa6_theta.Text = "MESA Nº 6\r\nTHETA\r\n4 Personas";
-            this.mesa6_theta.UseVisualStyleBackColor = true;
-            this.mesa6_theta.Click += new System.EventHandler(this.mesa6_theta_Click);
             // 
             // mesa10_omega
             // 
@@ -241,28 +291,6 @@
             this.mesa10_omega.UseVisualStyleBackColor = true;
             this.mesa10_omega.Click += new System.EventHandler(this.mesa10_omega_Click);
             // 
-            // mesa12_bravo
-            // 
-            this.mesa12_bravo.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa12_bravo.Location = new System.Drawing.Point(933, 255);
-            this.mesa12_bravo.Name = "mesa12_bravo";
-            this.mesa12_bravo.Size = new System.Drawing.Size(304, 120);
-            this.mesa12_bravo.TabIndex = 11;
-            this.mesa12_bravo.Text = "MESA Nº 12\r\nBRAVO\r\n8 Personas";
-            this.mesa12_bravo.UseVisualStyleBackColor = true;
-            this.mesa12_bravo.Click += new System.EventHandler(this.mesa12_bravo_Click);
-            // 
-            // mesa14_zeta
-            // 
-            this.mesa14_zeta.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa14_zeta.Location = new System.Drawing.Point(313, 381);
-            this.mesa14_zeta.Name = "mesa14_zeta";
-            this.mesa14_zeta.Size = new System.Drawing.Size(304, 120);
-            this.mesa14_zeta.TabIndex = 13;
-            this.mesa14_zeta.Text = "MESA Nº 14\r\nZETA\r\n2 Personas";
-            this.mesa14_zeta.UseVisualStyleBackColor = true;
-            this.mesa14_zeta.Click += new System.EventHandler(this.mesa14_zeta_Click);
-            // 
             // mesa11_minerva
             // 
             this.mesa11_minerva.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -274,6 +302,17 @@
             this.mesa11_minerva.UseVisualStyleBackColor = true;
             this.mesa11_minerva.Click += new System.EventHandler(this.mesa11_minerva_Click);
             // 
+            // mesa12_bravo
+            // 
+            this.mesa12_bravo.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa12_bravo.Location = new System.Drawing.Point(933, 255);
+            this.mesa12_bravo.Name = "mesa12_bravo";
+            this.mesa12_bravo.Size = new System.Drawing.Size(304, 120);
+            this.mesa12_bravo.TabIndex = 11;
+            this.mesa12_bravo.Text = "MESA Nº 12\r\nBRAVO\r\n8 Personas";
+            this.mesa12_bravo.UseVisualStyleBackColor = true;
+            this.mesa12_bravo.Click += new System.EventHandler(this.mesa12_bravo_Click);
+            // 
             // mesa13_charlie
             // 
             this.mesa13_charlie.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -284,6 +323,17 @@
             this.mesa13_charlie.Text = "MESA Nº 13\r\nCHARLIE\r\n4 Personas";
             this.mesa13_charlie.UseVisualStyleBackColor = true;
             this.mesa13_charlie.Click += new System.EventHandler(this.mesa13_charlie_Click);
+            // 
+            // mesa14_zeta
+            // 
+            this.mesa14_zeta.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mesa14_zeta.Location = new System.Drawing.Point(313, 381);
+            this.mesa14_zeta.Name = "mesa14_zeta";
+            this.mesa14_zeta.Size = new System.Drawing.Size(304, 120);
+            this.mesa14_zeta.TabIndex = 13;
+            this.mesa14_zeta.Text = "MESA Nº 14\r\nZETA\r\n2 Personas";
+            this.mesa14_zeta.UseVisualStyleBackColor = true;
+            this.mesa14_zeta.Click += new System.EventHandler(this.mesa14_zeta_Click);
             // 
             // mesa15_cobra
             // 
@@ -307,49 +357,40 @@
             this.mesa16_saturno.UseVisualStyleBackColor = true;
             this.mesa16_saturno.Click += new System.EventHandler(this.mesa16_saturno_Click);
             // 
-            // mesa19_dragon
+            // reportesToolStripMenuItem
             // 
-            this.mesa19_dragon.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa19_dragon.Location = new System.Drawing.Point(623, 507);
-            this.mesa19_dragon.Name = "mesa19_dragon";
-            this.mesa19_dragon.Size = new System.Drawing.Size(304, 120);
-            this.mesa19_dragon.TabIndex = 18;
-            this.mesa19_dragon.Text = "MESA Nº 19\r\nDRAGON\r\n6 Personas";
-            this.mesa19_dragon.UseVisualStyleBackColor = true;
-            this.mesa19_dragon.Click += new System.EventHandler(this.mesa19_dragon_Click);
+            this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.preciosPorCategoríasToolStripMenuItem,
+            this.preciosPorCategoríasToolStripMenuItem1,
+            this.ventasDiariasToolStripMenuItem,
+            this.ventasPorMozoToolStripMenuItem});
+            this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.reportesToolStripMenuItem.Text = "Reportes";
             // 
-            // mesa20_alba
+            // preciosPorCategoríasToolStripMenuItem
             // 
-            this.mesa20_alba.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa20_alba.Location = new System.Drawing.Point(933, 507);
-            this.mesa20_alba.Name = "mesa20_alba";
-            this.mesa20_alba.Size = new System.Drawing.Size(304, 120);
-            this.mesa20_alba.TabIndex = 19;
-            this.mesa20_alba.Text = "MESA Nº 20\r\nALBA\r\n4 Personas";
-            this.mesa20_alba.UseVisualStyleBackColor = true;
-            this.mesa20_alba.Click += new System.EventHandler(this.mesa20_alba_Click);
+            this.preciosPorCategoríasToolStripMenuItem.Name = "preciosPorCategoríasToolStripMenuItem";
+            this.preciosPorCategoríasToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.preciosPorCategoríasToolStripMenuItem.Text = "Materia Prima Utilizada";
             // 
-            // mesa17_neptuno
+            // preciosPorCategoríasToolStripMenuItem1
             // 
-            this.mesa17_neptuno.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa17_neptuno.Location = new System.Drawing.Point(3, 507);
-            this.mesa17_neptuno.Name = "mesa17_neptuno";
-            this.mesa17_neptuno.Size = new System.Drawing.Size(304, 120);
-            this.mesa17_neptuno.TabIndex = 16;
-            this.mesa17_neptuno.Text = "MESA Nº 17\r\nNEPTUNO\r\n6 Personas";
-            this.mesa17_neptuno.UseVisualStyleBackColor = true;
-            this.mesa17_neptuno.Click += new System.EventHandler(this.mesa17_neptuno_Click);
+            this.preciosPorCategoríasToolStripMenuItem1.Name = "preciosPorCategoríasToolStripMenuItem1";
+            this.preciosPorCategoríasToolStripMenuItem1.Size = new System.Drawing.Size(196, 22);
+            this.preciosPorCategoríasToolStripMenuItem1.Text = "Precios por Categorías";
             // 
-            // mesa18_kruger
+            // ventasDiariasToolStripMenuItem
             // 
-            this.mesa18_kruger.Font = new System.Drawing.Font("Lucida Sans", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mesa18_kruger.Location = new System.Drawing.Point(313, 507);
-            this.mesa18_kruger.Name = "mesa18_kruger";
-            this.mesa18_kruger.Size = new System.Drawing.Size(304, 120);
-            this.mesa18_kruger.TabIndex = 17;
-            this.mesa18_kruger.Text = "MESA Nº 18\r\nKRUGER\r\n8 Personas";
-            this.mesa18_kruger.UseVisualStyleBackColor = true;
-            this.mesa18_kruger.Click += new System.EventHandler(this.mesa18_kruger_Click);
+            this.ventasDiariasToolStripMenuItem.Name = "ventasDiariasToolStripMenuItem";
+            this.ventasDiariasToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.ventasDiariasToolStripMenuItem.Text = "Ventas Diarias";
+            // 
+            // ventasPorMozoToolStripMenuItem
+            // 
+            this.ventasPorMozoToolStripMenuItem.Name = "ventasPorMozoToolStripMenuItem";
+            this.ventasPorMozoToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.ventasPorMozoToolStripMenuItem.Text = "Ventas por Mozo";
             // 
             // Principal
             // 
@@ -400,6 +441,11 @@
         private System.Windows.Forms.Button mesa14_zeta;
         private System.Windows.Forms.Button mesa15_cobra;
         private System.Windows.Forms.Button mesa16_saturno;
+        private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preciosPorCategoríasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem preciosPorCategoríasToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ventasDiariasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ventasPorMozoToolStripMenuItem;
     }
 }
 

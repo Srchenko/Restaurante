@@ -24,6 +24,39 @@ namespace programa1
 
         private void abrir_comanda(int valor)
         {
+            string error = "Faltan datos de: ";
+            int contador = 0;
+            conexion.Open();
+            SqlCommand comando = new SqlCommand("SELECT id_mozo FROM Mozos WHERE baja=0", conexion);
+            SqlDataReader datos = comando.ExecuteReader();
+            if (!datos.Read())
+            {
+                contador = contador + 1;
+                error += "mozos ";
+            }
+            datos.Close();
+
+            SqlCommand comando2 = new SqlCommand("SELECT id_producto FROM Productos WHERE baja=0", conexion);
+            SqlDataReader datos2 = comando2.ExecuteReader();
+            if (!datos2.Read())
+            {
+                if (contador == 1)
+                {
+                    error += "y ";
+                }
+                contador = contador + 1;
+                error += "productos";
+            }
+            datos2.Close();
+
+            conexion.Close();
+
+            if (contador > 0)
+            {
+                MessageBox.Show(error, "Atención");
+                return;
+            }
+
             Comandas hijo = new Comandas(valor);
             hijo.MdiParent = this;
             tabla_mesas.Visible = false;
