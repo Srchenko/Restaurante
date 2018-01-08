@@ -57,11 +57,14 @@ namespace programa1
                 return;
             }
 
-            Comandas hijo = new Comandas(valor);
-            hijo.MdiParent = this;
-            tabla_mesas.Visible = false;
-            menuStrip1.Enabled = false;
-            hijo.Show();
+            if (this.MdiChildren.OfType<Comandas>().Count() == 0)
+            {
+                Comandas hijo = new Comandas(valor);
+                hijo.MdiParent = this;
+                tabla_mesas.Visible = false;
+                menuStrip1.Enabled = false;
+                hijo.Show();
+            }
         }
 
         //se cambian los colores de los botones de la tabla para indicar si estan libres u ocupados, de color verde o rojo respectivamente
@@ -235,6 +238,18 @@ namespace programa1
         private void mesa20_alba_Click(object sender, EventArgs e)
         {
             abrir_comanda(mesa20_alba.TabIndex + 1);
+        }
+
+        private void preciosPorCategoríasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.MdiChildren.OfType<Reportes>().Count() == 0)
+            {
+                tabla_mesas.Visible = false;
+                menuStrip1.Enabled = false;
+                Reportes hijo = new Reportes();
+                hijo.MdiParent = this;
+                hijo.Show();
+            }
         }
     }
 }

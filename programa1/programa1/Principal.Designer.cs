@@ -32,6 +32,8 @@
             this.aBMMozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mozosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mozosToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.preciosPorCategoríasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabla_mesas = new System.Windows.Forms.TableLayoutPanel();
             this.mesa18_kruger = new System.Windows.Forms.Button();
             this.mesa17_neptuno = new System.Windows.Forms.Button();
@@ -53,11 +55,6 @@
             this.mesa14_zeta = new System.Windows.Forms.Button();
             this.mesa15_cobra = new System.Windows.Forms.Button();
             this.mesa16_saturno = new System.Windows.Forms.Button();
-            this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.preciosPorCategoríasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.preciosPorCategoríasToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.ventasDiariasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ventasPorMozoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabla_mesas.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +93,21 @@
             this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.mozosToolStripMenuItem1.Text = "Mozos";
             this.mozosToolStripMenuItem1.Click += new System.EventHandler(this.mozosToolStripMenuItem1_Click);
+            // 
+            // reportesToolStripMenuItem
+            // 
+            this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.preciosPorCategoríasToolStripMenuItem});
+            this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
+            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.reportesToolStripMenuItem.Text = "Reportes";
+            // 
+            // preciosPorCategoríasToolStripMenuItem
+            // 
+            this.preciosPorCategoríasToolStripMenuItem.Name = "preciosPorCategoríasToolStripMenuItem";
+            this.preciosPorCategoríasToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preciosPorCategoríasToolStripMenuItem.Text = "Ver Reportes";
+            this.preciosPorCategoríasToolStripMenuItem.Click += new System.EventHandler(this.preciosPorCategoríasToolStripMenuItem_Click);
             // 
             // tabla_mesas
             // 
@@ -357,41 +369,6 @@
             this.mesa16_saturno.UseVisualStyleBackColor = true;
             this.mesa16_saturno.Click += new System.EventHandler(this.mesa16_saturno_Click);
             // 
-            // reportesToolStripMenuItem
-            // 
-            this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.preciosPorCategoríasToolStripMenuItem,
-            this.preciosPorCategoríasToolStripMenuItem1,
-            this.ventasDiariasToolStripMenuItem,
-            this.ventasPorMozoToolStripMenuItem});
-            this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
-            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-            this.reportesToolStripMenuItem.Text = "Reportes";
-            // 
-            // preciosPorCategoríasToolStripMenuItem
-            // 
-            this.preciosPorCategoríasToolStripMenuItem.Name = "preciosPorCategoríasToolStripMenuItem";
-            this.preciosPorCategoríasToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.preciosPorCategoríasToolStripMenuItem.Text = "Materia Prima Utilizada";
-            // 
-            // preciosPorCategoríasToolStripMenuItem1
-            // 
-            this.preciosPorCategoríasToolStripMenuItem1.Name = "preciosPorCategoríasToolStripMenuItem1";
-            this.preciosPorCategoríasToolStripMenuItem1.Size = new System.Drawing.Size(196, 22);
-            this.preciosPorCategoríasToolStripMenuItem1.Text = "Precios por Categorías";
-            // 
-            // ventasDiariasToolStripMenuItem
-            // 
-            this.ventasDiariasToolStripMenuItem.Name = "ventasDiariasToolStripMenuItem";
-            this.ventasDiariasToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.ventasDiariasToolStripMenuItem.Text = "Ventas Diarias";
-            // 
-            // ventasPorMozoToolStripMenuItem
-            // 
-            this.ventasPorMozoToolStripMenuItem.Name = "ventasPorMozoToolStripMenuItem";
-            this.ventasPorMozoToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.ventasPorMozoToolStripMenuItem.Text = "Ventas por Mozo";
-            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -443,9 +420,6 @@
         private System.Windows.Forms.Button mesa16_saturno;
         private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem preciosPorCategoríasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem preciosPorCategoríasToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem ventasDiariasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ventasPorMozoToolStripMenuItem;
     }
 }
 
