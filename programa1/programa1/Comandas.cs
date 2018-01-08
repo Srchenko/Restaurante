@@ -601,15 +601,18 @@ namespace programa1
 
             try
             {
+                //se crea un nuevo archivo de excel y se ejecuta en segundo plano
                 excel = new Microsoft.Office.Interop.Excel.Application();
                 excel.Visible = false;
                 excel.DisplayAlerts = false;
 
                 workbook = excel.Workbooks.Add(Type.Missing);
 
+                //la hoja de calculo tiene el nombre de comanda
                 worksheet = (Worksheet)workbook.ActiveSheet;
                 worksheet.Name = "Comanda";
 
+                //se agrega toda la tabla que se creo en el metodo de "crear tabla" para llevarlo a excel
                 int fila_excel = 0;
                 foreach (DataRow fila_tabla in Crear_Tabla_Excel().Rows)
                 {
@@ -620,12 +623,14 @@ namespace programa1
                     }
                 }
                 
+                //se combinan ciertas celdas donde no hay informacion
                 worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[3, 3]].Merge();
                 worksheet.Range[worksheet.Cells[6, 1], worksheet.Cells[7, 3]].Merge();
                 worksheet.Range[worksheet.Cells[1, 2], worksheet.Cells[2, 2]].Merge();
                 worksheet.Range[worksheet.Cells[4, 2], worksheet.Cells[5, 2]].Merge();
                 worksheet.Range[worksheet.Cells[24, 1], worksheet.Cells[24, 3]].Merge();
 
+                //se ponen en negrita ciertas celdas
                 worksheet.Cells[1, 1].Font.Bold = true;
                 worksheet.Cells[1, 3].Font.Bold = true;
                 worksheet.Cells[4, 1].Font.Bold = true;
@@ -635,12 +640,14 @@ namespace programa1
                 worksheet.Cells[8, 3].Font.Bold = true;
                 worksheet.Cells[25, 1].Font.Bold = true;
 
+                //hace que todas las celdas tengan bordes y tengan un tamaño justo para su contenido
                 cell_range = worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[fila_excel, Crear_Tabla_Excel().Columns.Count]];
                 cell_range.EntireColumn.AutoFit();
                 Borders border = cell_range.Borders;
                 border.LineStyle = XlLineStyle.xlContinuous;
                 border.Weight = 2d;
 
+                //hace que ciertas celdas tengan un borde mas gordo
                 worksheet.Cells[1, 1].Borders.Weight = 3d;
                 worksheet.Cells[1, 3].Borders.Weight = 3d;
                 worksheet.Cells[4, 1].Borders.Weight = 3d;
@@ -661,6 +668,7 @@ namespace programa1
                 segundos = (60 - ahora.Second - 1);
                 total = segundos + (minutos * 60) + (horas * 3600);
 
+                //se guarda en el escritorio como el nombre de comanda más la fecha y horario para que sea un archivo diferente a los demas... y luego se cierra excel
                 workbook.SaveAs("C:\\Users\\Srchenko\\Desktop\\Comanda" + DateTime.Now.ToString("ddMMyyyy") + total.ToString() + ".xlsx");
                 workbook.Close();
                 excel.Quit();
