@@ -91,11 +91,37 @@ namespace programa1
                 lbl_ventas_mozos.Text = "Seleccione un mozo.";
 
                 conexion.Open();
-                SqlCommand comando = new SqlCommand("SELECT DISTINCT Mozos.id_mozo AS ID, CONCAT(Mozos.nombre,' ',Mozos.apellido) AS NombreCompleto FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Mozos.baja=0 ORDER BY NombreCompleto", conexion);
+                SqlCommand comando = new SqlCommand("SELECT DISTINCT Mozos.id_mozo AS ID, CONCAT(Mozos.nombre,' ',Mozos.apellido) AS NombreCompleto FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Mozos.baja=0 AND Comandas_Cabecera.estado=1 ORDER BY NombreCompleto", conexion);
                 SqlDataReader datos = comando.ExecuteReader();
                 while (datos.Read())
                 {
                     dgv_mozos.Rows.Add(datos["NombreCompleto"].ToString(), datos["ID"].ToString());
+                }
+                datos.Close();
+
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
+        }
+
+        //se ponen todas las comandas de hoy en un datagridview para que despues el usuario pueda seleccionarlos
+        public void rellenar_comandas()
+        {
+            try
+            {
+                lbl_ventas_diarias.Text = "Seleccione una comanda.";
+                TimeSpan tiempo;
+
+                conexion.Open();
+                SqlCommand comando = new SqlCommand("SELECT DISTINCT Comandas_Cabecera.id_comanda AS ID, Comandas_Cabecera.hora AS hor, SUM(Comandas_Detalle.subtotal) AS tot FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Comandas_Cabecera.estado=1 AND CONVERT(date,Comandas_Cabecera.fecha)=CONVERT(DATE,getdate()) GROUP BY Comandas_Cabecera.id_comanda, Comandas_Cabecera.hora ORDER BY hor", conexion);
+                SqlDataReader datos = comando.ExecuteReader();
+                while (datos.Read())
+                {
+                    tiempo = (TimeSpan)datos["hor"];
+                    dgv_comandas_hora_total.Rows.Add(tiempo.ToString(@"hh\:mm"), datos["tot"].ToString(), datos["ID"].ToString());
                 }
                 datos.Close();
 
@@ -134,7 +160,7 @@ namespace programa1
                 conexion.Close();
 
                 conexion.Open();
-                //el segundo command y datareader sirve para saber si existe comandas en la base de datos
+                //el segundo command y datareader sirve para saber si existen comandas en la base de datos para mostrar las ventas que hicieron los mozos
                 SqlCommand comando2 = new SqlCommand("SELECT id_comanda FROM Comandas_Cabecera WHERE baja=0 AND estado=1", conexion);
                 SqlDataReader datos2 = comando2.ExecuteReader();
                 if (datos2.Read())
@@ -149,6 +175,23 @@ namespace programa1
                     dgv_comandas_detalle.Enabled = false;
                 }
                 datos2.Close();
+                conexion.Close();
+
+                //el tercer command y datareader sirve para saber si existen comandas en la base de datos que sean de la fecha de hoy, para mostrar las ventas diarias
+                conexion.Open();
+                SqlCommand comando3 = new SqlCommand("SELECT id_comanda FROM Comandas_Cabecera WHERE baja=0 AND estado=1 AND CONVERT(date,Comandas_Cabecera.fecha)=CONVERT(DATE,getdate())", conexion);
+                SqlDataReader datos3 = comando3.ExecuteReader();
+                if (datos3.Read())
+                {
+                    conexion.Close();
+                    rellenar_comandas();
+                }
+                else
+                {
+                    dgv_comandas_hora_total.Enabled = false;
+                    dgv_comandas_productos.Enabled = false;
+                }
+                datos3.Close();
 
                 conexion.Close();
             }
@@ -208,6 +251,8 @@ namespace programa1
             dgv_mozos.ClearSelection();
             dgv_comandas_cabecera.ClearSelection();
             dgv_comandas_detalle.ClearSelection();
+            dgv_comandas_hora_total.ClearSelection();
+            dgv_comandas_productos.ClearSelection();
         }
 
         //al hacer click en una determinada fila del datagridview de productos se muestra la materia prima de ese producto con los datos correspondientes en otro datagridview
@@ -251,6 +296,8 @@ namespace programa1
             dgv_mozos.ClearSelection();
             dgv_comandas_cabecera.ClearSelection();
             dgv_comandas_detalle.ClearSelection();
+            dgv_comandas_hora_total.ClearSelection();
+            dgv_comandas_productos.ClearSelection();
         }
 
         //al hacer click en una determinada fila del datagridview de mozos se muestran las comandas de ese mozo con los datos correspondientes en otro datagridview
@@ -271,7 +318,7 @@ namespace programa1
 
                 conexion.Open();
 
-                SqlCommand comando = new SqlCommand("SELECT Comandas_Cabecera.fecha AS fech, Comandas_Cabecera.hora AS hor, SUM(Comandas_Detalle.subtotal) AS tot, Comandas_Detalle.id_comanda AS ID FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Mozos.id_mozo=@idmozo AND Mozos.baja=0 GROUP BY Comandas_Cabecera.fecha, Comandas_Cabecera.hora, Comandas_Detalle.id_comanda ORDER BY fech, hor DESC", conexion);
+                SqlCommand comando = new SqlCommand("SELECT Comandas_Cabecera.fecha AS fech, Comandas_Cabecera.hora AS hor, SUM(Comandas_Detalle.subtotal) AS tot, Comandas_Detalle.id_comanda AS ID FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Mozos.id_mozo=@idmozo AND Mozos.baja=0 AND Comandas_Cabecera.estado=1 GROUP BY Comandas_Cabecera.fecha, Comandas_Cabecera.hora, Comandas_Detalle.id_comanda ORDER BY fech, hor DESC", conexion);
                 comando.Parameters.Add("@idmozo", SqlDbType.Int);
                 comando.Parameters["@idmozo"].Value = id_mozo;
                 SqlDataReader datos = comando.ExecuteReader();
@@ -306,13 +353,44 @@ namespace programa1
 
                 conexion.Open();
 
-                SqlCommand comando = new SqlCommand("SELECT Productos.descripcion AS descr, Comandas_Detalle.cantidad AS cant, Comandas_Detalle.subtotal AS sub FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Productos ON Comandas_Detalle.id_producto = Productos.id_producto WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Comandas_Detalle.id_comanda=@idcomanda AND Productos.baja=0 ORDER BY descr", conexion);
+                SqlCommand comando = new SqlCommand("SELECT Productos.descripcion AS descr, Comandas_Detalle.cantidad AS cant, Comandas_Detalle.subtotal AS sub FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Productos ON Comandas_Detalle.id_producto = Productos.id_producto WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Comandas_Detalle.id_comanda=@idcomanda AND Productos.baja=0 AND Comandas_Cabecera.estado=1 ORDER BY descr", conexion);
                 comando.Parameters.Add("@idcomanda", SqlDbType.Int);
                 comando.Parameters["@idcomanda"].Value = id_comanda;
                 SqlDataReader datos = comando.ExecuteReader();
                 while (datos.Read())
                 {                    
                     dgv_comandas_detalle.Rows.Add(datos["descr"].ToString(), datos["cant"].ToString(), datos["sub"].ToString());
+                }
+                datos.Close();
+
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
+        }
+
+        //al hacer click en una determinada fila del datagridview de la cabecera de las comandas se muestra el detalle de esa comanda con los datos correspondientes en otro datagridview
+        private void dgv_comandas_hora_total_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                int indice = dgv_comandas_hora_total.SelectedCells[0].RowIndex;
+                DataGridViewRow fila_seleccionada = dgv_comandas_hora_total.Rows[indice];
+                int id_comanda = Convert.ToInt32(fila_seleccionada.Cells["ID_Comanda_VD"].Value);
+
+                dgv_comandas_productos.Rows.Clear();
+
+                conexion.Open();
+
+                SqlCommand comando = new SqlCommand("SELECT Productos.descripcion AS descr, Comandas_Detalle.cantidad AS cant, Comandas_Detalle.subtotal AS sub FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Productos ON Comandas_Detalle.id_producto = Productos.id_producto WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Comandas_Detalle.id_comanda=@idcomanda AND Productos.baja=0 AND Comandas_Cabecera.estado=1 ORDER BY descr", conexion);
+                comando.Parameters.Add("@idcomanda", SqlDbType.Int);
+                comando.Parameters["@idcomanda"].Value = id_comanda;
+                SqlDataReader datos = comando.ExecuteReader();
+                while (datos.Read())
+                {
+                    dgv_comandas_productos.Rows.Add(datos["descr"].ToString(), datos["cant"].ToString(), datos["sub"].ToString());
                 }
                 datos.Close();
 

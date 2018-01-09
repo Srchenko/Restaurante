@@ -31,6 +31,8 @@
             this.pestañas_reportes = new System.Windows.Forms.TabControl();
             this.tab_precio_categoria = new System.Windows.Forms.TabPage();
             this.dgv_categoria_producto = new System.Windows.Forms.DataGridView();
+            this.Columna_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgv_categoria = new System.Windows.Forms.DataGridView();
             this.Columna_Categoria = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID_Categoria = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,22 +48,29 @@
             this.ID_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lbl_materia_utilizada_producto = new System.Windows.Forms.Label();
             this.tab_ventas_mozo = new System.Windows.Forms.TabPage();
-            this.tab_ventas_diarias = new System.Windows.Forms.TabPage();
-            this.lbl_ventas_mozos = new System.Windows.Forms.Label();
-            this.dgv_mozos = new System.Windows.Forms.DataGridView();
-            this.dgv_comandas_cabecera = new System.Windows.Forms.DataGridView();
-            this.Columna_Mozo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID_Mozo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Hora = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Total = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID_Comanda = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgv_comandas_detalle = new System.Windows.Forms.DataGridView();
             this.Columna_Producto_Detalle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Columna_Cantidad_Detalle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Columna_Subtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Columna_Precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_comandas_cabecera = new System.Windows.Forms.DataGridView();
+            this.Columna_Fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Hora = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Total = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ID_Comanda = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgv_mozos = new System.Windows.Forms.DataGridView();
+            this.Columna_Mozo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ID_Mozo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lbl_ventas_mozos = new System.Windows.Forms.Label();
+            this.tab_ventas_diarias = new System.Windows.Forms.TabPage();
+            this.lbl_ventas_diarias = new System.Windows.Forms.Label();
+            this.dgv_comandas_productos = new System.Windows.Forms.DataGridView();
+            this.dgv_comandas_hora_total = new System.Windows.Forms.DataGridView();
+            this.Columna_Hora_VD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Total_VD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ID_Comanda_VD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Producto_VD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Cantidad_VD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Columna_Subtotal_VD = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pestañas_reportes.SuspendLayout();
             this.tab_precio_categoria.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_categoria_producto)).BeginInit();
@@ -70,9 +79,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_productos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_productos)).BeginInit();
             this.tab_ventas_mozo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_cabecera)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_cabecera)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).BeginInit();
+            this.tab_ventas_diarias.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_productos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_hora_total)).BeginInit();
             this.SuspendLayout();
             // 
             // pestañas_reportes
@@ -119,6 +131,22 @@
             this.dgv_categoria_producto.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgv_categoria_producto.Size = new System.Drawing.Size(513, 292);
             this.dgv_categoria_producto.TabIndex = 2;
+            // 
+            // Columna_Producto
+            // 
+            this.Columna_Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Producto.HeaderText = "Producto";
+            this.Columna_Producto.Name = "Columna_Producto";
+            this.Columna_Producto.ReadOnly = true;
+            this.Columna_Producto.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Columna_Precio
+            // 
+            this.Columna_Precio.HeaderText = "Precio";
+            this.Columna_Precio.Name = "Columna_Precio";
+            this.Columna_Precio.ReadOnly = true;
+            this.Columna_Precio.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Columna_Precio.Width = 80;
             // 
             // dgv_categoria
             // 
@@ -285,115 +313,6 @@
             this.tab_ventas_mozo.Text = "Ventas por Mozo";
             this.tab_ventas_mozo.UseVisualStyleBackColor = true;
             // 
-            // tab_ventas_diarias
-            // 
-            this.tab_ventas_diarias.Location = new System.Drawing.Point(4, 22);
-            this.tab_ventas_diarias.Name = "tab_ventas_diarias";
-            this.tab_ventas_diarias.Size = new System.Drawing.Size(811, 330);
-            this.tab_ventas_diarias.TabIndex = 3;
-            this.tab_ventas_diarias.Text = "Ventas Diarias";
-            this.tab_ventas_diarias.UseVisualStyleBackColor = true;
-            // 
-            // lbl_ventas_mozos
-            // 
-            this.lbl_ventas_mozos.AutoSize = true;
-            this.lbl_ventas_mozos.Location = new System.Drawing.Point(3, 0);
-            this.lbl_ventas_mozos.Name = "lbl_ventas_mozos";
-            this.lbl_ventas_mozos.Size = new System.Drawing.Size(112, 13);
-            this.lbl_ventas_mozos.TabIndex = 2;
-            this.lbl_ventas_mozos.Text = "No existen comandas.";
-            // 
-            // dgv_mozos
-            // 
-            this.dgv_mozos.AllowUserToAddRows = false;
-            this.dgv_mozos.AllowUserToDeleteRows = false;
-            this.dgv_mozos.AllowUserToResizeColumns = false;
-            this.dgv_mozos.AllowUserToResizeRows = false;
-            this.dgv_mozos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_mozos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Columna_Mozo,
-            this.ID_Mozo});
-            this.dgv_mozos.Location = new System.Drawing.Point(6, 33);
-            this.dgv_mozos.Name = "dgv_mozos";
-            this.dgv_mozos.ReadOnly = true;
-            this.dgv_mozos.RowHeadersVisible = false;
-            this.dgv_mozos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgv_mozos.Size = new System.Drawing.Size(216, 293);
-            this.dgv_mozos.TabIndex = 3;
-            this.dgv_mozos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_mozos_CellClick);
-            // 
-            // dgv_comandas_cabecera
-            // 
-            this.dgv_comandas_cabecera.AllowUserToAddRows = false;
-            this.dgv_comandas_cabecera.AllowUserToDeleteRows = false;
-            this.dgv_comandas_cabecera.AllowUserToResizeColumns = false;
-            this.dgv_comandas_cabecera.AllowUserToResizeRows = false;
-            this.dgv_comandas_cabecera.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_comandas_cabecera.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Columna_Fecha,
-            this.Columna_Hora,
-            this.Columna_Total,
-            this.ID_Comanda});
-            this.dgv_comandas_cabecera.Location = new System.Drawing.Point(241, 33);
-            this.dgv_comandas_cabecera.Name = "dgv_comandas_cabecera";
-            this.dgv_comandas_cabecera.ReadOnly = true;
-            this.dgv_comandas_cabecera.RowHeadersVisible = false;
-            this.dgv_comandas_cabecera.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgv_comandas_cabecera.Size = new System.Drawing.Size(250, 294);
-            this.dgv_comandas_cabecera.TabIndex = 4;
-            this.dgv_comandas_cabecera.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_comandas_cabecera_CellClick);
-            // 
-            // Columna_Mozo
-            // 
-            this.Columna_Mozo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Columna_Mozo.HeaderText = "Mozo";
-            this.Columna_Mozo.Name = "Columna_Mozo";
-            this.Columna_Mozo.ReadOnly = true;
-            this.Columna_Mozo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // ID_Mozo
-            // 
-            this.ID_Mozo.HeaderText = "ID_Mozo";
-            this.ID_Mozo.Name = "ID_Mozo";
-            this.ID_Mozo.ReadOnly = true;
-            this.ID_Mozo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ID_Mozo.Visible = false;
-            // 
-            // Columna_Fecha
-            // 
-            this.Columna_Fecha.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Columna_Fecha.HeaderText = "Fecha";
-            this.Columna_Fecha.Name = "Columna_Fecha";
-            this.Columna_Fecha.ReadOnly = true;
-            this.Columna_Fecha.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Columna_Hora
-            // 
-            this.Columna_Hora.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Columna_Hora.HeaderText = "Hora";
-            this.Columna_Hora.Name = "Columna_Hora";
-            this.Columna_Hora.ReadOnly = true;
-            this.Columna_Hora.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Columna_Total
-            // 
-            this.Columna_Total.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Columna_Total.FillWeight = 139.0863F;
-            this.Columna_Total.HeaderText = "Total";
-            this.Columna_Total.Name = "Columna_Total";
-            this.Columna_Total.ReadOnly = true;
-            this.Columna_Total.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // ID_Comanda
-            // 
-            this.ID_Comanda.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ID_Comanda.FillWeight = 60.9137F;
-            this.ID_Comanda.HeaderText = "ID_Comanda";
-            this.ID_Comanda.Name = "ID_Comanda";
-            this.ID_Comanda.ReadOnly = true;
-            this.ID_Comanda.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.ID_Comanda.Visible = false;
-            // 
             // dgv_comandas_detalle
             // 
             this.dgv_comandas_detalle.AllowUserToAddRows = false;
@@ -438,21 +357,217 @@
             this.Columna_Subtotal.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Columna_Subtotal.Width = 60;
             // 
-            // Columna_Producto
+            // dgv_comandas_cabecera
             // 
-            this.Columna_Producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Columna_Producto.HeaderText = "Producto";
-            this.Columna_Producto.Name = "Columna_Producto";
-            this.Columna_Producto.ReadOnly = true;
-            this.Columna_Producto.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_comandas_cabecera.AllowUserToAddRows = false;
+            this.dgv_comandas_cabecera.AllowUserToDeleteRows = false;
+            this.dgv_comandas_cabecera.AllowUserToResizeColumns = false;
+            this.dgv_comandas_cabecera.AllowUserToResizeRows = false;
+            this.dgv_comandas_cabecera.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_comandas_cabecera.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Columna_Fecha,
+            this.Columna_Hora,
+            this.Columna_Total,
+            this.ID_Comanda});
+            this.dgv_comandas_cabecera.Location = new System.Drawing.Point(241, 33);
+            this.dgv_comandas_cabecera.Name = "dgv_comandas_cabecera";
+            this.dgv_comandas_cabecera.ReadOnly = true;
+            this.dgv_comandas_cabecera.RowHeadersVisible = false;
+            this.dgv_comandas_cabecera.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv_comandas_cabecera.Size = new System.Drawing.Size(250, 294);
+            this.dgv_comandas_cabecera.TabIndex = 4;
+            this.dgv_comandas_cabecera.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_comandas_cabecera_CellClick);
             // 
-            // Columna_Precio
+            // Columna_Fecha
             // 
-            this.Columna_Precio.HeaderText = "Precio";
-            this.Columna_Precio.Name = "Columna_Precio";
-            this.Columna_Precio.ReadOnly = true;
-            this.Columna_Precio.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Columna_Precio.Width = 80;
+            this.Columna_Fecha.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Fecha.HeaderText = "Fecha";
+            this.Columna_Fecha.Name = "Columna_Fecha";
+            this.Columna_Fecha.ReadOnly = true;
+            this.Columna_Fecha.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Columna_Hora
+            // 
+            this.Columna_Hora.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Hora.HeaderText = "Hora";
+            this.Columna_Hora.Name = "Columna_Hora";
+            this.Columna_Hora.ReadOnly = true;
+            this.Columna_Hora.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Columna_Total
+            // 
+            this.Columna_Total.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Total.FillWeight = 139.0863F;
+            this.Columna_Total.HeaderText = "Total";
+            this.Columna_Total.Name = "Columna_Total";
+            this.Columna_Total.ReadOnly = true;
+            this.Columna_Total.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // ID_Comanda
+            // 
+            this.ID_Comanda.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ID_Comanda.FillWeight = 60.9137F;
+            this.ID_Comanda.HeaderText = "ID_Comanda";
+            this.ID_Comanda.Name = "ID_Comanda";
+            this.ID_Comanda.ReadOnly = true;
+            this.ID_Comanda.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ID_Comanda.Visible = false;
+            // 
+            // dgv_mozos
+            // 
+            this.dgv_mozos.AllowUserToAddRows = false;
+            this.dgv_mozos.AllowUserToDeleteRows = false;
+            this.dgv_mozos.AllowUserToResizeColumns = false;
+            this.dgv_mozos.AllowUserToResizeRows = false;
+            this.dgv_mozos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_mozos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Columna_Mozo,
+            this.ID_Mozo});
+            this.dgv_mozos.Location = new System.Drawing.Point(6, 33);
+            this.dgv_mozos.Name = "dgv_mozos";
+            this.dgv_mozos.ReadOnly = true;
+            this.dgv_mozos.RowHeadersVisible = false;
+            this.dgv_mozos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv_mozos.Size = new System.Drawing.Size(216, 293);
+            this.dgv_mozos.TabIndex = 3;
+            this.dgv_mozos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_mozos_CellClick);
+            // 
+            // Columna_Mozo
+            // 
+            this.Columna_Mozo.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Mozo.HeaderText = "Mozo";
+            this.Columna_Mozo.Name = "Columna_Mozo";
+            this.Columna_Mozo.ReadOnly = true;
+            this.Columna_Mozo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // ID_Mozo
+            // 
+            this.ID_Mozo.HeaderText = "ID_Mozo";
+            this.ID_Mozo.Name = "ID_Mozo";
+            this.ID_Mozo.ReadOnly = true;
+            this.ID_Mozo.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ID_Mozo.Visible = false;
+            // 
+            // lbl_ventas_mozos
+            // 
+            this.lbl_ventas_mozos.AutoSize = true;
+            this.lbl_ventas_mozos.Location = new System.Drawing.Point(3, 0);
+            this.lbl_ventas_mozos.Name = "lbl_ventas_mozos";
+            this.lbl_ventas_mozos.Size = new System.Drawing.Size(112, 13);
+            this.lbl_ventas_mozos.TabIndex = 2;
+            this.lbl_ventas_mozos.Text = "No existen comandas.";
+            // 
+            // tab_ventas_diarias
+            // 
+            this.tab_ventas_diarias.Controls.Add(this.dgv_comandas_productos);
+            this.tab_ventas_diarias.Controls.Add(this.dgv_comandas_hora_total);
+            this.tab_ventas_diarias.Controls.Add(this.lbl_ventas_diarias);
+            this.tab_ventas_diarias.Location = new System.Drawing.Point(4, 22);
+            this.tab_ventas_diarias.Name = "tab_ventas_diarias";
+            this.tab_ventas_diarias.Size = new System.Drawing.Size(811, 330);
+            this.tab_ventas_diarias.TabIndex = 3;
+            this.tab_ventas_diarias.Text = "Ventas Diarias";
+            this.tab_ventas_diarias.UseVisualStyleBackColor = true;
+            // 
+            // lbl_ventas_diarias
+            // 
+            this.lbl_ventas_diarias.AutoSize = true;
+            this.lbl_ventas_diarias.Location = new System.Drawing.Point(3, 0);
+            this.lbl_ventas_diarias.Name = "lbl_ventas_diarias";
+            this.lbl_ventas_diarias.Size = new System.Drawing.Size(112, 13);
+            this.lbl_ventas_diarias.TabIndex = 3;
+            this.lbl_ventas_diarias.Text = "No existen comandas.";
+            // 
+            // dgv_comandas_productos
+            // 
+            this.dgv_comandas_productos.AllowUserToAddRows = false;
+            this.dgv_comandas_productos.AllowUserToDeleteRows = false;
+            this.dgv_comandas_productos.AllowUserToResizeColumns = false;
+            this.dgv_comandas_productos.AllowUserToResizeRows = false;
+            this.dgv_comandas_productos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_comandas_productos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Columna_Producto_VD,
+            this.Columna_Cantidad_VD,
+            this.Columna_Subtotal_VD});
+            this.dgv_comandas_productos.Location = new System.Drawing.Point(408, 33);
+            this.dgv_comandas_productos.Name = "dgv_comandas_productos";
+            this.dgv_comandas_productos.ReadOnly = true;
+            this.dgv_comandas_productos.RowHeadersVisible = false;
+            this.dgv_comandas_productos.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv_comandas_productos.Size = new System.Drawing.Size(400, 294);
+            this.dgv_comandas_productos.TabIndex = 7;
+            // 
+            // dgv_comandas_hora_total
+            // 
+            this.dgv_comandas_hora_total.AllowUserToAddRows = false;
+            this.dgv_comandas_hora_total.AllowUserToDeleteRows = false;
+            this.dgv_comandas_hora_total.AllowUserToResizeColumns = false;
+            this.dgv_comandas_hora_total.AllowUserToResizeRows = false;
+            this.dgv_comandas_hora_total.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_comandas_hora_total.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Columna_Hora_VD,
+            this.Columna_Total_VD,
+            this.ID_Comanda_VD});
+            this.dgv_comandas_hora_total.Location = new System.Drawing.Point(6, 33);
+            this.dgv_comandas_hora_total.Name = "dgv_comandas_hora_total";
+            this.dgv_comandas_hora_total.ReadOnly = true;
+            this.dgv_comandas_hora_total.RowHeadersVisible = false;
+            this.dgv_comandas_hora_total.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgv_comandas_hora_total.Size = new System.Drawing.Size(350, 294);
+            this.dgv_comandas_hora_total.TabIndex = 6;
+            this.dgv_comandas_hora_total.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_comandas_hora_total_CellClick);
+            // 
+            // Columna_Hora_VD
+            // 
+            this.Columna_Hora_VD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Hora_VD.HeaderText = "Hora";
+            this.Columna_Hora_VD.Name = "Columna_Hora_VD";
+            this.Columna_Hora_VD.ReadOnly = true;
+            this.Columna_Hora_VD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Columna_Total_VD
+            // 
+            this.Columna_Total_VD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Total_VD.FillWeight = 139.0863F;
+            this.Columna_Total_VD.HeaderText = "Total";
+            this.Columna_Total_VD.Name = "Columna_Total_VD";
+            this.Columna_Total_VD.ReadOnly = true;
+            this.Columna_Total_VD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // ID_Comanda_VD
+            // 
+            this.ID_Comanda_VD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.ID_Comanda_VD.FillWeight = 60.9137F;
+            this.ID_Comanda_VD.HeaderText = "ID_Comanda";
+            this.ID_Comanda_VD.Name = "ID_Comanda_VD";
+            this.ID_Comanda_VD.ReadOnly = true;
+            this.ID_Comanda_VD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.ID_Comanda_VD.Visible = false;
+            // 
+            // Columna_Producto_VD
+            // 
+            this.Columna_Producto_VD.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Columna_Producto_VD.HeaderText = "Producto";
+            this.Columna_Producto_VD.Name = "Columna_Producto_VD";
+            this.Columna_Producto_VD.ReadOnly = true;
+            this.Columna_Producto_VD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Columna_Cantidad_VD
+            // 
+            this.Columna_Cantidad_VD.HeaderText = "Cantidad";
+            this.Columna_Cantidad_VD.Name = "Columna_Cantidad_VD";
+            this.Columna_Cantidad_VD.ReadOnly = true;
+            this.Columna_Cantidad_VD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Columna_Cantidad_VD.Width = 60;
+            // 
+            // Columna_Subtotal_VD
+            // 
+            this.Columna_Subtotal_VD.FillWeight = 139.0863F;
+            this.Columna_Subtotal_VD.HeaderText = "Subtotal";
+            this.Columna_Subtotal_VD.Name = "Columna_Subtotal_VD";
+            this.Columna_Subtotal_VD.ReadOnly = true;
+            this.Columna_Subtotal_VD.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Columna_Subtotal_VD.Width = 60;
             // 
             // Reportes
             // 
@@ -477,9 +592,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgv_productos)).EndInit();
             this.tab_ventas_mozo.ResumeLayout(false);
             this.tab_ventas_mozo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_cabecera)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_cabecera)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).EndInit();
+            this.tab_ventas_diarias.ResumeLayout(false);
+            this.tab_ventas_diarias.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_productos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_hora_total)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -520,5 +639,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Producto;
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Precio;
+        private System.Windows.Forms.DataGridView dgv_comandas_productos;
+        private System.Windows.Forms.DataGridView dgv_comandas_hora_total;
+        private System.Windows.Forms.Label lbl_ventas_diarias;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Hora_VD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Total_VD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID_Comanda_VD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Producto_VD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Cantidad_VD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal_VD;
     }
 }
