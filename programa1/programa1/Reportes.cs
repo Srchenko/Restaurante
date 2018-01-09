@@ -40,7 +40,7 @@ namespace programa1
         {
             try
             {
-                lbl_precio_categoria_producto.Text = "";
+                lbl_precio_categoria_producto.Text = "Seleccione una categoría.";
 
                 conexion.Open();
                 SqlCommand comando = new SqlCommand("SELECT DISTINCT Categoria.id_categoria as ID, Categoria.nombre_categoria AS Nombre FROM Categoria JOIN Productos ON Categoria.id_categoria = Productos.id_categoria WHERE Categoria.baja=0 AND Productos.baja=0 ORDER BY Nombre", conexion);
@@ -64,7 +64,7 @@ namespace programa1
         {
             try
             {
-                lbl_materia_utilizada_producto.Text = "";
+                lbl_materia_utilizada_producto.Text = "Seleccione un producto.";
 
                 conexion.Open();
                 SqlCommand comando = new SqlCommand("SELECT DISTINCT Productos.id_producto AS ID, Productos.descripcion AS descrip FROM Marca JOIN Materia_Prima ON Marca.id_marca=Materia_Prima.id_marca JOIN Productos_Materia_Prima ON Materia_Prima.id_materia_prima = Productos_Materia_Prima.id_materia_prima JOIN Productos ON Productos_Materia_Prima.id_producto = Productos.id_producto WHERE Materia_Prima.baja=0 AND Marca.baja=0 AND Productos.baja=0 ORDER BY descrip", conexion);
@@ -88,7 +88,7 @@ namespace programa1
         {
             try
             {
-                lbl_ventas_mozos.Text = "";
+                lbl_ventas_mozos.Text = "Seleccione un mozo.";
 
                 conexion.Open();
                 SqlCommand comando = new SqlCommand("SELECT DISTINCT Mozos.id_mozo AS ID, CONCAT(Mozos.nombre,' ',Mozos.apellido) AS NombreCompleto FROM Comandas_Cabecera JOIN Comandas_Detalle ON Comandas_Cabecera.id_comanda = Comandas_Detalle.id_comanda JOIN Mozos ON Comandas_Cabecera.id_mozo = Mozos.id_mozo WHERE Comandas_Detalle.baja=0 AND Comandas_Cabecera.baja=0 AND Mozos.baja=0 ORDER BY NombreCompleto", conexion);
@@ -202,9 +202,12 @@ namespace programa1
         private void Reportes_Shown(object sender, EventArgs e)
         {
             dgv_categoria.ClearSelection();
+            dgv_categoria_producto.ClearSelection();
             dgv_productos.ClearSelection();
+            dgv_materia_productos.ClearSelection();
             dgv_mozos.ClearSelection();
             dgv_comandas_cabecera.ClearSelection();
+            dgv_comandas_detalle.ClearSelection();
         }
 
         //al hacer click en una determinada fila del datagridview de productos se muestra la materia prima de ese producto con los datos correspondientes en otro datagridview
@@ -242,9 +245,12 @@ namespace programa1
         private void pestañas_reportes_Click(object sender, EventArgs e)
         {
             dgv_categoria.ClearSelection();
+            dgv_categoria_producto.ClearSelection();
             dgv_productos.ClearSelection();
+            dgv_materia_productos.ClearSelection();
             dgv_mozos.ClearSelection();
             dgv_comandas_cabecera.ClearSelection();
+            dgv_comandas_detalle.ClearSelection();
         }
 
         //al hacer click en una determinada fila del datagridview de mozos se muestran las comandas de ese mozo con los datos correspondientes en otro datagridview
