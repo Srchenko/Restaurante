@@ -43,29 +43,47 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.b_agregarmateria = new System.Windows.Forms.Button();
             this.b_quitar = new System.Windows.Forms.Button();
-            this.b_agregar2 = new System.Windows.Forms.TabControl();
+            this.tc_formulario = new System.Windows.Forms.TabControl();
             this.tp_productos = new System.Windows.Forms.TabPage();
+            this.clb_simple_compuesto = new System.Windows.Forms.CheckedListBox();
             this.dgv_productos = new System.Windows.Forms.DataGridView();
             this.tp_materia = new System.Windows.Forms.TabPage();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
             this.l_descripcion2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.b_agregar2 = new System.Windows.Forms.Button();
             this.b_modificar2 = new System.Windows.Forms.Button();
             this.b_eliminar2 = new System.Windows.Forms.Button();
-            this.l_limpiar_campos = new System.Windows.Forms.Button();
-            this.l_costo2 = new System.Windows.Forms.Label();
+            this.b_limpiar_campos2 = new System.Windows.Forms.Button();
+            this.l_costo = new System.Windows.Forms.Label();
             this.l_marca = new System.Windows.Forms.Label();
             this.cb_marca = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.clb_simple_compuesto = new System.Windows.Forms.CheckedListBox();
+            this.txt_descripcion2 = new System.Windows.Forms.TextBox();
+            this.txt_costo = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.l_marca2 = new System.Windows.Forms.Label();
+            this.b_agregar3 = new System.Windows.Forms.Button();
+            this.b_modificar3 = new System.Windows.Forms.Button();
+            this.b_eliminar3 = new System.Windows.Forms.Button();
+            this.b_limpiar_campos3 = new System.Windows.Forms.Button();
+            this.txt_marca = new System.Windows.Forms.TextBox();
+            this.dgv_marca = new System.Windows.Forms.DataGridView();
+            this.dgv_categoria = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.b_agregar4 = new System.Windows.Forms.Button();
+            this.b_modificar4 = new System.Windows.Forms.Button();
+            this.b_eliminar4 = new System.Windows.Forms.Button();
+            this.b_limpiar_campos4 = new System.Windows.Forms.Button();
+            this.txt_categoria = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_prima)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            this.b_agregar2.SuspendLayout();
+            this.tc_formulario.SuspendLayout();
             this.tp_productos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_productos)).BeginInit();
             this.tp_materia.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_marca)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_categoria)).BeginInit();
             this.SuspendLayout();
             // 
             // b_limpiar_campos
@@ -208,15 +226,16 @@
             this.b_quitar.Text = "<- Quitar";
             this.b_quitar.UseVisualStyleBackColor = true;
             // 
-            // b_agregar2
+            // tc_formulario
             // 
-            this.b_agregar2.Controls.Add(this.tp_productos);
-            this.b_agregar2.Controls.Add(this.tp_materia);
-            this.b_agregar2.Location = new System.Drawing.Point(1, 2);
-            this.b_agregar2.Name = "b_agregar2";
-            this.b_agregar2.SelectedIndex = 0;
-            this.b_agregar2.Size = new System.Drawing.Size(844, 427);
-            this.b_agregar2.TabIndex = 24;
+            this.tc_formulario.Controls.Add(this.tp_productos);
+            this.tc_formulario.Controls.Add(this.tp_materia);
+            this.tc_formulario.Controls.Add(this.tabPage1);
+            this.tc_formulario.Location = new System.Drawing.Point(1, 2);
+            this.tc_formulario.Name = "tc_formulario";
+            this.tc_formulario.SelectedIndex = 0;
+            this.tc_formulario.Size = new System.Drawing.Size(844, 427);
+            this.tc_formulario.TabIndex = 24;
             // 
             // tp_productos
             // 
@@ -246,6 +265,18 @@
             this.tp_productos.Text = "Productos";
             this.tp_productos.UseVisualStyleBackColor = true;
             // 
+            // clb_simple_compuesto
+            // 
+            this.clb_simple_compuesto.FormattingEnabled = true;
+            this.clb_simple_compuesto.Items.AddRange(new object[] {
+            "Simple",
+            "Compuesto"});
+            this.clb_simple_compuesto.Location = new System.Drawing.Point(305, 65);
+            this.clb_simple_compuesto.Name = "clb_simple_compuesto";
+            this.clb_simple_compuesto.Size = new System.Drawing.Size(82, 34);
+            this.clb_simple_compuesto.TabIndex = 25;
+            this.clb_simple_compuesto.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clb_simple_compuesto_ItemCheck);
+            // 
             // dgv_productos
             // 
             this.dgv_productos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -258,15 +289,15 @@
             // 
             this.tp_materia.Controls.Add(this.dataGridView4);
             this.tp_materia.Controls.Add(this.l_descripcion2);
-            this.tp_materia.Controls.Add(this.button1);
+            this.tp_materia.Controls.Add(this.b_agregar2);
             this.tp_materia.Controls.Add(this.b_modificar2);
             this.tp_materia.Controls.Add(this.b_eliminar2);
-            this.tp_materia.Controls.Add(this.l_limpiar_campos);
-            this.tp_materia.Controls.Add(this.l_costo2);
+            this.tp_materia.Controls.Add(this.b_limpiar_campos2);
+            this.tp_materia.Controls.Add(this.l_costo);
             this.tp_materia.Controls.Add(this.l_marca);
             this.tp_materia.Controls.Add(this.cb_marca);
-            this.tp_materia.Controls.Add(this.textBox1);
-            this.tp_materia.Controls.Add(this.textBox2);
+            this.tp_materia.Controls.Add(this.txt_descripcion2);
+            this.tp_materia.Controls.Add(this.txt_costo);
             this.tp_materia.Location = new System.Drawing.Point(4, 22);
             this.tp_materia.Name = "tp_materia";
             this.tp_materia.Padding = new System.Windows.Forms.Padding(3);
@@ -292,14 +323,14 @@
             this.l_descripcion2.TabIndex = 22;
             this.l_descripcion2.Text = "Descripción";
             // 
-            // button1
+            // b_agregar2
             // 
-            this.button1.Location = new System.Drawing.Point(697, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 22);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "Agregar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.b_agregar2.Location = new System.Drawing.Point(697, 19);
+            this.b_agregar2.Name = "b_agregar2";
+            this.b_agregar2.Size = new System.Drawing.Size(112, 22);
+            this.b_agregar2.TabIndex = 18;
+            this.b_agregar2.Text = "Agregar";
+            this.b_agregar2.UseVisualStyleBackColor = true;
             // 
             // b_modificar2
             // 
@@ -319,23 +350,23 @@
             this.b_eliminar2.Text = "Eliminar";
             this.b_eliminar2.UseVisualStyleBackColor = true;
             // 
-            // l_limpiar_campos
+            // b_limpiar_campos2
             // 
-            this.l_limpiar_campos.Location = new System.Drawing.Point(697, 132);
-            this.l_limpiar_campos.Name = "l_limpiar_campos";
-            this.l_limpiar_campos.Size = new System.Drawing.Size(112, 22);
-            this.l_limpiar_campos.TabIndex = 21;
-            this.l_limpiar_campos.Text = "Limpiar Campos";
-            this.l_limpiar_campos.UseVisualStyleBackColor = true;
+            this.b_limpiar_campos2.Location = new System.Drawing.Point(697, 132);
+            this.b_limpiar_campos2.Name = "b_limpiar_campos2";
+            this.b_limpiar_campos2.Size = new System.Drawing.Size(112, 22);
+            this.b_limpiar_campos2.TabIndex = 21;
+            this.b_limpiar_campos2.Text = "Limpiar Campos";
+            this.b_limpiar_campos2.UseVisualStyleBackColor = true;
             // 
-            // l_costo2
+            // l_costo
             // 
-            this.l_costo2.AutoSize = true;
-            this.l_costo2.Location = new System.Drawing.Point(42, 87);
-            this.l_costo2.Name = "l_costo2";
-            this.l_costo2.Size = new System.Drawing.Size(34, 13);
-            this.l_costo2.TabIndex = 23;
-            this.l_costo2.Text = "Costo";
+            this.l_costo.AutoSize = true;
+            this.l_costo.Location = new System.Drawing.Point(42, 87);
+            this.l_costo.Name = "l_costo";
+            this.l_costo.Size = new System.Drawing.Size(34, 13);
+            this.l_costo.TabIndex = 23;
+            this.l_costo.Text = "Costo";
             // 
             // l_marca
             // 
@@ -355,40 +386,174 @@
             this.cb_marca.Size = new System.Drawing.Size(145, 21);
             this.cb_marca.TabIndex = 27;
             // 
-            // textBox1
+            // txt_descripcion2
             // 
-            this.textBox1.Location = new System.Drawing.Point(82, 40);
-            this.textBox1.MaxLength = 45;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(193, 20);
-            this.textBox1.TabIndex = 25;
+            this.txt_descripcion2.Location = new System.Drawing.Point(82, 40);
+            this.txt_descripcion2.MaxLength = 45;
+            this.txt_descripcion2.Name = "txt_descripcion2";
+            this.txt_descripcion2.Size = new System.Drawing.Size(193, 20);
+            this.txt_descripcion2.TabIndex = 25;
             // 
-            // textBox2
+            // txt_costo
             // 
-            this.textBox2.Location = new System.Drawing.Point(82, 84);
-            this.textBox2.MaxLength = 45;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(193, 20);
-            this.textBox2.TabIndex = 26;
+            this.txt_costo.Location = new System.Drawing.Point(82, 84);
+            this.txt_costo.MaxLength = 45;
+            this.txt_costo.Name = "txt_costo";
+            this.txt_costo.Size = new System.Drawing.Size(193, 20);
+            this.txt_costo.TabIndex = 26;
             // 
-            // clb_simple_compuesto
+            // tabPage1
             // 
-            this.clb_simple_compuesto.FormattingEnabled = true;
-            this.clb_simple_compuesto.Items.AddRange(new object[] {
-            "Simple",
-            "Compuesto"});
-            this.clb_simple_compuesto.Location = new System.Drawing.Point(305, 65);
-            this.clb_simple_compuesto.Name = "clb_simple_compuesto";
-            this.clb_simple_compuesto.Size = new System.Drawing.Size(82, 34);
-            this.clb_simple_compuesto.TabIndex = 25;
-            this.clb_simple_compuesto.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clb_simple_compuesto_ItemCheck);
+            this.tabPage1.Controls.Add(this.dgv_categoria);
+            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.b_agregar4);
+            this.tabPage1.Controls.Add(this.b_modificar4);
+            this.tabPage1.Controls.Add(this.b_eliminar4);
+            this.tabPage1.Controls.Add(this.b_limpiar_campos4);
+            this.tabPage1.Controls.Add(this.txt_categoria);
+            this.tabPage1.Controls.Add(this.dgv_marca);
+            this.tabPage1.Controls.Add(this.l_marca2);
+            this.tabPage1.Controls.Add(this.b_agregar3);
+            this.tabPage1.Controls.Add(this.b_modificar3);
+            this.tabPage1.Controls.Add(this.b_eliminar3);
+            this.tabPage1.Controls.Add(this.b_limpiar_campos3);
+            this.tabPage1.Controls.Add(this.txt_marca);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(836, 401);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Marcas y Categorías";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // l_marca2
+            // 
+            this.l_marca2.AutoSize = true;
+            this.l_marca2.Location = new System.Drawing.Point(15, 49);
+            this.l_marca2.Name = "l_marca2";
+            this.l_marca2.Size = new System.Drawing.Size(37, 13);
+            this.l_marca2.TabIndex = 30;
+            this.l_marca2.Text = "Marca";
+            // 
+            // b_agregar3
+            // 
+            this.b_agregar3.Location = new System.Drawing.Point(267, 22);
+            this.b_agregar3.Name = "b_agregar3";
+            this.b_agregar3.Size = new System.Drawing.Size(112, 22);
+            this.b_agregar3.TabIndex = 26;
+            this.b_agregar3.Text = "Agregar";
+            this.b_agregar3.UseVisualStyleBackColor = true;
+            // 
+            // b_modificar3
+            // 
+            this.b_modificar3.Location = new System.Drawing.Point(267, 59);
+            this.b_modificar3.Name = "b_modificar3";
+            this.b_modificar3.Size = new System.Drawing.Size(112, 22);
+            this.b_modificar3.TabIndex = 27;
+            this.b_modificar3.Text = "Modificar";
+            this.b_modificar3.UseVisualStyleBackColor = true;
+            // 
+            // b_eliminar3
+            // 
+            this.b_eliminar3.Location = new System.Drawing.Point(267, 96);
+            this.b_eliminar3.Name = "b_eliminar3";
+            this.b_eliminar3.Size = new System.Drawing.Size(112, 22);
+            this.b_eliminar3.TabIndex = 28;
+            this.b_eliminar3.Text = "Eliminar";
+            this.b_eliminar3.UseVisualStyleBackColor = true;
+            // 
+            // b_limpiar_campos3
+            // 
+            this.b_limpiar_campos3.Location = new System.Drawing.Point(267, 135);
+            this.b_limpiar_campos3.Name = "b_limpiar_campos3";
+            this.b_limpiar_campos3.Size = new System.Drawing.Size(112, 22);
+            this.b_limpiar_campos3.TabIndex = 29;
+            this.b_limpiar_campos3.Text = "Limpiar Campos";
+            this.b_limpiar_campos3.UseVisualStyleBackColor = true;
+            // 
+            // txt_marca
+            // 
+            this.txt_marca.Location = new System.Drawing.Point(58, 46);
+            this.txt_marca.MaxLength = 45;
+            this.txt_marca.Name = "txt_marca";
+            this.txt_marca.Size = new System.Drawing.Size(190, 20);
+            this.txt_marca.TabIndex = 31;
+            // 
+            // dgv_marca
+            // 
+            this.dgv_marca.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_marca.Location = new System.Drawing.Point(18, 190);
+            this.dgv_marca.Name = "dgv_marca";
+            this.dgv_marca.Size = new System.Drawing.Size(360, 139);
+            this.dgv_marca.TabIndex = 32;
+            // 
+            // dgv_categoria
+            // 
+            this.dgv_categoria.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_categoria.Location = new System.Drawing.Point(448, 190);
+            this.dgv_categoria.Name = "dgv_categoria";
+            this.dgv_categoria.Size = new System.Drawing.Size(360, 139);
+            this.dgv_categoria.TabIndex = 39;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(428, 49);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.TabIndex = 37;
+            this.label3.Text = "Categoría";
+            // 
+            // b_agregar4
+            // 
+            this.b_agregar4.Location = new System.Drawing.Point(697, 22);
+            this.b_agregar4.Name = "b_agregar4";
+            this.b_agregar4.Size = new System.Drawing.Size(112, 22);
+            this.b_agregar4.TabIndex = 33;
+            this.b_agregar4.Text = "Agregar";
+            this.b_agregar4.UseVisualStyleBackColor = true;
+            // 
+            // b_modificar4
+            // 
+            this.b_modificar4.Location = new System.Drawing.Point(697, 59);
+            this.b_modificar4.Name = "b_modificar4";
+            this.b_modificar4.Size = new System.Drawing.Size(112, 22);
+            this.b_modificar4.TabIndex = 34;
+            this.b_modificar4.Text = "Modificar";
+            this.b_modificar4.UseVisualStyleBackColor = true;
+            // 
+            // b_eliminar4
+            // 
+            this.b_eliminar4.Location = new System.Drawing.Point(697, 96);
+            this.b_eliminar4.Name = "b_eliminar4";
+            this.b_eliminar4.Size = new System.Drawing.Size(112, 22);
+            this.b_eliminar4.TabIndex = 35;
+            this.b_eliminar4.Text = "Eliminar";
+            this.b_eliminar4.UseVisualStyleBackColor = true;
+            // 
+            // b_limpiar_campos4
+            // 
+            this.b_limpiar_campos4.Location = new System.Drawing.Point(697, 135);
+            this.b_limpiar_campos4.Name = "b_limpiar_campos4";
+            this.b_limpiar_campos4.Size = new System.Drawing.Size(112, 22);
+            this.b_limpiar_campos4.TabIndex = 36;
+            this.b_limpiar_campos4.Text = "Limpiar Campos";
+            this.b_limpiar_campos4.UseVisualStyleBackColor = true;
+            // 
+            // txt_categoria
+            // 
+            this.txt_categoria.Location = new System.Drawing.Point(488, 46);
+            this.txt_categoria.MaxLength = 45;
+            this.txt_categoria.Name = "txt_categoria";
+            this.txt_categoria.Size = new System.Drawing.Size(190, 20);
+            this.txt_categoria.TabIndex = 38;
             // 
             // Productos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(903, 428);
-            this.Controls.Add(this.b_agregar2);
+            this.Controls.Add(this.tc_formulario);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Productos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -397,13 +562,17 @@
             this.Load += new System.EventHandler(this.Mesas_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_prima)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            this.b_agregar2.ResumeLayout(false);
+            this.tc_formulario.ResumeLayout(false);
             this.tp_productos.ResumeLayout(false);
             this.tp_productos.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_productos)).EndInit();
             this.tp_materia.ResumeLayout(false);
             this.tp_materia.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_marca)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_categoria)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -426,21 +595,36 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button b_agregarmateria;
         private System.Windows.Forms.Button b_quitar;
-        private System.Windows.Forms.TabControl b_agregar2;
+        private System.Windows.Forms.TabControl tc_formulario;
         private System.Windows.Forms.TabPage tp_productos;
         private System.Windows.Forms.TabPage tp_materia;
         private System.Windows.Forms.DataGridView dgv_productos;
         private System.Windows.Forms.DataGridView dataGridView4;
         private System.Windows.Forms.Label l_descripcion2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button b_agregar2;
         private System.Windows.Forms.Button b_modificar2;
         private System.Windows.Forms.Button b_eliminar2;
-        private System.Windows.Forms.Button l_limpiar_campos;
-        private System.Windows.Forms.Label l_costo2;
+        private System.Windows.Forms.Button b_limpiar_campos2;
+        private System.Windows.Forms.Label l_costo;
         private System.Windows.Forms.Label l_marca;
         private System.Windows.Forms.ComboBox cb_marca;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox txt_descripcion2;
+        private System.Windows.Forms.TextBox txt_costo;
         private System.Windows.Forms.CheckedListBox clb_simple_compuesto;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView dgv_categoria;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button b_agregar4;
+        private System.Windows.Forms.Button b_modificar4;
+        private System.Windows.Forms.Button b_eliminar4;
+        private System.Windows.Forms.Button b_limpiar_campos4;
+        private System.Windows.Forms.TextBox txt_categoria;
+        private System.Windows.Forms.DataGridView dgv_marca;
+        private System.Windows.Forms.Label l_marca2;
+        private System.Windows.Forms.Button b_agregar3;
+        private System.Windows.Forms.Button b_modificar3;
+        private System.Windows.Forms.Button b_eliminar3;
+        private System.Windows.Forms.Button b_limpiar_campos3;
+        private System.Windows.Forms.TextBox txt_marca;
     }
 }
