@@ -15,7 +15,7 @@ namespace programa1
 {
     public partial class Comandas : Form
     {
-        SqlConnection conexion = new SqlConnection("Data Source=SRCHENKO-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
+        SqlConnection conexion = new SqlConnection("Data Source=SEBA-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
 
         //Se evita que se mueva la ventana del formulario
         protected override void WndProc(ref Message mensaje)

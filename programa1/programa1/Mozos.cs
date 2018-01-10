@@ -14,7 +14,7 @@ namespace programa1
 {
     public partial class Mozos : Form
     {
-        SqlConnection conexion = new SqlConnection("Data Source=SRCHENKO-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
+        SqlConnection conexion = new SqlConnection("Data Source=SEBA-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
 
         int id_mozo=0;
 
@@ -24,12 +24,13 @@ namespace programa1
             {
                 //se carga una grilla con todos los datos posibles de una tabla en particular de una base de datos
                 conexion.Open();
-                string sql = "SELECT id_mozo, nombre, apellido, dni, fecha_nac, telefono, direccion FROM Mozos WHERE baja=0";
+                string sql = "SELECT id_mozo AS ID, nombre AS Nombre, apellido AS Apellido, dni AS DNI, fecha_nac AS [Fecha de nacimiento], telefono AS Telefono, direccion AS Dirección FROM Mozos WHERE baja=0";
                 DataTable lista = new DataTable("lista");
                 SqlCommand comando = new SqlCommand(sql, conexion);
                 SqlDataAdapter sqldat = new SqlDataAdapter(comando);
                 sqldat.Fill(lista);
                 this.dgv_mozos.DataSource = lista;
+                dgv_mozos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -47,6 +48,7 @@ namespace programa1
             txt_direccion.Text = "";
             txt_telefono.Text = "";
             id_mozo = 0;
+            dgv_mozos.ClearSelection();
         }
 
         //Se evita que se mueva la ventana del formulario
@@ -433,6 +435,11 @@ namespace programa1
         private void txt_direccion_KeyDown(object sender, KeyEventArgs e)
         {
             no_mas_espacios(e);
+        }
+
+        private void Mozos_Shown(object sender, EventArgs e)
+        {
+            dgv_mozos.ClearSelection();
         }
     }
 }

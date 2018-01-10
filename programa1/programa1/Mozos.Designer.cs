@@ -204,11 +204,14 @@
             // 
             this.dgv_mozos.AllowUserToAddRows = false;
             this.dgv_mozos.AllowUserToDeleteRows = false;
+            this.dgv_mozos.AllowUserToResizeColumns = false;
+            this.dgv_mozos.AllowUserToResizeRows = false;
             this.dgv_mozos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_mozos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_mozos.Location = new System.Drawing.Point(11, 161);
             this.dgv_mozos.Name = "dgv_mozos";
             this.dgv_mozos.ReadOnly = true;
+            this.dgv_mozos.RowHeadersVisible = false;
             this.dgv_mozos.Size = new System.Drawing.Size(815, 209);
             this.dgv_mozos.TabIndex = 16;
             this.dgv_mozos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_mozos_CellClick);
@@ -251,6 +254,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mozos";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Mozos_FormClosed);
+            this.Shown += new System.EventHandler(this.Mozos_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_mozos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

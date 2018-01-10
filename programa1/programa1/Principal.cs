@@ -14,7 +14,7 @@ namespace programa1
 {
     public partial class Principal : Form
     {
-        SqlConnection conexion = new SqlConnection("Data Source=SRCHENKO-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
+        SqlConnection conexion = new SqlConnection("Data Source=SEBA-PC\\SQLEXPRESS;Initial Catalog=Restaurante;Integrated Security=True");
 
         public Principal()
         {
