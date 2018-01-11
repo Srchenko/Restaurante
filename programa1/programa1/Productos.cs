@@ -248,7 +248,7 @@ namespace programa1
 
         int id_materia_prima = 0;
 
-        // verifica los campos 
+        // validacion de datos
         private bool validacion_copada2()
         {
             string error = "";
@@ -408,19 +408,129 @@ namespace programa1
             limpiarTexto();
         }
 
+        //agregar dropdownlist
+        private void b_agregar2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (validacion_copada2() == false)
+                {
+                    return;
+                }
+                conexion.Open();
+                //Antes de agregar una materia prima, se intenta que no existan dos iguales
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
+                comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                comando3.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
+                SqlDataReader datos3 = comando3.ExecuteReader();
+                if (datos3.Read())
+                {
+                    MessageBox.Show("Esta Materia Prima ya existe.", "Atención");
+                    datos3.Close();
+                    conexion.Close();
+                    return;
+                }
+                datos3.Close();
+                //Si la materia prima no existe, se agrega en la base de datos
+                string sql = "INSERT INTO Materia Prima(descripcion, baja) VALUES (@Descripcion,0)";
+                SqlCommand comando = new SqlCommand(sql, conexion);
+                comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                comando.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                comando.ExecuteNonQuery();
+
+                conexion.Close();
+                cargarGridMateriasPrimas();
+                cargarGridMaterias();
+                limpiarTexto2();
+                MessageBox.Show("Se ingresó el dato.", "Atención");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+
+            }
+        }
+
+        //cambiar
+        private void b_modificar2_Click(object sender, EventArgs e)
+        {
+            if (id_materia_prima != 0)
+            {
+
+                try
+                {
+                    if (validacion_copada2() == false)
+                    {
+                        return;
+                    }
+
+                    conexion.Open();
+                    //al modificar la materia prima se verifica que no exista ya
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima=@ID", conexion);
+                    comando4.Parameters.Add("@ID", SqlDbType.Int);
+                    comando4.Parameters["@ID"].Value = id_materia_prima;
+                    SqlDataReader datos4 = comando4.ExecuteReader();
+                    string materiaor = "";
+                    if (datos4.Read())
+                    {
+                        materiaor = (datos4["descripcion"]).ToString();
+                    }
+                    datos4.Close();
+
+                    SqlCommand comando5 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion<>@Descripcion", conexion);
+                    comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando5.Parameters["@Descripcion"].Value = materiaor;
+                    SqlDataReader datos5 = comando5.ExecuteReader();
+                    String marcaref = "";
+                    while (datos5.Read())
+                    {
+                        marcaref = datos5["descripcion"].ToString();
+                        if (txt_descripcion2.Text.Equals(marcaref))
+                        {
+                            MessageBox.Show("Esta Materia Prima ya existe.", "Atención");
+                            datos5.Close();
+                            conexion.Close();
+                            return;
+                        }
+                    }
+                    datos5.Close();
+                    //si la descripcion esta bien, se modifica la materia prima
+                    string sql = "UPDATE Materia_Prima SET materia_prima=@Descripcion WHERE id_materia_prima=@ID";
+                    SqlCommand comando = new SqlCommand(sql, conexion);
+                    comando.Parameters.Add("@ID", SqlDbType.Int);
+                    comando.Parameters["@ID"].Value = id_materia_prima;
+                    comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
+
+                    comando.ExecuteNonQuery();
+
+                    conexion.Close();
+                    cargarGridMaterias();
+                    MessageBox.Show("Se modificó el dato.", "Atención");
+                    limpiarTexto2();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una fila.", "Atención");
+            }
+        }
 
 
         //tercera pestaña / marcas
 
         int id_marca = 0;
 
-        // *****************debe verificar si es la tercer pestaña 
+        // validacion de datos 
         private bool validacion_copada3()
         {
             string error = "";
             //primero se verifica si hay textboxs vacios
-            if (this.Controls.OfType<TextBox>().Any(t => string.IsNullOrEmpty(t.Text)))
-
+            if (String.IsNullOrEmpty(txt_marca.Text) == true)
             {
                 MessageBox.Show("Faltan completar campos", "Atención");
                 return false;
@@ -659,13 +769,12 @@ namespace programa1
         //tercera pestaña / categorias
         int id_categoria = 0;
 
-        // *****************debe verificar si es la primer pestaña 
+        // validacion de datos
         private bool validacion_copada4()
         {
             string error = "";
             //primero se verifica si hay textboxs vacios
-            if (this.Controls.OfType<TextBox>().Any(t => string.IsNullOrEmpty(t.Text)))
-
+            if (String.IsNullOrEmpty(txt_categoria.Text) == true)
             {
                 MessageBox.Show("Faltan completar campos", "Atención");
                 return false;
@@ -674,9 +783,9 @@ namespace programa1
             else
             {
 
-                if (txt_categoria.Text.Length < 3)
+                if (txt_categoria.Text.Length < 2)
                 {
-                    error += "Nombre de categoria muy corto. ";
+                    error += "Nombre de Marca muy corto. ";
                 }
 
             }
@@ -947,6 +1056,6 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
         }
 
-        
+
     }
 }

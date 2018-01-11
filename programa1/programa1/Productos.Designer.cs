@@ -359,6 +359,7 @@
             this.b_agregar2.TabIndex = 18;
             this.b_agregar2.Text = "Agregar";
             this.b_agregar2.UseVisualStyleBackColor = true;
+            this.b_agregar2.Click += new System.EventHandler(this.b_agregar2_Click);
             // 
             // b_modificar2
             // 
@@ -368,6 +369,7 @@
             this.b_modificar2.TabIndex = 19;
             this.b_modificar2.Text = "Modificar";
             this.b_modificar2.UseVisualStyleBackColor = true;
+            this.b_modificar2.Click += new System.EventHandler(this.b_modificar2_Click);
             // 
             // b_eliminar2
             // 
