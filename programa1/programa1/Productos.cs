@@ -35,6 +35,24 @@ namespace programa1
             base.WndProc(ref mensaje);
         }
 
+        //evita que ponga 2 espacios seguidos o empiece un textbox con espacios
+        private int contador = 0;
+        private void no_mas_espacios(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                contador++;
+            }
+            else
+            {
+                contador = 0;
+            }
+
+            if (contador > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
 
         //primera pestaña
 
@@ -240,6 +258,17 @@ namespace programa1
         private void b_limpiar_campos_Click(object sender, EventArgs e)
         {
             limpiarTexto();
+        }
+
+        //espacios primer pestaña
+        private void txt_descripcion_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
+        }
+
+        private void txt_precio_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
         }
 
 
@@ -518,6 +547,17 @@ namespace programa1
             {
                 MessageBox.Show("Seleccione una fila.", "Atención");
             }
+        }
+
+        //espacios segunda pestaña
+        private void txt_descripcion2_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
+        }
+
+        private void txt_costo_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
         }
 
 
@@ -1010,6 +1050,17 @@ namespace programa1
             }
         }
 
+        //espacios tercer pestaña
+        private void txt_marca_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
+        }
+
+        private void txt_categoria_KeyDown(object sender, KeyEventArgs e)
+        {
+            no_mas_espacios(e);
+        }
+
 
         public Productos()
         {
@@ -1025,6 +1076,17 @@ namespace programa1
 
         //no tocar, rompe diseño
         private void Mesas_Load(object sender, EventArgs e)
+        {
+
+        }
+        private void txt_precio_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void txt_marca_TextChanged(object sender, EventArgs e)
+        {
+        }
+        private void txt_categoria_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -1056,6 +1118,15 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
         }
 
+        
+
+        
+
+
+
+
+
+        
 
     }
 }

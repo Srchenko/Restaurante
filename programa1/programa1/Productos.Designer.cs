@@ -131,6 +131,8 @@
             this.txt_precio.Name = "txt_precio";
             this.txt_precio.Size = new System.Drawing.Size(193, 20);
             this.txt_precio.TabIndex = 14;
+            this.txt_precio.TextChanged += new System.EventHandler(this.txt_precio_TextChanged);
+            this.txt_precio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_precio_KeyDown);
             // 
             // txt_descripcion
             // 
@@ -139,6 +141,7 @@
             this.txt_descripcion.Name = "txt_descripcion";
             this.txt_descripcion.Size = new System.Drawing.Size(193, 20);
             this.txt_descripcion.TabIndex = 13;
+            this.txt_descripcion.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_descripcion_KeyDown);
             // 
             // l_categoria
             // 
@@ -425,6 +428,7 @@
             this.txt_descripcion2.Name = "txt_descripcion2";
             this.txt_descripcion2.Size = new System.Drawing.Size(193, 20);
             this.txt_descripcion2.TabIndex = 25;
+            this.txt_descripcion2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_descripcion2_KeyDown);
             // 
             // txt_costo
             // 
@@ -433,6 +437,7 @@
             this.txt_costo.Name = "txt_costo";
             this.txt_costo.Size = new System.Drawing.Size(193, 20);
             this.txt_costo.TabIndex = 26;
+            this.txt_costo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_costo_KeyDown);
             // 
             // tabPage1
             // 
@@ -529,6 +534,8 @@
             this.txt_categoria.Name = "txt_categoria";
             this.txt_categoria.Size = new System.Drawing.Size(190, 20);
             this.txt_categoria.TabIndex = 38;
+            this.txt_categoria.TextChanged += new System.EventHandler(this.txt_categoria_TextChanged);
+            this.txt_categoria.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_categoria_KeyDown);
             // 
             // dgv_marca
             // 
@@ -601,6 +608,8 @@
             this.txt_marca.Name = "txt_marca";
             this.txt_marca.Size = new System.Drawing.Size(190, 20);
             this.txt_marca.TabIndex = 31;
+            this.txt_marca.TextChanged += new System.EventHandler(this.txt_marca_TextChanged);
+            this.txt_marca.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_marca_KeyDown);
             // 
             // Productos
             // 
