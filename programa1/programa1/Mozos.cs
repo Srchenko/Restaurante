@@ -389,34 +389,39 @@ namespace programa1
         }
 
         //se evita que se pongan mas espacios innecesarios si alguien tiene nombre o apellido compuesto... tambien, por las dudas, para el telefono y direccion
-        private int contador = 0;
 
-        private void no_mas_espacios(KeyEventArgs e)
+        private int no_mas_espacios(KeyEventArgs e, int contador_general)
         {
             if (e.KeyCode == Keys.Space)
             {
-                contador++;
+                contador_general++;
+                return contador_general;
             }
             else
             {
-                contador = 0;
+                contador_general = 0;
+                return contador_general;
             }
+        }
 
-            if (contador > 1)
+        private int contador_nombre = 0;
+        private void txt_nombre_KeyDown(object sender, KeyEventArgs e)
+        {
+            contador_nombre=no_mas_espacios(e, contador_nombre);
+            if (contador_nombre > 1)
             {
                 e.SuppressKeyPress = true;
             }
         }
 
-        private void txt_nombre_KeyDown(object sender, KeyEventArgs e)
-        {
-
-            no_mas_espacios(e);
-        }
-
+        private int contador_apellido = 0;
         private void txt_apellido_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_apellido=no_mas_espacios(e, contador_apellido);
+            if (contador_apellido > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
         //al cerrar el formulario hijo, se hacen visibles los botones de la tabla del formulario padre
         private void Mozos_FormClosed(object sender, FormClosedEventArgs e)
@@ -427,19 +432,47 @@ namespace programa1
             padre.menustrip_visible_si();
         }
 
+        private int contador_telefono = 0;
         private void txt_telefono_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_telefono=no_mas_espacios(e, contador_telefono);
+            if (contador_telefono > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
 
+        private int contador_direccion = 0;
         private void txt_direccion_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_direccion=no_mas_espacios(e, contador_direccion);
+            if (contador_direccion > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
 
         private void Mozos_Shown(object sender, EventArgs e)
         {
             dgv_mozos.ClearSelection();
+        }
+
+        private void txt_fecha_nacimiento_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void txt_fecha_nacimiento_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char nom = e.KeyChar;
+            if ((Char.IsLetter(nom)) && (e.KeyChar != (char)Keys.Back))
+            {
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

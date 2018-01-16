@@ -181,6 +181,8 @@
             this.txt_fecha_nacimiento.Name = "txt_fecha_nacimiento";
             this.txt_fecha_nacimiento.Size = new System.Drawing.Size(129, 20);
             this.txt_fecha_nacimiento.TabIndex = 13;
+            this.txt_fecha_nacimiento.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_fecha_nacimiento_KeyDown);
+            this.txt_fecha_nacimiento.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_fecha_nacimiento_KeyPress);
             // 
             // txt_direccion
             // 
