@@ -358,8 +358,23 @@ namespace programa1
         }
 
         // Otras validaciones para que no ingresen cualquier cosa a los textboxs
+        
+        private void no_espacios_al_principio(object sender, KeyPressEventArgs e)
+        {
+            if ((sender as TextBox).SelectionStart == 0)
+            {
+                e.Handled = (e.KeyChar == (char)Keys.Space);
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+
         private void txt_nombre_KeyPress_1(object sender, KeyPressEventArgs e)
         {
+            no_espacios_al_principio(sender, e);
+
             char nom = e.KeyChar;
             if (!(Char.IsLetter(nom)) && (e.KeyChar != (char)Keys.Back) && !char.IsWhiteSpace(e.KeyChar))
             {
@@ -370,6 +385,8 @@ namespace programa1
 
         private void txt_apellido_KeyPress_1(object sender, KeyPressEventArgs e)
         {
+            no_espacios_al_principio(sender, e);
+
             char nom = e.KeyChar;
             if (!(Char.IsLetter(nom)) && (e.KeyChar != (char)Keys.Back) && !char.IsWhiteSpace(e.KeyChar))
             {
@@ -473,6 +490,16 @@ namespace programa1
                 e.Handled = true;
                 return;
             }
+        }
+
+        private void txt_telefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
+        }
+
+        private void txt_direccion_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
         }
     }
 }

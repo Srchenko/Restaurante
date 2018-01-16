@@ -192,6 +192,7 @@
             this.txt_direccion.Size = new System.Drawing.Size(185, 20);
             this.txt_direccion.TabIndex = 14;
             this.txt_direccion.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_direccion_KeyDown);
+            this.txt_direccion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_direccion_KeyPress);
             // 
             // txt_telefono
             // 
@@ -201,6 +202,7 @@
             this.txt_telefono.Size = new System.Drawing.Size(141, 20);
             this.txt_telefono.TabIndex = 15;
             this.txt_telefono.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_telefono_KeyDown);
+            this.txt_telefono.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_telefono_KeyPress);
             // 
             // dgv_mozos
             // 
