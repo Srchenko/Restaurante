@@ -54,6 +54,7 @@ namespace programa1
             }
         }
 
+
         //primera pestaña
 
         int id_producto = 0;
@@ -87,6 +88,9 @@ namespace programa1
             txt_precio.Text = "";
             clb_simple_compuesto.SetItemChecked(0, true);
             id_producto = 0;
+            dgv_materia_prima.ClearSelection();
+            dgv_materia_producto.ClearSelection();
+            dgv_productos.ClearSelection();
         }
 
         // validacion de datos
@@ -154,13 +158,14 @@ namespace programa1
             {
                 //se carga una grilla con todos los datos posibles de una tabla en particular de una base de datos
                 conexion.Open();
-                string sql = "SELECT Materia_Prima.descripcion AS [Materia Prima], Materia_Prima.id_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0";
+                string sql = "SELECT Materia_Prima.id_materia_prima AS ID, Materia_Prima.descripcion AS [Materia Prima], Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0";
                 DataTable lista = new DataTable("lista");
                 SqlCommand comando = new SqlCommand(sql, conexion);
                 SqlDataAdapter sqldat = new SqlDataAdapter(comando);
                 sqldat.Fill(lista);
                 this.dgv_materia_prima.DataSource = lista;
                 dgv_materia_prima.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dgv_materia_prima.Columns["ID"].Visible = false;
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -172,9 +177,40 @@ namespace programa1
         //permite un item del checklist
         private void clb_simple_compuesto_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (e.NewValue == CheckState.Checked)
-                for (int ix = 0; ix < clb_simple_compuesto.Items.Count; ++ix)
-                    if (e.Index != ix) clb_simple_compuesto.SetItemChecked(ix, false);
+            if (clb_simple_compuesto.CheckedItems.Count == 1)
+            {
+                Boolean isCheckedItemBeingUnchecked = (e.CurrentValue == CheckState.Checked);
+                if (isCheckedItemBeingUnchecked)
+                {
+                    e.NewValue = CheckState.Checked;
+                }
+                else
+                {
+                    Int32 checkedItemIndex = clb_simple_compuesto.CheckedIndices[0];
+                    clb_simple_compuesto.ItemCheck -= clb_simple_compuesto_ItemCheck;
+                    clb_simple_compuesto.SetItemChecked(checkedItemIndex, false);
+                    clb_simple_compuesto.ItemCheck += clb_simple_compuesto_ItemCheck;
+                }
+
+            }
+
+            if (clb_simple_compuesto.SelectedIndex==0)
+            {
+                b_agregarmateria.Enabled = false;
+                b_quitar.Enabled = false;
+                dgv_materia_prima.DataSource=null;
+                dgv_materia_prima.Enabled = false;
+                dgv_materia_producto.Rows.Clear();
+                dgv_materia_producto.Enabled = false;
+            }
+            else
+            {
+                b_agregarmateria.Enabled = true;
+                b_quitar.Enabled = true;
+                dgv_materia_prima.Enabled = true;
+                cargarGridMaterias();
+                dgv_materia_producto.Enabled = true;
+            }
         }
 
         private void dgv_productos_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -291,12 +327,12 @@ namespace programa1
             else
             {
 
-                if (txt_descripcion.Text.Length < 3)
+                if (txt_descripcion2.Text.Length < 3)
                 {
                     error += "Nombre de Materia Prima muy corto. ";
                 }
 
-                if (float.Parse(txt_precio.Text) < 0)
+                if (float.Parse(txt_costo.Text) < 0)
                 {
                     error += "Ingrese un costo mayor. ";
                 }
@@ -320,7 +356,7 @@ namespace programa1
             {
                 //se carga una grilla con todos los datos posibles de una tabla en particular de una base de datos
                 conexion.Open();
-                string sql = "SELECT Materia_Prima.id_materia_prima AS ID, Materia_Prima.descripcion AS [Materia Prima], Materia_Prima.id_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0";
+                string sql = "SELECT Materia_Prima.id_materia_prima AS ID, Materia_Prima.descripcion AS [Materia Prima], Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0";
                 DataTable lista = new DataTable("lista");
                 SqlCommand comando = new SqlCommand(sql, conexion);
                 SqlDataAdapter sqldat = new SqlDataAdapter(comando);
@@ -341,6 +377,8 @@ namespace programa1
             txt_descripcion2.Text = "";
             txt_costo.Text = "";
             id_materia_prima = 0;
+            cb_marca.SelectedValue = 1;
+            dgv_materias.ClearSelection();
         }
 
         //se ponen las categorias en un combobox
@@ -364,36 +402,6 @@ namespace programa1
             }
         }
 
-        private void dgv_materias_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los productos
-                int campa = Convert.ToInt32(this.dgv_materias.CurrentRow.Cells["id_materia_prima"].Value);
-                conexion.Open();
-                SqlCommand comando = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima=@ID ", conexion);
-                comando.Parameters.Add("@ID", SqlDbType.VarChar);
-                comando.Parameters["@ID"].Value = campa;
-                SqlDataReader datos = comando.ExecuteReader();
-                if (datos.Read())
-                {
-                    txt_descripcion2.Text = datos["descripcion"].ToString();
-                    txt_costo.Text = datos["costo"].ToString();
-                    cb_marca.SelectedValue = datos["id_marca"];
-                    
-                    id_materia_prima = Convert.ToInt32(datos["id_materia_prima"]);
-                }
-                datos.Close();
-
-                conexion.Close();
-            }
-            catch (AccessViolationException Exception)
-            {
-                Console.WriteLine(Exception.Message);
-            }
-
-        }
-
         private void b_eliminar2_Click(object sender, EventArgs e)
         {
             if (id_materia_prima != 0)
@@ -412,8 +420,8 @@ namespace programa1
                         comando.ExecuteNonQuery();
 
                         conexion.Close();
-                        cargarGridProductos();
-                        limpiarTexto();
+                        cargarGridMateriasPrimas();
+                        limpiarTexto2();
                         MessageBox.Show("Se eliminó la materia prima.", "Atención");
                     }
                     catch (Exception)
@@ -434,7 +442,7 @@ namespace programa1
 
         private void b_limpiar_campos2_Click(object sender, EventArgs e)
         {
-            limpiarTexto();
+            limpiarTexto2();
         }
 
         //agregar dropdownlist
@@ -448,23 +456,29 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar una materia prima, se intenta que no existan dos iguales
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion and id_marca=@Marca", conexion);
                 comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                 comando3.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
+                comando3.Parameters.Add("@Marca", SqlDbType.Int);
+                comando3.Parameters["@Marca"].Value = cb_marca.SelectedValue;
                 SqlDataReader datos3 = comando3.ExecuteReader();
                 if (datos3.Read())
                 {
-                    MessageBox.Show("Esta Materia Prima ya existe.", "Atención");
+                    MessageBox.Show("Ya existe una Materia Prima con la misma Descripción y la misma Marca", "Atención");
                     datos3.Close();
                     conexion.Close();
                     return;
                 }
                 datos3.Close();
                 //Si la materia prima no existe, se agrega en la base de datos
-                string sql = "INSERT INTO Materia Prima(descripcion, baja) VALUES (@Descripcion,0)";
+                string sql = "INSERT INTO Materia_Prima(descripcion, id_marca, costo, baja) VALUES (@Descripcion, @Marca, @Costo, 0)";
                 SqlCommand comando = new SqlCommand(sql, conexion);
                 comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
-                comando.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                comando.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
+                comando.Parameters.Add("@Marca", SqlDbType.Int);
+                comando.Parameters["@Marca"].Value = cb_marca.SelectedValue;
+                comando.Parameters.Add("@Costo", SqlDbType.Float);
+                comando.Parameters["@Costo"].Value = txt_costo.Text;
                 comando.ExecuteNonQuery();
 
                 conexion.Close();
@@ -480,7 +494,7 @@ namespace programa1
             }
         }
 
-        //cambiar
+        //modificacion de materias primas
         private void b_modificar2_Click(object sender, EventArgs e)
         {
             if (id_materia_prima != 0)
@@ -495,46 +509,38 @@ namespace programa1
 
                     conexion.Open();
                     //al modificar la materia prima se verifica que no exista ya
-                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima=@ID", conexion);
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima<>@ID and descripcion=@Descripcion and id_marca=@Marca", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
                     comando4.Parameters["@ID"].Value = id_materia_prima;
+                    comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando4.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
+                    comando4.Parameters.Add("@Marca", SqlDbType.Int);
+                    comando4.Parameters["@Marca"].Value = cb_marca.SelectedValue;
                     SqlDataReader datos4 = comando4.ExecuteReader();
-                    string materiaor = "";
                     if (datos4.Read())
                     {
-                        materiaor = (datos4["descripcion"]).ToString();
+                        MessageBox.Show("Esta Materia Prima ya existe.", "Atención");
+                        datos4.Close();
+                        conexion.Close();
+                        return;
                     }
-                    datos4.Close();
 
-                    SqlCommand comando5 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion<>@Descripcion", conexion);
-                    comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
-                    comando5.Parameters["@Descripcion"].Value = materiaor;
-                    SqlDataReader datos5 = comando5.ExecuteReader();
-                    String marcaref = "";
-                    while (datos5.Read())
-                    {
-                        marcaref = datos5["descripcion"].ToString();
-                        if (txt_descripcion2.Text.Equals(marcaref))
-                        {
-                            MessageBox.Show("Esta Materia Prima ya existe.", "Atención");
-                            datos5.Close();
-                            conexion.Close();
-                            return;
-                        }
-                    }
-                    datos5.Close();
                     //si la descripcion esta bien, se modifica la materia prima
-                    string sql = "UPDATE Materia_Prima SET materia_prima=@Descripcion WHERE id_materia_prima=@ID";
+                    string sql = "UPDATE Materia_Prima SET descripcion=@Descripcion, costo=@Costo, id_marca=@Marca WHERE id_materia_prima=@ID";
                     SqlCommand comando = new SqlCommand(sql, conexion);
                     comando.Parameters.Add("@ID", SqlDbType.Int);
                     comando.Parameters["@ID"].Value = id_materia_prima;
                     comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                     comando.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
-
+                    comando.Parameters.Add("@Costo", SqlDbType.Float);
+                    comando.Parameters["@Costo"].Value = txt_costo.Text;
+                    comando.Parameters.Add("@Marca", SqlDbType.Int);
+                    comando.Parameters["@Marca"].Value = cb_marca.SelectedValue;
+                    datos4.Close();
                     comando.ExecuteNonQuery();
 
                     conexion.Close();
-                    cargarGridMaterias();
+                    cargarGridMateriasPrimas();
                     MessageBox.Show("Se modificó el dato.", "Atención");
                     limpiarTexto2();
                 }
@@ -546,6 +552,34 @@ namespace programa1
             else
             {
                 MessageBox.Show("Seleccione una fila.", "Atención");
+            }
+        }
+
+        private void dgv_materias_CellClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los productos
+                int campa = Convert.ToInt32(this.dgv_materias.CurrentRow.Cells["ID"].Value);
+                conexion.Open();
+                SqlCommand comando = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima=@ID ", conexion);
+                comando.Parameters.Add("@ID", SqlDbType.VarChar);
+                comando.Parameters["@ID"].Value = campa;
+                SqlDataReader datos = comando.ExecuteReader();
+                if (datos.Read())
+                {
+                    txt_descripcion2.Text = datos["descripcion"].ToString();
+                    id_materia_prima = Convert.ToInt32(datos["id_materia_prima"]);
+                    cb_marca.SelectedValue = Convert.ToInt32(datos["id_marca"]);
+                    txt_costo.Text= datos["costo"].ToString();
+                }
+                datos.Close();
+
+                conexion.Close();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
             }
         }
 
@@ -624,6 +658,8 @@ namespace programa1
             txt_marca.Text = "";
             id_marca = 0;
             dgv_marca.ClearSelection();
+            dgv_categoria.ClearSelection();
+            cargarListaMarcas();
         }
 
         private void b_limpiar_campos3_Click(object sender, EventArgs e)
@@ -806,6 +842,8 @@ namespace programa1
             }
         }
 
+
+
         //tercera pestaña / categorias
         int id_categoria = 0;
 
@@ -868,12 +906,13 @@ namespace programa1
             txt_categoria.Text = "";
             id_categoria = 0;
             dgv_categoria.ClearSelection();
+            dgv_marca.ClearSelection();
 
         }
 
         private void b_limpiar4_campos_Click(object sender, EventArgs e)
         {
-            limpiarTexto();
+            limpiarTexto4();
         }
 
         private void b_agregar4_Click(object sender, EventArgs e)
@@ -944,14 +983,14 @@ namespace programa1
                     datos4.Close();
 
                     SqlCommand comando5 = new SqlCommand("SELECT * FROM Categoria WHERE nombre_categoria<>@Categoria", conexion);
-                    comando5.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando5.Parameters.Add("@Categoria", SqlDbType.VarChar);
                     comando5.Parameters["@Categoria"].Value = categoriaor;
                     SqlDataReader datos5 = comando5.ExecuteReader();
                     String categoriaref = "";
                     while (datos5.Read())
                     {
                         categoriaref = datos5["nombre_categoria"].ToString();
-                        if (txt_marca.Text.Equals(categoriaref))
+                        if (txt_categoria.Text.Equals(categoriaref))
                         {
                             MessageBox.Show("Esta Categoría ya existe.", "Atención");
                             datos5.Close();
@@ -961,17 +1000,17 @@ namespace programa1
                     }
                     datos5.Close();
                     //si el nombre esta bien, se modifica la categoria
-                    string sql = "UPDATE Categoria SET nombre_categoria=@Nombre, WHERE id_categoria=@ID";
+                    string sql = "UPDATE Categoria SET nombre_categoria=@Nombre WHERE id_categoria=@ID";
                     SqlCommand comando = new SqlCommand(sql, conexion);
                     comando.Parameters.Add("@ID", SqlDbType.Int);
-                    comando.Parameters["@ID"].Value = id_marca;
+                    comando.Parameters["@ID"].Value = id_categoria;
                     comando.Parameters.Add("@Nombre", SqlDbType.VarChar);
                     comando.Parameters["@Nombre"].Value = txt_categoria.Text;
 
                     comando.ExecuteNonQuery();
 
                     conexion.Close();
-                    cargarGridMarcas();
+                    cargarGridCategorias();
                     MessageBox.Show("Se modificó el dato.", "Atención");
                     limpiarTexto4();
                 }
@@ -988,7 +1027,7 @@ namespace programa1
 
         private void b_eliminar4_Click(object sender, EventArgs e)
         {
-            if (id_marca != 0)
+            if (id_categoria != 0)
             {
                 //Se pregunta si de verdad quiere eliminar una categoria... 
                 if (MessageBox.Show("¿Está seguro?", "Eliminar", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -1067,11 +1106,22 @@ namespace programa1
             InitializeComponent();
             cargarGridProductos();
             cargarGridMateriasPrimas();
-            cargarGridMaterias();
             cargarGridCategorias();
             cargarGridMarcas();
             cargarListaCategorias();
             cargarListaMarcas();
+            b_agregarmateria.Enabled = false;
+            b_quitar.Enabled = false;
+            dgv_materia_prima.Enabled = false;
+            dgv_materia_producto.Enabled = false;
+
+            clb_simple_compuesto.SetItemChecked(0, true);
+            b_agregarmateria.Enabled = false;
+            b_quitar.Enabled = false;
+            dgv_materia_prima.DataSource = null;
+            dgv_materia_prima.Enabled = false;
+            dgv_materia_producto.Rows.Clear();
+            dgv_materia_producto.Enabled = false;
         }
 
         //no tocar, rompe diseño
@@ -1118,15 +1168,6 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
         }
 
-        
-
-        
-
-
-
-
-
-        
 
     }
 }

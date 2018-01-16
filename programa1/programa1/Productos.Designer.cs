@@ -88,7 +88,7 @@
             // 
             // b_limpiar_campos
             // 
-            this.b_limpiar_campos.Location = new System.Drawing.Point(707, 135);
+            this.b_limpiar_campos.Location = new System.Drawing.Point(707, 51);
             this.b_limpiar_campos.Name = "b_limpiar_campos";
             this.b_limpiar_campos.Size = new System.Drawing.Size(112, 22);
             this.b_limpiar_campos.TabIndex = 7;
@@ -98,7 +98,7 @@
             // 
             // b_eliminar
             // 
-            this.b_eliminar.Location = new System.Drawing.Point(707, 96);
+            this.b_eliminar.Location = new System.Drawing.Point(707, 19);
             this.b_eliminar.Name = "b_eliminar";
             this.b_eliminar.Size = new System.Drawing.Size(112, 22);
             this.b_eliminar.TabIndex = 6;
@@ -108,7 +108,7 @@
             // 
             // b_modificar
             // 
-            this.b_modificar.Location = new System.Drawing.Point(707, 59);
+            this.b_modificar.Location = new System.Drawing.Point(578, 51);
             this.b_modificar.Name = "b_modificar";
             this.b_modificar.Size = new System.Drawing.Size(112, 22);
             this.b_modificar.TabIndex = 5;
@@ -117,7 +117,7 @@
             // 
             // b_agregar
             // 
-            this.b_agregar.Location = new System.Drawing.Point(707, 22);
+            this.b_agregar.Location = new System.Drawing.Point(578, 18);
             this.b_agregar.Name = "b_agregar";
             this.b_agregar.Size = new System.Drawing.Size(112, 22);
             this.b_agregar.TabIndex = 4;
@@ -126,9 +126,10 @@
             // 
             // txt_precio
             // 
-            this.txt_precio.Location = new System.Drawing.Point(80, 41);
-            this.txt_precio.MaxLength = 45;
+            this.txt_precio.Location = new System.Drawing.Point(80, 48);
+            this.txt_precio.MaxLength = 7;
             this.txt_precio.Name = "txt_precio";
+            this.txt_precio.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txt_precio.Size = new System.Drawing.Size(193, 20);
             this.txt_precio.TabIndex = 14;
             this.txt_precio.TextChanged += new System.EventHandler(this.txt_precio_TextChanged);
@@ -137,7 +138,7 @@
             // txt_descripcion
             // 
             this.txt_descripcion.Location = new System.Drawing.Point(80, 15);
-            this.txt_descripcion.MaxLength = 45;
+            this.txt_descripcion.MaxLength = 50;
             this.txt_descripcion.Name = "txt_descripcion";
             this.txt_descripcion.Size = new System.Drawing.Size(193, 20);
             this.txt_descripcion.TabIndex = 13;
@@ -155,7 +156,7 @@
             // l_precio
             // 
             this.l_precio.AutoSize = true;
-            this.l_precio.Location = new System.Drawing.Point(40, 44);
+            this.l_precio.Location = new System.Drawing.Point(37, 51);
             this.l_precio.Name = "l_precio";
             this.l_precio.Size = new System.Drawing.Size(37, 13);
             this.l_precio.TabIndex = 11;
@@ -186,17 +187,17 @@
             this.dgv_materia_prima.AllowUserToResizeColumns = false;
             this.dgv_materia_prima.AllowUserToResizeRows = false;
             this.dgv_materia_prima.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_materia_prima.Location = new System.Drawing.Point(30, 106);
+            this.dgv_materia_prima.Location = new System.Drawing.Point(7, 117);
             this.dgv_materia_prima.Name = "dgv_materia_prima";
             this.dgv_materia_prima.ReadOnly = true;
             this.dgv_materia_prima.RowHeadersVisible = false;
-            this.dgv_materia_prima.Size = new System.Drawing.Size(257, 141);
+            this.dgv_materia_prima.Size = new System.Drawing.Size(366, 141);
             this.dgv_materia_prima.TabIndex = 18;
             // 
             // l_materia
             // 
             this.l_materia.AutoSize = true;
-            this.l_materia.Location = new System.Drawing.Point(89, 86);
+            this.l_materia.Location = new System.Drawing.Point(115, 101);
             this.l_materia.Name = "l_materia";
             this.l_materia.Size = new System.Drawing.Size(121, 13);
             this.l_materia.TabIndex = 19;
@@ -205,7 +206,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(470, 86);
+            this.label1.Location = new System.Drawing.Point(616, 101);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(105, 13);
             this.label1.TabIndex = 20;
@@ -218,16 +219,16 @@
             this.dgv_materia_producto.AllowUserToResizeColumns = false;
             this.dgv_materia_producto.AllowUserToResizeRows = false;
             this.dgv_materia_producto.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgv_materia_producto.Location = new System.Drawing.Point(405, 106);
+            this.dgv_materia_producto.Location = new System.Drawing.Point(469, 117);
             this.dgv_materia_producto.Name = "dgv_materia_producto";
             this.dgv_materia_producto.ReadOnly = true;
             this.dgv_materia_producto.RowHeadersVisible = false;
-            this.dgv_materia_producto.Size = new System.Drawing.Size(258, 141);
+            this.dgv_materia_producto.Size = new System.Drawing.Size(361, 141);
             this.dgv_materia_producto.TabIndex = 21;
             // 
             // b_agregarmateria
             // 
-            this.b_agregarmateria.Location = new System.Drawing.Point(305, 132);
+            this.b_agregarmateria.Location = new System.Drawing.Point(381, 152);
             this.b_agregarmateria.Name = "b_agregarmateria";
             this.b_agregarmateria.Size = new System.Drawing.Size(82, 29);
             this.b_agregarmateria.TabIndex = 22;
@@ -236,7 +237,7 @@
             // 
             // b_quitar
             // 
-            this.b_quitar.Location = new System.Drawing.Point(305, 180);
+            this.b_quitar.Location = new System.Drawing.Point(379, 197);
             this.b_quitar.Name = "b_quitar";
             this.b_quitar.Size = new System.Drawing.Size(84, 29);
             this.b_quitar.TabIndex = 23;
@@ -290,7 +291,7 @@
             this.clb_simple_compuesto.Items.AddRange(new object[] {
             "Simple",
             "Compuesto"});
-            this.clb_simple_compuesto.Location = new System.Drawing.Point(305, 65);
+            this.clb_simple_compuesto.Location = new System.Drawing.Point(379, 65);
             this.clb_simple_compuesto.Name = "clb_simple_compuesto";
             this.clb_simple_compuesto.Size = new System.Drawing.Size(82, 34);
             this.clb_simple_compuesto.TabIndex = 25;
@@ -344,6 +345,7 @@
             this.dgv_materias.RowHeadersVisible = false;
             this.dgv_materias.Size = new System.Drawing.Size(792, 184);
             this.dgv_materias.TabIndex = 28;
+            this.dgv_materias.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_materias_CellClick_1);
             // 
             // l_descripcion2
             // 
@@ -424,7 +426,7 @@
             // txt_descripcion2
             // 
             this.txt_descripcion2.Location = new System.Drawing.Point(82, 40);
-            this.txt_descripcion2.MaxLength = 45;
+            this.txt_descripcion2.MaxLength = 50;
             this.txt_descripcion2.Name = "txt_descripcion2";
             this.txt_descripcion2.Size = new System.Drawing.Size(193, 20);
             this.txt_descripcion2.TabIndex = 25;
@@ -433,8 +435,9 @@
             // txt_costo
             // 
             this.txt_costo.Location = new System.Drawing.Point(82, 84);
-            this.txt_costo.MaxLength = 45;
+            this.txt_costo.MaxLength = 6;
             this.txt_costo.Name = "txt_costo";
+            this.txt_costo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txt_costo.Size = new System.Drawing.Size(193, 20);
             this.txt_costo.TabIndex = 26;
             this.txt_costo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_costo_KeyDown);
@@ -530,7 +533,7 @@
             // txt_categoria
             // 
             this.txt_categoria.Location = new System.Drawing.Point(488, 46);
-            this.txt_categoria.MaxLength = 45;
+            this.txt_categoria.MaxLength = 50;
             this.txt_categoria.Name = "txt_categoria";
             this.txt_categoria.Size = new System.Drawing.Size(190, 20);
             this.txt_categoria.TabIndex = 38;
@@ -604,7 +607,7 @@
             // txt_marca
             // 
             this.txt_marca.Location = new System.Drawing.Point(58, 46);
-            this.txt_marca.MaxLength = 45;
+            this.txt_marca.MaxLength = 50;
             this.txt_marca.Name = "txt_marca";
             this.txt_marca.Size = new System.Drawing.Size(190, 20);
             this.txt_marca.TabIndex = 31;
