@@ -58,6 +58,7 @@ namespace programa1
         //primera pestaña
 
         int id_producto = 0;
+        
 
         //carga dgv de productos
         private void cargarGridProductos()
@@ -91,6 +92,13 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
             dgv_materia_producto.ClearSelection();
             dgv_productos.ClearSelection();
+            cb_categoria.SelectedValue = 1;
+            b_agregarmateria.Enabled = false;
+            b_quitar.Enabled = false;
+            dgv_materia_prima.DataSource = null;
+            dgv_materia_prima.Enabled = false;
+            dgv_materia_producto.Rows.Clear();
+            dgv_materia_producto.Enabled = false;
         }
 
         // validacion de datos
@@ -218,10 +226,10 @@ namespace programa1
             try
             {
                 //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los productos
-                int campa = Convert.ToInt32(this.dgv_productos.CurrentRow.Cells["id_producto"].Value);
+                int campa = Convert.ToInt32(this.dgv_productos.CurrentRow.Cells["ID"].Value);
                 conexion.Open();
                 SqlCommand comando = new SqlCommand("SELECT * FROM Productos WHERE id_producto=@ID ", conexion);
-                comando.Parameters.Add("@ID", SqlDbType.VarChar);
+                comando.Parameters.Add("@ID", SqlDbType.Int);
                 comando.Parameters["@ID"].Value = campa;
                 SqlDataReader datos = comando.ExecuteReader();
                 if (datos.Read())
@@ -229,18 +237,30 @@ namespace programa1
                     txt_descripcion.Text = datos["descripcion"].ToString();
                     txt_precio.Text = datos["precio"].ToString();
                     cb_categoria.SelectedValue = datos["id_categoria"];
+                    id_producto = Convert.ToInt32(datos["id_producto"]);
+                    
                     if (Convert.ToBoolean(datos["compuesto"]) == false)
                     {
-                        clb_simple_compuesto.SetItemChecked(1, true);
-                        clb_simple_compuesto.SetItemChecked(2, false);
+                        datos.Close();
+                        conexion.Close();
+                        clb_simple_compuesto.SetItemChecked(0, true);
+                        clb_simple_compuesto.SetItemChecked(1, false);
+                        b_agregarmateria.Enabled = false;
+                        b_quitar.Enabled = false;
+                        dgv_materia_prima.DataSource = null;
+                        dgv_materia_prima.Enabled = false;
+                        dgv_materia_producto.Rows.Clear();
+                        dgv_materia_producto.Enabled = false;
                     }
 
                     else
                     {
-                        clb_simple_compuesto.SetItemChecked(1, false);
-                        clb_simple_compuesto.SetItemChecked(2, true);
+                        datos.Close();
+                        conexion.Close();
+                        clb_simple_compuesto.SetItemChecked(0, false);
+                        clb_simple_compuesto.SetItemChecked(1, true);
                     }
-                    id_producto = Convert.ToInt32(datos["id_producto"]);
+                    
                 }
                 datos.Close();
 
@@ -296,6 +316,75 @@ namespace programa1
             limpiarTexto();
         }
 
+
+        //variable bandera para que no se tome la primer fila del dgv automaticamente
+        bool rowselected = false;
+        private void dgv_materia_prima_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            rowselected = true;
+        }
+
+        //mueve una fila de la tabla de materias primas a la tabla de materias de productos
+        private void b_agregarmateria_Click(object sender, EventArgs e)
+        {
+            int id_materia_agregar=0;
+            try
+            {
+                
+                if(dgv_materia_prima.Rows.Count==0)
+                {
+                    MessageBox.Show("No hay más filas", "Atención");
+                    return;
+                }
+
+                if (rowselected == false)
+                {
+                    MessageBox.Show("Seleccione una fila.", "Atención");
+                    return;
+                }
+
+                int indice = dgv_materia_prima.SelectedCells[0].RowIndex;
+                DataGridViewRow fila_seleccionada = dgv_materia_prima.Rows[indice];
+                id_materia_agregar = Convert.ToInt32(fila_seleccionada.Cells["ID"].Value);
+                if (id_materia_agregar != 0)
+                {
+                    conexion.Open();
+
+                    SqlCommand comando = new SqlCommand("SELECT Materia_Prima.id_materia_prima AS ID, Materia_Prima.descripcion AS descrip, Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0 and Materia_Prima.id_materia_prima= @id_materia", conexion);
+                    comando.Parameters.Add("@id_materia", SqlDbType.Int);
+                    comando.Parameters["@id_materia"].Value = id_materia_agregar;
+                    SqlDataReader datos = comando.ExecuteReader();
+                    if (datos.Read())
+                    {
+                        dgv_materia_producto.Rows.Add(datos["ID"].ToString(), datos["descrip"].ToString(), datos["Marca"].ToString(), datos["Costo"].ToString(), 1);
+                    }
+                    dgv_materia_prima.Rows.RemoveAt(indice);
+
+                    datos.Close();
+
+                    conexion.Close();
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Seleccione una fila.", "Atención");
+                }
+                rowselected = false;
+                dgv_materia_prima.ClearSelection();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
+            
+        }
+
+        private void b_quitar_Click(object sender, EventArgs e)
+        {
+
+        }
+
         //espacios primer pestaña
         private void txt_descripcion_KeyDown(object sender, KeyEventArgs e)
         {
@@ -306,6 +395,8 @@ namespace programa1
         {
             no_mas_espacios(e);
         }
+
+
 
 
 
@@ -1122,21 +1213,13 @@ namespace programa1
             dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Rows.Clear();
             dgv_materia_producto.Enabled = false;
+
+            
+
         }
 
         //no tocar, rompe diseño
         private void Mesas_Load(object sender, EventArgs e)
-        {
-
-        }
-        private void txt_precio_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void txt_marca_TextChanged(object sender, EventArgs e)
-        {
-        }
-        private void txt_categoria_TextChanged(object sender, EventArgs e)
         {
 
         }
