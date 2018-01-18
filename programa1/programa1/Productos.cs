@@ -318,10 +318,17 @@ namespace programa1
 
 
         //variable bandera para que no se tome la primer fila del dgv automaticamente
-        bool rowselected = false;
+        bool rowselected_materia_prima = false;
         private void dgv_materia_prima_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            rowselected = true;
+            rowselected_materia_prima = true;
+        }
+
+        //variable bandera para que no se tome la primer fila del dgv automaticamente
+        bool rowselected_materia_producto = false;
+        private void dgv_materia_producto_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            rowselected_materia_producto = true;
         }
 
         //mueve una fila de la tabla de materias primas a la tabla de materias de productos
@@ -337,7 +344,7 @@ namespace programa1
                     return;
                 }
 
-                if (rowselected == false)
+                if (rowselected_materia_prima == false)
                 {
                     MessageBox.Show("Seleccione una fila.", "Atención");
                     return;
@@ -370,8 +377,10 @@ namespace programa1
                 {
                     MessageBox.Show("Seleccione una fila.", "Atención");
                 }
-                rowselected = false;
+                rowselected_materia_prima = false;
+                rowselected_materia_producto = false;
                 dgv_materia_prima.ClearSelection();
+                dgv_materia_producto.ClearSelection();
             }
             catch (AccessViolationException Exception)
             {
@@ -380,9 +389,61 @@ namespace programa1
             
         }
 
+        //tira un error desconocido**
         private void b_quitar_Click(object sender, EventArgs e)
         {
+            int id_materia_producto = 0;
+            try
+            {
 
+                if (dgv_materia_producto.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay más filas", "Atención");
+                    return;
+                }
+
+                if (rowselected_materia_producto == false)
+                {
+                    MessageBox.Show("Seleccione una fila.", "Atención");
+                    return;
+                }
+
+                int indice = dgv_materia_producto.SelectedCells[0].RowIndex;
+                DataGridViewRow fila_seleccionada = dgv_materia_producto.Rows[indice];
+                id_materia_producto = Convert.ToInt32(fila_seleccionada.Cells["id_materia_producto"].Value);
+                if (id_materia_producto != 0)
+                {
+                    conexion.Open();
+
+                    SqlCommand comando = new SqlCommand("SELECT Materia_Prima.id_materia_prima AS ID, Materia_Prima.descripcion AS descrip, Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0 and Materia_Prima.id_materia_prima= @id_materia", conexion);
+                    comando.Parameters.Add("@id_materia", SqlDbType.Int);
+                    comando.Parameters["@id_materia"].Value = id_materia_producto;
+                    SqlDataReader datos = comando.ExecuteReader();
+                    if (datos.Read())
+                    {
+                        dgv_materia_prima.Rows.Add(datos["ID"].ToString(), datos["descrip"].ToString(), datos["Marca"].ToString(), datos["Costo"].ToString());
+                    }
+                    dgv_materia_producto.Rows.RemoveAt(indice);
+
+                    datos.Close();
+
+                    conexion.Close();
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Seleccione una fila.", "Atención");
+                }
+                rowselected_materia_prima = false;
+                rowselected_materia_producto = false;
+                dgv_materia_producto.ClearSelection();
+                dgv_materia_prima.ClearSelection();
+            }
+            catch (AccessViolationException Exception)
+            {
+                Console.WriteLine(Exception.Message);
+            }
         }
 
         //espacios primer pestaña

@@ -41,6 +41,11 @@
             this.l_materia = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dgv_materia_producto = new System.Windows.Forms.DataGridView();
+            this.id_materia_producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descripcion_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.marca_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costo_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cantidad_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.b_agregarmateria = new System.Windows.Forms.Button();
             this.b_quitar = new System.Windows.Forms.Button();
             this.tc_formulario = new System.Windows.Forms.TabControl();
@@ -74,11 +79,6 @@
             this.b_eliminar3 = new System.Windows.Forms.Button();
             this.b_limpiar_campos3 = new System.Windows.Forms.Button();
             this.txt_marca = new System.Windows.Forms.TextBox();
-            this.id_materia_producto = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descripcion_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.marca_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costo_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cantidad_materia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_prima)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_producto)).BeginInit();
             this.tc_formulario.SuspendLayout();
@@ -236,6 +236,49 @@
             this.dgv_materia_producto.RowHeadersVisible = false;
             this.dgv_materia_producto.Size = new System.Drawing.Size(361, 141);
             this.dgv_materia_producto.TabIndex = 21;
+            this.dgv_materia_producto.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_materia_producto_CellClick);
+            // 
+            // id_materia_producto
+            // 
+            this.id_materia_producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.id_materia_producto.HeaderText = "ID";
+            this.id_materia_producto.Name = "id_materia_producto";
+            this.id_materia_producto.ReadOnly = true;
+            this.id_materia_producto.Visible = false;
+            // 
+            // descripcion_materia
+            // 
+            this.descripcion_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.descripcion_materia.HeaderText = "Descripción";
+            this.descripcion_materia.Name = "descripcion_materia";
+            this.descripcion_materia.ReadOnly = true;
+            this.descripcion_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // marca_materia
+            // 
+            this.marca_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.marca_materia.HeaderText = "Marca";
+            this.marca_materia.Name = "marca_materia";
+            this.marca_materia.ReadOnly = true;
+            this.marca_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // costo_materia
+            // 
+            this.costo_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.costo_materia.HeaderText = "Costo";
+            this.costo_materia.Name = "costo_materia";
+            this.costo_materia.ReadOnly = true;
+            this.costo_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.costo_materia.Width = 59;
+            // 
+            // cantidad_materia
+            // 
+            this.cantidad_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.cantidad_materia.HeaderText = "Cantidad";
+            this.cantidad_materia.MaxInputLength = 2;
+            this.cantidad_materia.Name = "cantidad_materia";
+            this.cantidad_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.cantidad_materia.Width = 74;
             // 
             // b_agregarmateria
             // 
@@ -625,48 +668,6 @@
             this.txt_marca.Size = new System.Drawing.Size(190, 20);
             this.txt_marca.TabIndex = 31;
             this.txt_marca.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_marca_KeyDown);
-            // 
-            // id_materia_producto
-            // 
-            this.id_materia_producto.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.id_materia_producto.HeaderText = "ID";
-            this.id_materia_producto.Name = "id_materia_producto";
-            this.id_materia_producto.ReadOnly = true;
-            this.id_materia_producto.Visible = false;
-            // 
-            // descripcion_materia
-            // 
-            this.descripcion_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.descripcion_materia.HeaderText = "Descripción";
-            this.descripcion_materia.Name = "descripcion_materia";
-            this.descripcion_materia.ReadOnly = true;
-            this.descripcion_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // marca_materia
-            // 
-            this.marca_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.marca_materia.HeaderText = "Marca";
-            this.marca_materia.Name = "marca_materia";
-            this.marca_materia.ReadOnly = true;
-            this.marca_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // costo_materia
-            // 
-            this.costo_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.costo_materia.HeaderText = "Costo";
-            this.costo_materia.Name = "costo_materia";
-            this.costo_materia.ReadOnly = true;
-            this.costo_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.costo_materia.Width = 59;
-            // 
-            // cantidad_materia
-            // 
-            this.cantidad_materia.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.cantidad_materia.HeaderText = "Cantidad";
-            this.cantidad_materia.MaxInputLength = 2;
-            this.cantidad_materia.Name = "cantidad_materia";
-            this.cantidad_materia.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.cantidad_materia.Width = 74;
             // 
             // Productos
             // 
