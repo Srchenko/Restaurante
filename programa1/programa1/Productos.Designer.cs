@@ -138,6 +138,7 @@
             this.txt_precio.Size = new System.Drawing.Size(193, 20);
             this.txt_precio.TabIndex = 14;
             this.txt_precio.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_precio_KeyDown);
+            this.txt_precio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_precio_KeyPress);
             // 
             // txt_descripcion
             // 
@@ -147,6 +148,7 @@
             this.txt_descripcion.Size = new System.Drawing.Size(193, 20);
             this.txt_descripcion.TabIndex = 13;
             this.txt_descripcion.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_descripcion_KeyDown);
+            this.txt_descripcion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_descripcion_KeyPress);
             // 
             // l_categoria
             // 
@@ -488,6 +490,7 @@
             this.txt_descripcion2.Size = new System.Drawing.Size(193, 20);
             this.txt_descripcion2.TabIndex = 25;
             this.txt_descripcion2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_descripcion2_KeyDown);
+            this.txt_descripcion2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_descripcion2_KeyPress);
             // 
             // txt_costo
             // 
@@ -498,6 +501,7 @@
             this.txt_costo.Size = new System.Drawing.Size(193, 20);
             this.txt_costo.TabIndex = 26;
             this.txt_costo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_costo_KeyDown);
+            this.txt_costo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_costo_KeyPress);
             // 
             // tabPage1
             // 
@@ -595,6 +599,7 @@
             this.txt_categoria.Size = new System.Drawing.Size(190, 20);
             this.txt_categoria.TabIndex = 38;
             this.txt_categoria.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_categoria_KeyDown);
+            this.txt_categoria.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_categoria_KeyPress);
             // 
             // dgv_marca
             // 
@@ -668,6 +673,7 @@
             this.txt_marca.Size = new System.Drawing.Size(190, 20);
             this.txt_marca.TabIndex = 31;
             this.txt_marca.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_marca_KeyDown);
+            this.txt_marca.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_marca_KeyPress);
             // 
             // Productos
             // 

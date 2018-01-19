@@ -35,22 +35,32 @@ namespace programa1
             base.WndProc(ref mensaje);
         }
 
-        //evita que ponga 2 espacios seguidos o empiece un textbox con espacios
-        private int contador = 0;
-        private void no_mas_espacios(KeyEventArgs e)
+        //evita que ponga 2 espacios seguidos 
+        private int contador_general = 0;
+        private int no_mas_espacios(KeyEventArgs e, int contador_general)
         {
             if (e.KeyCode == Keys.Space)
             {
-                contador++;
+                contador_general++;
+                return contador_general;
             }
             else
             {
-                contador = 0;
+                contador_general = 0;
+                return contador_general;
             }
+        }
 
-            if (contador > 1)
+        // evita que empiece un textbox con espacios
+        private void no_espacios_al_principio(object sender, KeyPressEventArgs e)
+        {
+            if ((sender as TextBox).SelectionStart == 0)
             {
-                e.SuppressKeyPress = true;
+                e.Handled = (e.KeyChar == (char)Keys.Space);
+            }
+            else
+            {
+                e.Handled = false;
             }
         }
 
@@ -99,9 +109,10 @@ namespace programa1
             dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Rows.Clear();
             dgv_materia_producto.Enabled = false;
+            clb_simple_compuesto.ClearSelected();
         }
 
-        // validacion de datos
+        //validacion de datos
         private bool validacion_copada1()
         {
             string error = "";
@@ -273,6 +284,7 @@ namespace programa1
 
         }
 
+        //elimina el producto seleccionado
         private void b_eliminar_Click(object sender, EventArgs e)
         {
             if (id_producto != 0)
@@ -311,6 +323,7 @@ namespace programa1
             }
         }
 
+        //boton de limpieza de textboxs y dropdownlist
         private void b_limpiar_campos_Click(object sender, EventArgs e)
         {
             limpiarTexto();
@@ -365,7 +378,11 @@ namespace programa1
                     {
                         dgv_materia_producto.Rows.Add(datos["ID"].ToString(), datos["descrip"].ToString(), datos["Marca"].ToString(), datos["Costo"].ToString(), 1);
                     }
-                    dgv_materia_prima.Rows.RemoveAt(indice);
+                    //dgv_materia_prima.Rows.RemoveAt(indice);
+
+                    dgv_materia_prima.CurrentCell = null;
+
+                    dgv_materia_prima.Rows[indice].Visible = false;
 
                     datos.Close();
 
@@ -389,7 +406,7 @@ namespace programa1
             
         }
 
-        //tira un error desconocido**
+        //mueve una fila de la tabla de materias de productos a la tabla de materias primas
         private void b_quitar_Click(object sender, EventArgs e)
         {
             int id_materia_producto = 0;
@@ -411,24 +428,18 @@ namespace programa1
                 int indice = dgv_materia_producto.SelectedCells[0].RowIndex;
                 DataGridViewRow fila_seleccionada = dgv_materia_producto.Rows[indice];
                 id_materia_producto = Convert.ToInt32(fila_seleccionada.Cells["id_materia_producto"].Value);
+
                 if (id_materia_producto != 0)
                 {
-                    conexion.Open();
-
-                    SqlCommand comando = new SqlCommand("SELECT Materia_Prima.id_materia_prima AS ID, Materia_Prima.descripcion AS descrip, Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Materia_Prima JOIN Marca ON Materia_Prima.id_marca = Marca.id_marca WHERE Materia_Prima.baja=0 and Materia_Prima.id_materia_prima= @id_materia", conexion);
-                    comando.Parameters.Add("@id_materia", SqlDbType.Int);
-                    comando.Parameters["@id_materia"].Value = id_materia_producto;
-                    SqlDataReader datos = comando.ExecuteReader();
-                    if (datos.Read())
+                    foreach (DataGridViewRow fila in dgv_materia_prima.Rows)
                     {
-                        dgv_materia_prima.Rows.Add(datos["ID"].ToString(), datos["descrip"].ToString(), datos["Marca"].ToString(), datos["Costo"].ToString());
+                        if (Convert.ToInt32(fila.Cells["ID"].Value) == id_materia_producto)
+                        {
+                            fila.Visible = true;
+                            dgv_materia_producto.Rows.RemoveAt(indice);
+                        }
+
                     }
-                    dgv_materia_producto.Rows.RemoveAt(indice);
-
-                    datos.Close();
-
-                    conexion.Close();
-
 
                 }
                 else
@@ -447,14 +458,34 @@ namespace programa1
         }
 
         //espacios primer pestaña
+        private int contador_descripcion = 0;
         private void txt_descripcion_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_descripcion = no_mas_espacios(e, contador_descripcion);
+            if (contador_descripcion > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
 
+        private int contador_precio = 0;
         private void txt_precio_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_precio = no_mas_espacios(e, contador_precio);
+            if (contador_precio > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void txt_precio_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
+        }
+
+        private void txt_descripcion_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
         }
 
 
@@ -736,14 +767,34 @@ namespace programa1
         }
 
         //espacios segunda pestaña
+        private int contador_descripcion2 = 0;
         private void txt_descripcion2_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_descripcion2 = no_mas_espacios(e, contador_descripcion2);
+            if (contador_descripcion2 > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
 
+        private int contador_costo = 0;
         private void txt_costo_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_costo = no_mas_espacios(e, contador_costo);
+            if (contador_costo > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void txt_descripcion2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
+        }
+
+        private void txt_costo_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
         }
 
 
@@ -1242,14 +1293,34 @@ namespace programa1
         }
 
         //espacios tercer pestaña
+        private int contador_marca = 0;
         private void txt_marca_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_marca = no_mas_espacios(e, contador_marca);
+            if (contador_marca > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
         }
 
+        private int contador_categoria = 0;
         private void txt_categoria_KeyDown(object sender, KeyEventArgs e)
         {
-            no_mas_espacios(e);
+            contador_categoria = no_mas_espacios(e, contador_categoria);
+            if (contador_categoria > 1)
+            {
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void txt_marca_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
+        }
+
+        private void txt_categoria_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            no_espacios_al_principio(sender, e);
         }
 
 
@@ -1311,6 +1382,10 @@ namespace programa1
             dgv_materias.ClearSelection();
             dgv_materia_prima.ClearSelection();
         }
+
+
+
+
 
 
     }
