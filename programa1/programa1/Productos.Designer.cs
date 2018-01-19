@@ -128,6 +128,7 @@
             this.b_agregar.TabIndex = 4;
             this.b_agregar.Text = "Agregar";
             this.b_agregar.UseVisualStyleBackColor = true;
+            this.b_agregar.Click += new System.EventHandler(this.b_agregar_Click);
             // 
             // txt_precio
             // 

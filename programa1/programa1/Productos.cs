@@ -457,6 +457,86 @@ namespace programa1
             }
         }
 
+        private void b_agregar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (validacion_copada1() == false)
+                {
+                    return;
+                }
+                conexion.Open();
+                //Antes de agregar un producto se verifica que no haya 2 con el mismo nombre
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Productos WHERE descripcion=@Descripcion", conexion);
+                comando3.Parameters.Add("@Descripcion", SqlDbType.Int);
+                comando3.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                SqlDataReader datos3 = comando3.ExecuteReader();
+                if (datos3.Read())
+                {
+                    MessageBox.Show("Este Producto ya existe.", "Atención");
+                    datos3.Close();
+                    conexion.Close();
+                    return;
+                }
+                
+                //Si el nombre es diferente a todos los productos de la base de datos, se agrega
+                if (clb_simple_compuesto.SelectedIndex == 0)
+                {
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
+                    comando4.Parameters.Add("@Descripcion", SqlDbType.Int);
+                    comando4.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    SqlDataReader datos4 = comando4.ExecuteReader();
+                    if (datos4.Read())
+                    {
+                        string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
+                        SqlCommand comando5 = new SqlCommand(sql2, conexion);
+                        comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                        comando5.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                        comando5.Parameters.Add("@Precio", SqlDbType.VarChar);
+                        comando5.Parameters["@Precio"].Value = txt_precio.Text;
+                        comando5.Parameters.Add("@Categoria", SqlDbType.Int);
+                        comando5.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                        comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                        comando5.Parameters["@Compuesto"].Value = 0; 
+
+                        // aca el otro insert
+                        datos4.Close();
+                        return;
+                    }
+                }
+                else
+                {
+                    string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
+                    SqlCommand comando5 = new SqlCommand(sql2, conexion);
+                    comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando5.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    comando5.Parameters.Add("@Precio", SqlDbType.VarChar);
+                    comando5.Parameters["@Precio"].Value = txt_precio.Text;
+                    comando5.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando5.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                    comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                    comando5.Parameters["@Compuesto"].Value = 0;
+                    comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                    comando5.Parameters["@Compuesto"].Value = 1;
+                    //aca el otro insert
+                    return;
+                }
+
+                comando3.ExecuteNonQuery();
+
+                conexion.Close();
+                cargarGridProductos();
+                limpiarTexto();
+                MessageBox.Show("Se ingresó el dato.", "Atención");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+
+            }
+        }
+
+
         //espacios primer pestaña
         private int contador_descripcion = 0;
         private void txt_descripcion_KeyDown(object sender, KeyEventArgs e)
@@ -1382,10 +1462,6 @@ namespace programa1
             dgv_materias.ClearSelection();
             dgv_materia_prima.ClearSelection();
         }
-
-
-
-
 
 
     }
