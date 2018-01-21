@@ -467,9 +467,12 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar un producto se verifica que no haya 2 con el mismo nombre
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Productos WHERE descripcion=@Descripcion", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Productos WHERE descripcion=@Descripcion and id_categoria=@Categoria", conexion);
                 comando3.Parameters.Add("@Descripcion", SqlDbType.Int);
                 comando3.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                comando3.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                comando3.Parameters.Add("@Compuesto", SqlDbType.Bit);
+
                 SqlDataReader datos3 = comando3.ExecuteReader();
                 if (datos3.Read())
                 {
@@ -482,6 +485,7 @@ namespace programa1
                 //Si el nombre es diferente a todos los productos de la base de datos, se agrega
                 if (clb_simple_compuesto.SelectedIndex == 0)
                 {
+                    // ingreso de un producto simple
                     SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
                     comando4.Parameters.Add("@Descripcion", SqlDbType.Int);
                     comando4.Parameters["@Descripcion"].Value = txt_descripcion.Text;
@@ -497,15 +501,34 @@ namespace programa1
                         comando5.Parameters.Add("@Categoria", SqlDbType.Int);
                         comando5.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
                         comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
-                        comando5.Parameters["@Compuesto"].Value = 0; 
+                        comando5.Parameters["@Compuesto"].Value = 0;
 
+                        comando5.ExecuteNonQuery();
                         // aca el otro insert
                         datos4.Close();
+                        string sql3 = "INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, 1)";
+
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Antes de ingresar un producto simple verifique que exista una materia prima con su misma descripción", "Atención");
+                        datos3.Close();
+                        conexion.Close();
                         return;
                     }
                 }
                 else
                 {
+                    //ingreso de un producto compuesto
+                    if  (dgv_materia_producto.RowCount<2)
+                    {
+                        MessageBox.Show("Un producto compuesto debe poseer al menos 2 materias primas", "Atención");
+                        datos3.Close();
+                        conexion.Close();
+                        return;
+                    }
+
                     string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
                     SqlCommand comando5 = new SqlCommand(sql2, conexion);
                     comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
@@ -518,7 +541,15 @@ namespace programa1
                     comando5.Parameters["@Compuesto"].Value = 0;
                     comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
                     comando5.Parameters["@Compuesto"].Value = 1;
+
+                    comando5.ExecuteNonQuery();
                     //aca el otro insert
+
+                    string sql4 = "INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, 1)";
+
+                    SqlCommand comando6 = new SqlCommand(sql4, conexion);
+                    comando6.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+
                     return;
                 }
 
