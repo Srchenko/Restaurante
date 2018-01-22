@@ -265,7 +265,29 @@ namespace programa1
 
                     else
                     {
-                        datos.Close();
+                        SqlCommand comando2 = new SqlCommand("SELECT * FROM Productos_Materia_Prima WHERE id_producto=@ID ", conexion);
+                        comando.Parameters.Add("@ID", SqlDbType.Int);
+                        comando.Parameters["@ID"].Value = campa;
+                        SqlDataReader datos2 = comando.ExecuteReader();
+
+                        /////**** agregar las materias primas
+                        cargarGridMaterias();
+                        foreach (DataGridViewRow fila in dgv_materia_prima.Rows)
+                        {
+                            int id_materia_prima = Convert.ToInt32(fila.Cells["id_materia_prima"].Value);
+                            foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                            {
+                                if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                                {
+                                    dgv_materia_prima.CurrentCell = null;
+                                    fila2.Visible = false;
+                                    break;
+                                }
+
+                            }
+                        }
+                        //////****
+                        datos2.Close();
                         conexion.Close();
                         clb_simple_compuesto.SetItemChecked(0, false);
                         clb_simple_compuesto.SetItemChecked(1, true);
@@ -496,9 +518,19 @@ namespace programa1
                     comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                     comando4.Parameters["@Descripcion"].Value = txt_descripcion.Text;
                     SqlDataReader datos4 = comando4.ExecuteReader();
+
+
+
                     if (datos4.Read())
                     {
-                        
+                        //validacion de precio
+                        double costo = Convert.ToDouble(datos4["costo"]);
+                        if (Convert.ToDouble(txt_precio.Text) < costo)
+                        {
+                            MessageBox.Show("Procure poner un precio mayor al costo de la materia prima.", "Atención");
+                            datos4.Close();
+                            return;
+                        }
                         int id_materia = Convert.ToInt32(datos4["id_materia_prima"]);
                         datos4.Close();
                         string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
@@ -556,6 +588,20 @@ namespace programa1
                         conexion.Close();
                         return;
                     }
+
+                    //validacion de precio
+                    double costo = 0;
+                    foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                    {
+                        costo = costo + Convert.ToDouble(fila.Cells["costo_materia"].Value)* Convert.ToInt32(fila.Cells["cantidad_materia"].Value);
+
+                    }
+                    if (Convert.ToDouble(txt_precio.Text) < costo)
+                    {
+                        MessageBox.Show("Procure poner un precio mayor al costo de las materias primas.", "Atención");
+                        return;
+                    }
+
                     string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
                     SqlCommand comando10 = new SqlCommand(sql2, conexion);
                     comando10.Parameters.Add("@Descripcion", SqlDbType.VarChar);
