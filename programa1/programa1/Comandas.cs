@@ -463,12 +463,12 @@ namespace programa1
             {
                 Console.WriteLine(Exception.Message);
             }
-            //if (tabla_vacia == false)
-            //{
-            //    dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
-            //    Exportar_Excel();
-            //    MessageBox.Show("Comanda finalizada. Se creará un archivo de Excel en el escritorio para que usted pueda verla completa.", "Atención");
-            //}
+            if (tabla_vacia == false)
+            {
+                dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
+                Exportar_Excel();
+                MessageBox.Show("Comanda finalizada. Se creará un archivo de Excel en el escritorio para que usted pueda verla completa.", "Atención");
+            }
 
             Principal padre = this.MdiParent as Principal;
             padre.cambiar_color_boton();
@@ -669,7 +669,7 @@ namespace programa1
                 total = segundos + (minutos * 60) + (horas * 3600);
 
                 //se guarda en el escritorio como el nombre de comanda más la fecha y horario para que sea un archivo diferente a los demas... y luego se cierra excel
-                workbook.SaveAs("C:\\Users\\Srchenko\\Desktop\\Comanda" + DateTime.Now.ToString("ddMMyyyy") + total.ToString() + ".xlsx");
+                workbook.SaveAs("C:\\Users\\Seba\\Desktop\\Comanda" + DateTime.Now.ToString("ddMMyyyy") + total.ToString() + ".xlsx");
                 workbook.Close();
                 excel.Quit();
             }
