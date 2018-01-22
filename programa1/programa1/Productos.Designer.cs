@@ -687,7 +687,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Productos";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Productos_FormClosed);
-            this.Load += new System.EventHandler(this.Mesas_Load);
+            this.Load += new System.EventHandler(this.Productos_Load);
             this.Shown += new System.EventHandler(this.Productos_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_prima)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_materia_producto)).EndInit();

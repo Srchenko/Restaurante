@@ -97,7 +97,6 @@ namespace programa1
         {
             txt_descripcion.Text = "";
             txt_precio.Text = "";
-            clb_simple_compuesto.SetItemChecked(0, true);
             id_producto = 0;
             dgv_materia_prima.ClearSelection();
             dgv_materia_producto.ClearSelection();
@@ -109,7 +108,7 @@ namespace programa1
             dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Rows.Clear();
             dgv_materia_producto.Enabled = false;
-            clb_simple_compuesto.ClearSelected();
+            clb_simple_compuesto.SelectedIndex = 0;
         }
 
         //validacion de datos
@@ -357,6 +356,12 @@ namespace programa1
                     return;
                 }
 
+                if (dgv_materia_producto.Rows.Count > 19)
+                {
+                    MessageBox.Show("Este producto ya posee demasiada materia prima", "Atención");
+                    return;
+                }
+
                 if (rowselected_materia_prima == false)
                 {
                     MessageBox.Show("Seleccione una fila.", "Atención");
@@ -437,6 +442,7 @@ namespace programa1
                         {
                             fila.Visible = true;
                             dgv_materia_producto.Rows.RemoveAt(indice);
+                            break;
                         }
 
                     }
@@ -466,12 +472,12 @@ namespace programa1
                     return;
                 }
                 conexion.Open();
-                //Antes de agregar un producto se verifica que no haya 2 con el mismo nombre
+                //Antes de agregar un producto se verifica que no haya 2 con el mismo nombre y misma categoria
                 SqlCommand comando3 = new SqlCommand("SELECT * FROM Productos WHERE descripcion=@Descripcion and id_categoria=@Categoria", conexion);
-                comando3.Parameters.Add("@Descripcion", SqlDbType.Int);
+                comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                 comando3.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                comando3.Parameters.Add("@Categoria", SqlDbType.Int);
                 comando3.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
-                comando3.Parameters.Add("@Compuesto", SqlDbType.Bit);
 
                 SqlDataReader datos3 = comando3.ExecuteReader();
                 if (datos3.Read())
@@ -481,22 +487,25 @@ namespace programa1
                     conexion.Close();
                     return;
                 }
-                
+                datos3.Close();
                 //Si el nombre es diferente a todos los productos de la base de datos, se agrega
                 if (clb_simple_compuesto.SelectedIndex == 0)
                 {
                     // ingreso de un producto simple
                     SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
-                    comando4.Parameters.Add("@Descripcion", SqlDbType.Int);
+                    comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                     comando4.Parameters["@Descripcion"].Value = txt_descripcion.Text;
                     SqlDataReader datos4 = comando4.ExecuteReader();
                     if (datos4.Read())
                     {
+                        
+                        int id_materia = Convert.ToInt32(datos4["id_materia_prima"]);
+                        datos4.Close();
                         string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
                         SqlCommand comando5 = new SqlCommand(sql2, conexion);
                         comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                         comando5.Parameters["@Descripcion"].Value = txt_descripcion.Text;
-                        comando5.Parameters.Add("@Precio", SqlDbType.VarChar);
+                        comando5.Parameters.Add("@Precio", SqlDbType.Float);
                         comando5.Parameters["@Precio"].Value = txt_precio.Text;
                         comando5.Parameters.Add("@Categoria", SqlDbType.Int);
                         comando5.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
@@ -504,16 +513,36 @@ namespace programa1
                         comando5.Parameters["@Compuesto"].Value = 0;
 
                         comando5.ExecuteNonQuery();
-                        // aca el otro insert
-                        datos4.Close();
-                        string sql3 = "INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, 1)";
+                        
 
-                        return;
+                        //ingreso las id de materia y producto en la tabla de union
+                        SqlCommand comando6 = new SqlCommand("SELECT id_producto FROM Productos WHERE descripcion=@Descripcion and id_categoria=@Categoria", conexion);
+                        comando6.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                        comando6.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                        comando6.Parameters.Add("@Categoria", SqlDbType.Int);
+                        comando6.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                        SqlDataReader datos6 = comando6.ExecuteReader();
+
+                        if (datos6.Read())
+                        {
+                            int id_producto2= Convert.ToInt32(datos6["id_producto"]);
+                            datos6.Close();
+                            SqlCommand comando7 = new SqlCommand("INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, 1)", conexion);
+                            
+                            comando7.Parameters.Add("@Id_Materia_Prima", SqlDbType.Int);
+                            comando7.Parameters["@Id_Materia_Prima"].Value = id_materia;
+                            comando7.Parameters.Add("@Id_Producto", SqlDbType.Int);
+                            comando7.Parameters["@Id_Producto"].Value = id_producto2;
+
+                            comando7.ExecuteNonQuery();
+                            
+                        }
+                        datos6.Close();
                     }
                     else
                     {
                         MessageBox.Show("Antes de ingresar un producto simple verifique que exista una materia prima con su misma descripción", "Atención");
-                        datos3.Close();
+                        datos4.Close();
                         conexion.Close();
                         return;
                     }
@@ -524,36 +553,54 @@ namespace programa1
                     if  (dgv_materia_producto.RowCount<2)
                     {
                         MessageBox.Show("Un producto compuesto debe poseer al menos 2 materias primas", "Atención");
-                        datos3.Close();
                         conexion.Close();
                         return;
                     }
-
                     string sql2 = "INSERT INTO Productos(descripcion, precio, id_categoria, compuesto, baja) VALUES (@Descripcion,@Precio,@Categoria,@Compuesto,0)";
-                    SqlCommand comando5 = new SqlCommand(sql2, conexion);
-                    comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
-                    comando5.Parameters["@Descripcion"].Value = txt_descripcion.Text;
-                    comando5.Parameters.Add("@Precio", SqlDbType.VarChar);
-                    comando5.Parameters["@Precio"].Value = txt_precio.Text;
-                    comando5.Parameters.Add("@Categoria", SqlDbType.Int);
-                    comando5.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
-                    comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
-                    comando5.Parameters["@Compuesto"].Value = 0;
-                    comando5.Parameters.Add("@Compuesto", SqlDbType.Bit);
-                    comando5.Parameters["@Compuesto"].Value = 1;
+                    SqlCommand comando10 = new SqlCommand(sql2, conexion);
+                    comando10.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando10.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    comando10.Parameters.Add("@Precio", SqlDbType.Float);
+                    comando10.Parameters["@Precio"].Value = txt_precio.Text;
+                    comando10.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando10.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                    comando10.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                    comando10.Parameters["@Compuesto"].Value = 1;
+                    comando10.ExecuteNonQuery();
 
-                    comando5.ExecuteNonQuery();
-                    //aca el otro insert
+                    //ingreso las id de materia y producto en la tabla de union
+                    SqlCommand comando11 = new SqlCommand("SELECT id_producto FROM Productos WHERE descripcion=@Descripcion and id_categoria=@Categoria", conexion);
+                    comando11.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando11.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    comando11.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando11.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                    SqlDataReader datos10 = comando11.ExecuteReader();
 
-                    string sql4 = "INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, 1)";
+                    if (datos10.Read())
+                    {
+                        int id_producto2 = Convert.ToInt32(datos10["id_producto"]);
+                        datos10.Close();
+                        foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                        {
+                            int id_materia2 = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                            int cantidad = Convert.ToInt32(fila.Cells["cantidad_materia"].Value);
 
-                    SqlCommand comando6 = new SqlCommand(sql4, conexion);
-                    comando6.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                            SqlCommand comando12 = new SqlCommand("INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, @Cantidad)", conexion);
 
-                    return;
+                            comando12.Parameters.Add("@Id_Materia_Prima", SqlDbType.Int);
+                            comando12.Parameters["@Id_Materia_Prima"].Value = id_materia2;
+                            comando12.Parameters.Add("@Id_Producto", SqlDbType.Int);
+                            comando12.Parameters["@Id_Producto"].Value = id_producto2;
+                            comando12.Parameters.Add("@Cantidad", SqlDbType.Int);
+                            comando12.Parameters["@Cantidad"].Value = cantidad;
+                            comando12.ExecuteNonQuery();
+
+                        }
+
+
+                    }
+                    datos10.Close();
                 }
-
-                comando3.ExecuteNonQuery();
 
                 conexion.Close();
                 cargarGridProductos();
@@ -776,8 +823,27 @@ namespace programa1
                 comando.ExecuteNonQuery();
 
                 conexion.Close();
+
+                if (clb_simple_compuesto.SelectedIndex == 1)
+                {
+                    cargarGridMaterias();
+                    foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                    {
+                        int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                        foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                        {
+                            if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                            {
+                                dgv_materia_prima.CurrentCell = null;
+                                fila2.Visible = false;
+                                break;
+                            }
+
+                        }
+                    }
+                    
+                }
                 cargarGridMateriasPrimas();
-                cargarGridMaterias();
                 limpiarTexto2();
                 MessageBox.Show("Se ingresó el dato.", "Atención");
             }
@@ -1446,24 +1512,13 @@ namespace programa1
             cargarListaMarcas();
             b_agregarmateria.Enabled = false;
             b_quitar.Enabled = false;
-            dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Enabled = false;
-
-            clb_simple_compuesto.SetItemChecked(0, true);
-            b_agregarmateria.Enabled = false;
-            b_quitar.Enabled = false;
+            clb_simple_compuesto.SelectedIndex = 0;
+            dgv_materia_prima.Enabled = false;
             dgv_materia_prima.DataSource = null;
-            dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Rows.Clear();
-            dgv_materia_producto.Enabled = false;
 
             
-
-        }
-
-        //no tocar, rompe diseño
-        private void Mesas_Load(object sender, EventArgs e)
-        {
 
         }
 
@@ -1494,6 +1549,9 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
         }
 
-
+        private void Productos_Load(object sender, EventArgs e)
+        {
+            clb_simple_compuesto.SetItemCheckState(0, CheckState.Checked);
+        }
     }
 }
