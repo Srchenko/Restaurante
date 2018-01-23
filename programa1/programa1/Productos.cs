@@ -819,6 +819,21 @@ namespace programa1
                 {
                     try
                     {
+                        conexion.Open();
+                        //Antes de eliminar verifica que no se esté usando la materia prima para evitar que un producto quede con una materia prima eliminada
+                        SqlCommand comando4 = new SqlCommand("SELECT * FROM Productos_Materia_Prima WHERE id_materia_prima=@ID", conexion);
+                        comando4.Parameters.Add("@ID", SqlDbType.Int);
+                        comando4.Parameters["@ID"].Value = id_materia_prima;
+                        SqlDataReader datos4 = comando4.ExecuteReader();
+                        if (datos4.Read())
+                        {
+                            MessageBox.Show("No se puede eliminar una materia prima en uso.", "Atención");
+                            datos4.Close();
+                            conexion.Close();
+                            return;
+                        }
+                        datos4.Close();
+
                         //las materias primas eliminadas siguen estando en la tabla de la base de datos, pero no se muestran como activos
                         conexion.Open();
                         string sql = "UPDATE Materia_Prima SET baja=1 WHERE id_materia_prima=@ID";
@@ -1238,6 +1253,20 @@ namespace programa1
                 {
                     try
                     {
+                        conexion.Open();
+                        //Antes de eliminar verifica que no se esté usando la marca para evitar que una materia prima quede con una marca eliminada
+                        SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_marca=@ID and baja=0", conexion);
+                        comando4.Parameters.Add("@ID", SqlDbType.Int);
+                        comando4.Parameters["@ID"].Value = id_marca;
+                        SqlDataReader datos4 = comando4.ExecuteReader();
+                        if (datos4.Read())
+                        {
+                            MessageBox.Show("No se puede eliminar una marca en uso.", "Atención");
+                            datos4.Close();
+                            conexion.Close();
+                            return;
+                        }
+                        datos4.Close();
                         //las marcas eliminados siguen estando en la tabla de la base de datos, pero no se muestran como activos
                         conexion.Open();
                         string sql = "UPDATE Marca SET baja=1 WHERE id_marca=@ID";
@@ -1489,6 +1518,21 @@ namespace programa1
                 {
                     try
                     {
+                        conexion.Open();
+                        //Antes de eliminar verifica que no se esté usando la categoría para evitar que un producto quede con una categoria eliminada
+                        SqlCommand comando4 = new SqlCommand("SELECT * FROM Productos WHERE id_categoria=@ID and baja=0", conexion);
+                        comando4.Parameters.Add("@ID", SqlDbType.Int);
+                        comando4.Parameters["@ID"].Value = id_categoria;
+                        SqlDataReader datos4 = comando4.ExecuteReader();
+                        if (datos4.Read())
+                        {
+                            MessageBox.Show("No se puede eliminar una categoría en uso.", "Atención");
+                            datos4.Close();
+                            conexion.Close();
+                            return;
+                        }
+                        datos4.Close();
+
                         //las marcas eliminados siguen estando en la tabla de la base de datos, pero no se muestran como activos
                         conexion.Open();
                         string sql = "UPDATE Categoria SET baja=1 WHERE id_categoria=@ID";
