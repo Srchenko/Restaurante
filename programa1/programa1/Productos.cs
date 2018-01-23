@@ -36,7 +36,6 @@ namespace programa1
         }
 
         //evita que ponga 2 espacios seguidos 
-        private int contador_general = 0;
         private int no_mas_espacios(KeyEventArgs e, int contador_general)
         {
             if (e.KeyCode == Keys.Space)
@@ -77,13 +76,17 @@ namespace programa1
             {
                 //se carga una grilla con todos los datos posibles de una tabla en particular de una base de datos
                 conexion.Open();
-                string sql = "SELECT Productos.id_producto AS ID, Productos.descripcion AS Descripción, Productos.id_categoria AS Categoría, Productos.precio AS Precio, Productos.compuesto AS Compuesto FROM Productos JOIN Categoria ON Productos.id_categoria = Categoria.id_categoria WHERE Productos.baja=0";
+                string sql = "SELECT Productos.id_producto AS ID, Productos.descripcion AS Descripción, Categoria.nombre_categoria AS Categoría, Productos.precio AS Precio, Productos.compuesto AS Compuesto FROM Productos JOIN Categoria ON Productos.id_categoria = Categoria.id_categoria WHERE Productos.baja=0";
                 DataTable lista = new DataTable("lista");
                 SqlCommand comando = new SqlCommand(sql, conexion);
                 SqlDataAdapter sqldat = new SqlDataAdapter(comando);
                 sqldat.Fill(lista);
                 this.dgv_productos.DataSource = lista;
                 dgv_productos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                foreach (DataGridViewColumn column in dgv_productos.Columns)
+                {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -101,6 +104,8 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
             dgv_materia_producto.ClearSelection();
             dgv_productos.ClearSelection();
+            clb_simple_compuesto.SetItemChecked(0, true);
+            clb_simple_compuesto.SetItemChecked(1, false);
             cb_categoria.SelectedValue = 1;
             b_agregarmateria.Enabled = false;
             b_quitar.Enabled = false;
@@ -108,7 +113,7 @@ namespace programa1
             dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Rows.Clear();
             dgv_materia_producto.Enabled = false;
-            clb_simple_compuesto.SelectedIndex = 0;
+            
         }
 
         //validacion de datos
@@ -184,6 +189,10 @@ namespace programa1
                 this.dgv_materia_prima.DataSource = lista;
                 dgv_materia_prima.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 dgv_materia_prima.Columns["ID"].Visible = false;
+                foreach (DataGridViewColumn column in dgv_materia_prima.Columns)
+                {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -255,47 +264,54 @@ namespace programa1
                         conexion.Close();
                         clb_simple_compuesto.SetItemChecked(0, true);
                         clb_simple_compuesto.SetItemChecked(1, false);
-                        b_agregarmateria.Enabled = false;
-                        b_quitar.Enabled = false;
-                        dgv_materia_prima.DataSource = null;
-                        dgv_materia_prima.Enabled = false;
-                        dgv_materia_producto.Rows.Clear();
-                        dgv_materia_producto.Enabled = false;
                     }
 
                     else
                     {
-                        SqlCommand comando2 = new SqlCommand("SELECT * FROM Productos_Materia_Prima WHERE id_producto=@ID ", conexion);
-                        comando.Parameters.Add("@ID", SqlDbType.Int);
-                        comando.Parameters["@ID"].Value = campa;
-                        SqlDataReader datos2 = comando.ExecuteReader();
-
-                        /////**** agregar las materias primas
-                        cargarGridMaterias();
-                        foreach (DataGridViewRow fila in dgv_materia_prima.Rows)
-                        {
-                            int id_materia_prima = Convert.ToInt32(fila.Cells["id_materia_prima"].Value);
-                            foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
-                            {
-                                if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
-                                {
-                                    dgv_materia_prima.CurrentCell = null;
-                                    fila2.Visible = false;
-                                    break;
-                                }
-
-                            }
-                        }
-                        //////****
-                        datos2.Close();
+                        datos.Close();
                         conexion.Close();
                         clb_simple_compuesto.SetItemChecked(0, false);
                         clb_simple_compuesto.SetItemChecked(1, true);
+                        b_agregarmateria.Enabled = true;
+                        b_quitar.Enabled = true;
+                        dgv_materia_prima.Enabled = true;
+                        dgv_materia_producto.Enabled = true;
+                        cargarGridMaterias();
+                        dgv_materia_producto.Rows.Clear();
+                        conexion.Open();
+                        SqlCommand comando2 = new SqlCommand("SELECT Productos_Materia_Prima.id_materia_prima AS ID, Productos_Materia_Prima.cantidad AS cant, Materia_Prima.descripcion AS descrip, Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Productos_Materia_Prima JOIN Materia_Prima ON Materia_Prima.id_materia_prima = Productos_Materia_Prima.id_materia_prima JOIN Marca ON Materia_Prima.id_marca= Marca.id_marca WHERE Productos_Materia_Prima.id_producto=@ID ", conexion);
+                        comando2.Parameters.Add("@ID", SqlDbType.Int);
+                        comando2.Parameters["@ID"].Value = campa;
+                        SqlDataReader datos2 = comando2.ExecuteReader();
+
+                        while (datos2.Read())
+                        {
+                            int id_materia = Convert.ToInt32(datos2["ID"]);
+                            int cantidad = Convert.ToInt32(datos2["cant"]);
+
+                            dgv_materia_producto.Rows.Add(id_materia, datos2["descrip"].ToString(), datos2["Marca"].ToString(), datos2["Costo"].ToString(), cantidad);
+
+                            foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                            {
+                                int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                                foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                                {
+                                    if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                                    {
+                                        dgv_materia_prima.CurrentCell = null;
+                                        fila2.Visible = false;
+                                        break;
+                                    }
+
+                                }
+                            }
+
+                        }
+                        dgv_materia_producto.ClearSelection();
+                        datos2.Close();
                     }
-                    
                 }
                 datos.Close();
-
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -405,7 +421,6 @@ namespace programa1
                     {
                         dgv_materia_producto.Rows.Add(datos["ID"].ToString(), datos["descrip"].ToString(), datos["Marca"].ToString(), datos["Costo"].ToString(), 1);
                     }
-                    //dgv_materia_prima.Rows.RemoveAt(indice);
 
                     dgv_materia_prima.CurrentCell = null;
 
@@ -525,10 +540,11 @@ namespace programa1
                     {
                         //validacion de precio
                         double costo = Convert.ToDouble(datos4["costo"]);
-                        if (Convert.ToDouble(txt_precio.Text) < costo)
+                        if (Convert.ToDouble(txt_precio.Text) <= costo)
                         {
                             MessageBox.Show("Procure poner un precio mayor al costo de la materia prima.", "Atención");
                             datos4.Close();
+                            conexion.Close();
                             return;
                         }
                         int id_materia = Convert.ToInt32(datos4["id_materia_prima"]);
@@ -596,9 +612,10 @@ namespace programa1
                         costo = costo + Convert.ToDouble(fila.Cells["costo_materia"].Value)* Convert.ToInt32(fila.Cells["cantidad_materia"].Value);
 
                     }
-                    if (Convert.ToDouble(txt_precio.Text) < costo)
+                    if (Convert.ToDouble(txt_precio.Text) <= costo)
                     {
                         MessageBox.Show("Procure poner un precio mayor al costo de las materias primas.", "Atención");
+                        conexion.Close();
                         return;
                     }
 
@@ -750,6 +767,10 @@ namespace programa1
                 sqldat.Fill(lista);
                 this.dgv_materias.DataSource = lista;
                 dgv_materias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                foreach (DataGridViewColumn column in dgv_materias.Columns)
+                {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -1070,6 +1091,10 @@ namespace programa1
                 sqldat.Fill(lista);
                 this.dgv_marca.DataSource = lista;
                 dgv_marca.AutoSizeColumnsMode=DataGridViewAutoSizeColumnsMode.Fill;
+                foreach (DataGridViewColumn column in dgv_marca.Columns)
+                {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
@@ -1318,6 +1343,10 @@ namespace programa1
                 sqldat.Fill(lista);
                 this.dgv_categoria.DataSource = lista;
                 dgv_categoria.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                foreach (DataGridViewColumn column in dgv_categoria.Columns)
+                {
+                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 conexion.Close();
             }
             catch (AccessViolationException Exception)
