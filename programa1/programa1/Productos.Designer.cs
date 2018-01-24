@@ -119,6 +119,7 @@
             this.b_modificar.TabIndex = 5;
             this.b_modificar.Text = "Modificar";
             this.b_modificar.UseVisualStyleBackColor = true;
+            this.b_modificar.Click += new System.EventHandler(this.b_modificar_Click);
             // 
             // b_agregar
             // 

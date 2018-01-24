@@ -677,6 +677,117 @@ namespace programa1
             }
         }
 
+        private void b_modificar_Click(object sender, EventArgs e)
+        {
+            if (id_producto != 0)
+            {
+
+                try
+                {
+                    if (validacion_copada1() == false)
+                    {
+                        return;
+                    }
+
+                    conexion.Open();
+                    //al modificar el producto se verifica que no exista ya
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Producto WHERE id_producto<>@ID and descripcion=@Descripcion and id_categoria=@Categoria", conexion);
+                    comando4.Parameters.Add("@ID", SqlDbType.Int);
+                    comando4.Parameters["@ID"].Value = id_producto;
+                    comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando4.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    comando4.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando4.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                    SqlDataReader datos4 = comando4.ExecuteReader();
+                    if (datos4.Read())
+                    {
+                        MessageBox.Show("Este Producto ya existe.", "Atención");
+                        datos4.Close();
+                        conexion.Close();
+                        return;
+                    }
+
+                    //se verifica que de ser compuesto no debe poseer una sola materia prima
+                    if (clb_simple_compuesto.SelectedIndex == 1)
+                    {
+                        if (dgv_materia_producto.RowCount < 2)
+                        {
+                            MessageBox.Show("Un producto compuesto debe poseer al menos 2 materias primas", "Atención");
+                            datos4.Close();
+                            conexion.Close();
+                            return;
+                        }
+                    }
+
+                    //si la descripcion y categoria estan bien, se modifica el producto
+                    string sql = "UPDATE Producto SET descripcion=@Descripcion, precio=@Precio, id_categoria=@Categoria WHERE id_producto=@ID";
+                    SqlCommand comando = new SqlCommand(sql, conexion);
+                    comando.Parameters.Add("@ID", SqlDbType.Int);
+                    comando.Parameters["@ID"].Value = id_producto;
+                    comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    comando.Parameters.Add("@Precio", SqlDbType.Float);
+                    comando.Parameters["@Precio"].Value = txt_precio.Text;
+                    comando.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+
+                    //si es simple se setea en 0
+                    if (clb_simple_compuesto.SelectedIndex == 0)
+                    {
+                        comando.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                        comando.Parameters["@Compuesto"].Value = 0;
+                        comando.ExecuteNonQuery();
+                        datos4.Close();
+
+                    }
+                    else
+                    {
+                        comando.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                        comando.Parameters["@Compuesto"].Value = 1;
+                        comando.ExecuteNonQuery();
+                        datos4.Close();
+
+                        //borro todas las uniones de ese producto
+                        SqlCommand comando2 = new SqlCommand("DELETE FROM Productos_Materia_Prima WHERE id_producto=@Id_producto", conexion);
+                        comando2.Parameters.Add("@Id_producto", SqlDbType.Int);
+                        comando2.Parameters["@Id_producto"].Value = id_producto;
+
+                        //agrego las nuevas uniones, o las mismas en caso de no haber modificacion
+                        foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                        {
+                            int id_materia = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                            int cantidad = Convert.ToInt32(fila.Cells["cantidad_materia"].Value);
+
+                            SqlCommand comando12 = new SqlCommand("INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, @Cantidad)", conexion);
+
+                            comando12.Parameters.Add("@Id_Materia_Prima", SqlDbType.Int);
+                            comando12.Parameters["@Id_Materia_Prima"].Value = id_materia;
+                            comando12.Parameters.Add("@Id_Producto", SqlDbType.Int);
+                            comando12.Parameters["@Id_Producto"].Value = id_producto;
+                            comando12.Parameters.Add("@Cantidad", SqlDbType.Int);
+                            comando12.Parameters["@Cantidad"].Value = cantidad;
+                            comando12.ExecuteNonQuery();
+
+                        }
+
+                    }         
+                    datos4.Close();
+                    comando.ExecuteNonQuery();
+                    conexion.Close();
+                    cargarGridProductos();
+                    MessageBox.Show("Se modificó el dato.", "Atención");
+                    limpiarTexto();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una fila.", "Atención");
+            }
+        }
 
         //espacios primer pestaña
         private int contador_descripcion = 0;
@@ -810,6 +921,7 @@ namespace programa1
             }
         }
 
+        //eliminar materia prima
         private void b_eliminar2_Click(object sender, EventArgs e)
         {
             if (id_materia_prima != 0)
@@ -1672,5 +1784,7 @@ namespace programa1
         {
             clb_simple_compuesto.SetItemCheckState(0, CheckState.Checked);
         }
+
+
     }
 }
