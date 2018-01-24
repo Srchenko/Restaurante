@@ -64,11 +64,10 @@ namespace programa1
         }
 
 
+
         //primera pestaña
 
         int id_producto = 0;
-        
-
         //carga dgv de productos
         private void cargarGridProductos()
         {
@@ -365,7 +364,6 @@ namespace programa1
         {
             limpiarTexto();
         }
-
 
         //variable bandera para que no se tome la primer fila del dgv automaticamente
         bool rowselected_materia_prima = false;
@@ -821,13 +819,9 @@ namespace programa1
         }
 
 
-
-
-
         //segunda pestaña
 
         int id_materia_prima = 0;
-
         // validacion de datos
         private bool validacion_copada2()
         {
@@ -1172,7 +1166,6 @@ namespace programa1
         //tercera pestaña / marcas
 
         int id_marca = 0;
-
         // validacion de datos 
         private bool validacion_copada3()
         {
@@ -1433,7 +1426,6 @@ namespace programa1
                 Console.WriteLine(Exception.Message);
             }
         }
-
 
 
         //tercera pestaña / categorias
