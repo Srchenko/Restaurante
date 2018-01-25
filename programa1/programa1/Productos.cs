@@ -217,6 +217,20 @@ namespace programa1
                     clb_simple_compuesto.SetItemChecked(checkedItemIndex, false);
                     clb_simple_compuesto.ItemCheck += clb_simple_compuesto_ItemCheck;
                 }
+                foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                {
+                    int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                    foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                    {
+                        if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                        {
+                            dgv_materia_prima.CurrentCell = null;
+                            fila2.Visible = false;
+                            break;
+                        }
+
+                    }
+                }
 
             }
 
@@ -236,13 +250,35 @@ namespace programa1
                 dgv_materia_prima.Enabled = true;
                 cargarGridMaterias();
                 dgv_materia_producto.Enabled = true;
+                foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                {
+                    int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                    foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                    {
+                        if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                        {
+                            dgv_materia_prima.CurrentCell = null;
+                            fila2.Visible = false;
+                            break;
+                        }
+
+                    }
+                }
             }
         }
 
         private void dgv_productos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
-            {
+            {     
+                
+                b_agregarmateria.Enabled = false;
+                b_quitar.Enabled = false;
+                dgv_materia_producto.Enabled = false;
+                dgv_materia_prima.Enabled = false;
+                clb_simple_compuesto.ClearSelected();
+                dgv_materia_prima.DataSource = null;
+                dgv_materia_producto.Rows.Clear();
                 //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los productos
                 int campa = Convert.ToInt32(this.dgv_productos.CurrentRow.Cells["ID"].Value);
                 conexion.Open();
@@ -261,14 +297,22 @@ namespace programa1
                     {
                         datos.Close();
                         conexion.Close();
+                        clb_simple_compuesto.SelectedIndex = 0;
                         clb_simple_compuesto.SetItemChecked(0, true);
                         clb_simple_compuesto.SetItemChecked(1, false);
+                        b_agregarmateria.Enabled = false;
+                        b_quitar.Enabled = false;
+                        dgv_materia_producto.Enabled = false;
+                        dgv_materia_prima.Enabled = false;
+                        dgv_materia_prima.DataSource = null;
+                        dgv_materia_producto.Rows.Clear();
                     }
 
                     else
                     {
                         datos.Close();
                         conexion.Close();
+                        clb_simple_compuesto.SelectedIndex = 1;
                         clb_simple_compuesto.SetItemChecked(0, false);
                         clb_simple_compuesto.SetItemChecked(1, true);
                         b_agregarmateria.Enabled = true;
@@ -532,8 +576,6 @@ namespace programa1
                     comando4.Parameters["@Descripcion"].Value = txt_descripcion.Text;
                     SqlDataReader datos4 = comando4.ExecuteReader();
 
-
-
                     if (datos4.Read())
                     {
                         //validacion de precio
@@ -689,7 +731,7 @@ namespace programa1
 
                     conexion.Open();
                     //al modificar el producto se verifica que no exista ya
-                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Producto WHERE id_producto<>@ID and descripcion=@Descripcion and id_categoria=@Categoria", conexion);
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Productos WHERE id_producto<>@ID and descripcion=@Descripcion and id_categoria=@Categoria and baja=0", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
                     comando4.Parameters["@ID"].Value = id_producto;
                     comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
@@ -704,52 +746,159 @@ namespace programa1
                         conexion.Close();
                         return;
                     }
-
+                    datos4.Close();
                     //se verifica que de ser compuesto no debe poseer una sola materia prima
                     if (clb_simple_compuesto.SelectedIndex == 1)
                     {
                         if (dgv_materia_producto.RowCount < 2)
                         {
                             MessageBox.Show("Un producto compuesto debe poseer al menos 2 materias primas", "Atención");
-                            datos4.Close();
                             conexion.Close();
                             return;
                         }
                     }
 
+                    //busco el tipo de producto que estoy por modificar
+                    SqlCommand comando5 = new SqlCommand("SELECT compuesto FROM Productos WHERE id_producto=@ID and descripcion=@Descripcion and id_categoria=@Categoria and baja=0", conexion);
+                    comando5.Parameters.Add("@ID", SqlDbType.Int);
+                    comando5.Parameters["@ID"].Value = id_producto;
+                    comando5.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                    comando5.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                    comando5.Parameters.Add("@Categoria", SqlDbType.Int);
+                    comando5.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                    SqlDataReader datos5 = comando5.ExecuteReader();
+                    int compuesto = 0;
+                    if (datos5.Read())
+                    {
+                        compuesto = Convert.ToInt32(datos5["compuesto"]);
+                    }
+
+                    datos5.Close();
                     //si la descripcion y categoria estan bien, se modifica el producto
-                    string sql = "UPDATE Producto SET descripcion=@Descripcion, precio=@Precio, id_categoria=@Categoria WHERE id_producto=@ID";
-                    SqlCommand comando = new SqlCommand(sql, conexion);
-                    comando.Parameters.Add("@ID", SqlDbType.Int);
-                    comando.Parameters["@ID"].Value = id_producto;
-                    comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
-                    comando.Parameters["@Descripcion"].Value = txt_descripcion.Text;
-                    comando.Parameters.Add("@Precio", SqlDbType.Float);
-                    comando.Parameters["@Precio"].Value = txt_precio.Text;
-                    comando.Parameters.Add("@Categoria", SqlDbType.Int);
-                    comando.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+
 
                     //si es simple se setea en 0
                     if (clb_simple_compuesto.SelectedIndex == 0)
                     {
+                        SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion and baja=0", conexion);
+                        comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                        comando3.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                        SqlDataReader datos3 = comando3.ExecuteReader();
+                        if (!datos3.Read())
+                        {
+                            MessageBox.Show("No existe la materia prima con esa descripción", "Atención");
+                            datos3.Close();
+                            conexion.Close();
+                            return;
+                        }
+                        datos3.Close();
+
+                        SqlCommand comando8 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion and baja=0", conexion);
+                        comando8.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                        comando8.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                        SqlDataReader datos8 = comando8.ExecuteReader();
+
+                        //validacion de precio
+                        double costo = 0;
+                        if (datos8.Read())
+                        {
+                            costo = Convert.ToDouble(datos8["costo"]);
+                        }    
+
+                        if (Convert.ToDouble(txt_precio.Text) <= costo)
+                        {
+                            MessageBox.Show("Procure poner un precio mayor al costo de la materia prima.", "Atención");
+                            datos8.Close();
+                            conexion.Close();
+                            return;
+                        }
+                        datos8.Close();
+
+                        if (compuesto == 0)
+                        {
+                            SqlCommand comando2 = new SqlCommand("SELECT id_materia_prima FROM Materia_Prima WHERE descripcion=@Descripcion and baja=0", conexion);
+
+                            comando2.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                            comando2.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                            SqlDataReader datos2 = comando2.ExecuteReader();
+                            if (datos2.Read())
+                            {
+                                int id_materia_prima = Convert.ToInt32(datos2["id_materia_prima"]);
+                                datos2.Close();
+
+                                string sql5 = "UPDATE Productos_Materia_Prima SET id_materia_prima=@Id_materia WHERE id_producto=@ID ";
+                                SqlCommand comando6 = new SqlCommand(sql5, conexion);
+                                comando6.Parameters.Add("@ID", SqlDbType.Int);
+                                comando6.Parameters["@ID"].Value = id_producto;
+                                comando6.Parameters.Add("@Id_materia", SqlDbType.Int);
+                                comando6.Parameters["@Id_materia"].Value = id_materia_prima;
+
+                                comando6.ExecuteNonQuery();
+                            }
+                            datos2.Close();
+                        }
+                        else
+                        {
+                            //borro todas las uniones de ese producto
+                            SqlCommand comando2 = new SqlCommand("DELETE FROM Productos_Materia_Prima WHERE id_producto=@Id_producto", conexion);
+                            comando2.Parameters.Add("@Id_producto", SqlDbType.Int);
+                            comando2.Parameters["@Id_producto"].Value = id_producto;
+                            comando2.ExecuteNonQuery();
+
+                            SqlCommand comando7 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
+                            comando7.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                            comando7.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                            SqlDataReader datos7 = comando7.ExecuteReader();
+                            if (datos7.Read())
+                            {
+                                int id_materia = Convert.ToInt32(datos7["id_materia_prima"]);
+                                datos7.Close();
+                                SqlCommand comando9 = new SqlCommand("INSERT INTO Productos_Materia_Prima(id_producto, id_materia_prima, cantidad) VALUES (@Id_Producto, @Id_Materia_Prima, 1)", conexion);
+                                comando9.Parameters.Add("@Id_Materia_Prima", SqlDbType.Int);
+                                comando9.Parameters["@Id_Materia_Prima"].Value = id_materia;
+                                comando9.Parameters.Add("@Id_Producto", SqlDbType.Int);
+                                comando9.Parameters["@Id_Producto"].Value = id_producto;
+                                comando9.ExecuteNonQuery();
+                                
+                            }
+                            datos7.Close();                            
+
+                        }
+                        string sql = "UPDATE Productos SET descripcion=@Descripcion, precio=@Precio, id_categoria=@Categoria, compuesto=@Compuesto WHERE id_producto=@ID";
+                        SqlCommand comando = new SqlCommand(sql, conexion);
+                        comando.Parameters.Add("@ID", SqlDbType.Int);
+                        comando.Parameters["@ID"].Value = id_producto;
+                        comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                        comando.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                        comando.Parameters.Add("@Precio", SqlDbType.Float);
+                        comando.Parameters["@Precio"].Value = txt_precio.Text;
+                        comando.Parameters.Add("@Categoria", SqlDbType.Int);
+                        comando.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
                         comando.Parameters.Add("@Compuesto", SqlDbType.Bit);
                         comando.Parameters["@Compuesto"].Value = 0;
                         comando.ExecuteNonQuery();
-                        datos4.Close();
-
                     }
+                    //productos compuestos
                     else
                     {
-                        comando.Parameters.Add("@Compuesto", SqlDbType.Bit);
-                        comando.Parameters["@Compuesto"].Value = 1;
-                        comando.ExecuteNonQuery();
-                        datos4.Close();
+                        //validacion de precio
+                        double costo2 = 0;
+                        foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                        {
+                            costo2 = costo2 + Convert.ToDouble(fila.Cells["costo_materia"].Value) * Convert.ToInt32(fila.Cells["cantidad_materia"].Value);
 
+                        }
+                        if (Convert.ToDouble(txt_precio.Text) <= costo2)
+                        {
+                            MessageBox.Show("Procure poner un precio mayor al costo de las materias primas.", "Atención");
+                            conexion.Close();
+                            return;
+                        }
                         //borro todas las uniones de ese producto
                         SqlCommand comando2 = new SqlCommand("DELETE FROM Productos_Materia_Prima WHERE id_producto=@Id_producto", conexion);
                         comando2.Parameters.Add("@Id_producto", SqlDbType.Int);
                         comando2.Parameters["@Id_producto"].Value = id_producto;
-
+                        comando2.ExecuteNonQuery();
                         //agrego las nuevas uniones, o las mismas en caso de no haber modificacion
                         foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
                         {
@@ -767,10 +916,21 @@ namespace programa1
                             comando12.ExecuteNonQuery();
 
                         }
+                        string sql = "UPDATE Productos SET descripcion=@Descripcion, precio=@Precio, id_categoria=@Categoria, compuesto=@Compuesto WHERE id_producto=@ID";
+                        SqlCommand comando = new SqlCommand(sql, conexion);
+                        comando.Parameters.Add("@ID", SqlDbType.Int);
+                        comando.Parameters["@ID"].Value = id_producto;
+                        comando.Parameters.Add("@Descripcion", SqlDbType.VarChar);
+                        comando.Parameters["@Descripcion"].Value = txt_descripcion.Text;
+                        comando.Parameters.Add("@Precio", SqlDbType.Float);
+                        comando.Parameters["@Precio"].Value = txt_precio.Text;
+                        comando.Parameters.Add("@Categoria", SqlDbType.Int);
+                        comando.Parameters["@Categoria"].Value = cb_categoria.SelectedValue;
+                        comando.Parameters.Add("@Compuesto", SqlDbType.Bit);
+                        comando.Parameters["@Compuesto"].Value = 1;
+                        comando.ExecuteNonQuery();
 
                     }         
-                    datos4.Close();
-                    comando.ExecuteNonQuery();
                     conexion.Close();
                     cargarGridProductos();
                     MessageBox.Show("Se modificó el dato.", "Atención");
@@ -927,7 +1087,7 @@ namespace programa1
                     {
                         conexion.Open();
                         //Antes de eliminar verifica que no se esté usando la materia prima para evitar que un producto quede con una materia prima eliminada
-                        SqlCommand comando4 = new SqlCommand("SELECT * FROM Productos_Materia_Prima WHERE id_materia_prima=@ID", conexion);
+                        SqlCommand comando4 = new SqlCommand("SELECT Productos_Materia_Prima.id_producto AS idprod FROM Productos_Materia_Prima JOIN Productos ON Productos_Materia_Prima.id_producto=Productos.id_producto where Productos_Materia_Prima.id_materia_prima=@ID and Productos.baja=0", conexion);
                         comando4.Parameters.Add("@ID", SqlDbType.Int);
                         comando4.Parameters["@ID"].Value = id_materia_prima;
                         SqlDataReader datos4 = comando4.ExecuteReader();
@@ -941,7 +1101,6 @@ namespace programa1
                         datos4.Close();
 
                         //las materias primas eliminadas siguen estando en la tabla de la base de datos, pero no se muestran como activos
-                        conexion.Open();
                         string sql = "UPDATE Materia_Prima SET baja=1 WHERE id_materia_prima=@ID";
                         SqlCommand comando = new SqlCommand(sql, conexion);
                         comando.Parameters.Add("@ID", SqlDbType.Int);
@@ -953,9 +1112,9 @@ namespace programa1
                         limpiarTexto2();
                         MessageBox.Show("Se eliminó la materia prima.", "Atención");
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Error.", "Atención");
+                        MessageBox.Show(ex.ToString());
                     }
                 }
                 else
@@ -985,15 +1144,13 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar una materia prima, se intenta que no existan dos iguales
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion and id_marca=@Marca", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
                 comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                 comando3.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
-                comando3.Parameters.Add("@Marca", SqlDbType.Int);
-                comando3.Parameters["@Marca"].Value = cb_marca.SelectedValue;
                 SqlDataReader datos3 = comando3.ExecuteReader();
                 if (datos3.Read())
                 {
-                    MessageBox.Show("Ya existe una Materia Prima con la misma Descripción y la misma Marca", "Atención");
+                    MessageBox.Show("Ya existe una Materia Prima con la misma Descripción", "Atención");
                     datos3.Close();
                     conexion.Close();
                     return;
@@ -1057,13 +1214,11 @@ namespace programa1
 
                     conexion.Open();
                     //al modificar la materia prima se verifica que no exista ya
-                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima<>@ID and descripcion=@Descripcion and id_marca=@Marca", conexion);
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima<>@ID and descripcion=@Descripcion", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
                     comando4.Parameters["@ID"].Value = id_materia_prima;
                     comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                     comando4.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
-                    comando4.Parameters.Add("@Marca", SqlDbType.Int);
-                    comando4.Parameters["@Marca"].Value = cb_marca.SelectedValue;
                     SqlDataReader datos4 = comando4.ExecuteReader();
                     if (datos4.Read())
                     {
@@ -1373,7 +1528,6 @@ namespace programa1
                         }
                         datos4.Close();
                         //las marcas eliminados siguen estando en la tabla de la base de datos, pero no se muestran como activos
-                        conexion.Open();
                         string sql = "UPDATE Marca SET baja=1 WHERE id_marca=@ID";
                         SqlCommand comando = new SqlCommand(sql, conexion);
                         comando.Parameters.Add("@ID", SqlDbType.Int);
@@ -1638,7 +1792,6 @@ namespace programa1
                         datos4.Close();
 
                         //las marcas eliminados siguen estando en la tabla de la base de datos, pero no se muestran como activos
-                        conexion.Open();
                         string sql = "UPDATE Categoria SET baja=1 WHERE id_categoria=@ID";
                         SqlCommand comando = new SqlCommand(sql, conexion);
                         comando.Parameters.Add("@ID", SqlDbType.Int);
