@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace programa1
 {
@@ -141,6 +142,13 @@ namespace programa1
                 }
      
             }
+
+            Regex re = new Regex("^([0-9]{1,2})?,?([0-9]{3})?,?([0-9]{3})?([0-9]{2})?[$]?$");
+            if (!re.IsMatch(txt_precio.Text))
+            {
+                error += "Ingrese un precio valido";
+            }
+
             if (error != "")
             {
                 MessageBox.Show(error, "Atención");
@@ -552,7 +560,7 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar un producto se verifica que no haya 2 con el mismo nombre y misma categoria
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Productos WHERE descripcion=@Descripcion and id_categoria=@Categoria", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Productos WHERE descripcion=@Descripcion and id_categoria=@Categoria and baja=0", conexion);
                 comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                 comando3.Parameters["@Descripcion"].Value = txt_descripcion.Text;
                 comando3.Parameters.Add("@Categoria", SqlDbType.Int);
@@ -971,6 +979,12 @@ namespace programa1
         private void txt_precio_KeyPress(object sender, KeyPressEventArgs e)
         {
             no_espacios_al_principio(sender, e);
+            char nom = e.KeyChar;
+            if (!(Char.IsDigit(nom)) && (e.KeyChar != (char)Keys.Back) )
+            {
+                e.Handled = true;
+                return;
+            }
         }
 
         private void txt_descripcion_KeyPress(object sender, KeyPressEventArgs e)
@@ -1007,6 +1021,13 @@ namespace programa1
                 }
 
             }
+
+            Regex re = new Regex("^([0-9]{1,2})?,?([0-9]{3})?,?([0-9]{3})?([0-9]{2})?[$]?$");
+            if (!re.IsMatch(txt_costo.Text))
+            {
+                error += "Ingrese un costo valido";
+            }
+
             if (error != "")
             {
                 MessageBox.Show(error, "Atención");
@@ -1144,7 +1165,7 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar una materia prima, se intenta que no existan dos iguales
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Materia_Prima WHERE descripcion=@Descripcion and baja=0", conexion);
                 comando3.Parameters.Add("@Descripcion", SqlDbType.VarChar);
                 comando3.Parameters["@Descripcion"].Value = txt_descripcion2.Text;
                 SqlDataReader datos3 = comando3.ExecuteReader();
@@ -1214,7 +1235,7 @@ namespace programa1
 
                     conexion.Open();
                     //al modificar la materia prima se verifica que no exista ya
-                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima<>@ID and descripcion=@Descripcion", conexion);
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Materia_Prima WHERE id_materia_prima<>@ID and descripcion=@Descripcion and baja=0", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
                     comando4.Parameters["@ID"].Value = id_materia_prima;
                     comando4.Parameters.Add("@Descripcion", SqlDbType.VarChar);
@@ -1404,7 +1425,7 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar una marca, se intenta que no existan dos marcas iguales
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Marca WHERE nombre_marca=@Marca", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Marca WHERE nombre_marca=@Marca and baja=0", conexion);
                 comando3.Parameters.Add("@Marca", SqlDbType.VarChar);
                 comando3.Parameters["@Marca"].Value = txt_marca.Text;
                 SqlDataReader datos3 = comando3.ExecuteReader();
@@ -1450,7 +1471,7 @@ namespace programa1
 
                     conexion.Open();
                     //al modificar la marca se verifica que no exista ya
-                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Marca WHERE id_marca=@ID", conexion);
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Marca WHERE id_marca=@ID and baja=0", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
                     comando4.Parameters["@ID"].Value = id_marca;
                     SqlDataReader datos4 = comando4.ExecuteReader();
@@ -1667,7 +1688,7 @@ namespace programa1
                 }
                 conexion.Open();
                 //Antes de agregar una categoria, se intenta que no existan dos categorias iguales
-                SqlCommand comando3 = new SqlCommand("SELECT * FROM Categoria WHERE nombre_categoria=@Categoria", conexion);
+                SqlCommand comando3 = new SqlCommand("SELECT * FROM Categoria WHERE nombre_categoria=@Categoria and baja=0", conexion);
                 comando3.Parameters.Add("@Categoria", SqlDbType.VarChar);
                 comando3.Parameters["@Categoria"].Value = txt_categoria.Text;
                 SqlDataReader datos3 = comando3.ExecuteReader();
@@ -1713,7 +1734,7 @@ namespace programa1
 
                     conexion.Open();
                     //al modificar la categoria se verifica que no exista ya
-                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Categoria WHERE id_categoria=@ID", conexion);
+                    SqlCommand comando4 = new SqlCommand("SELECT * FROM Categoria WHERE id_categoria=@ID and baja=0", conexion);
                     comando4.Parameters.Add("@ID", SqlDbType.Int);
                     comando4.Parameters["@ID"].Value = id_categoria;
                     SqlDataReader datos4 = comando4.ExecuteReader();
