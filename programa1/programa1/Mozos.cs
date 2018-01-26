@@ -212,11 +212,11 @@ namespace programa1
             try
             {
                 //Cada vez que se seleccione una fila, se mostraran los datos correspondientes en los textboxs para luego modificar o eliminar los mozos
-                int campa = Convert.ToInt32(this.dgv_mozos.CurrentRow.Cells["id_mozo"].Value);
+                int campa = Convert.ToInt32(this.dgv_mozos.CurrentRow.Cells["ID"].Value);
                 conexion.Open();
-                SqlCommand comando = new SqlCommand("SELECT * FROM Mozos WHERE id_mozo=@ID ", conexion);
-                comando.Parameters.Add("@ID", SqlDbType.VarChar);
-                comando.Parameters["@ID"].Value = campa;
+                SqlCommand comando = new SqlCommand("SELECT * FROM Mozos WHERE id_mozo=@IDM ", conexion);
+                comando.Parameters.Add("@IDM", SqlDbType.VarChar);
+                comando.Parameters["@IDM"].Value = campa;
                 SqlDataReader datos = comando.ExecuteReader();
                 if (datos.Read())
                 {
