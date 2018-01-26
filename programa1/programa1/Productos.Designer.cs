@@ -241,6 +241,7 @@
             this.dgv_materia_producto.Size = new System.Drawing.Size(361, 141);
             this.dgv_materia_producto.TabIndex = 21;
             this.dgv_materia_producto.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_materia_producto_CellClick);
+            this.dgv_materia_producto.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgv_materia_producto_EditingControlShowing);
             // 
             // id_materia_producto
             // 

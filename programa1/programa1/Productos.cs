@@ -653,6 +653,12 @@ namespace programa1
                         return;
                     }
 
+                    if (revisar_columna_cantidad() == false)
+                    {
+                        conexion.Close();
+                        return;
+                    }
+
                     //validacion de precio
                     double costo = 0;
                     foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
@@ -1898,6 +1904,46 @@ namespace programa1
         }
 
 
+
+        //tambien se crea un nuevo evento para que en la columna de cantidad se pongan solo numeros
+        private void dgv_materia_producto_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dgv_materia_producto.CurrentCell.ColumnIndex == 2)
+            {
+                e.Control.KeyPress -= new KeyPressEventHandler(columna3_cantidad_KeyPress);
+                System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(columna3_cantidad_KeyPress);
+                }
+            }
+        }
+
+        private void columna3_cantidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != (char)Keys.Back))
+            {
+                e.Handled = true;
+            }
+        }
+
+        //se revisa que a la tabla no le falten ciertos datos
+        private bool revisar_columna_cantidad()
+        {
+            bool dato = true;
+            foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+            {
+                //no se permite que una celda de la columna cantidad sea 0 cuando se quiera ingresar un renglon, excepto si se quiere modificar/eliminar de un renglon existente
+                if (fila.Cells["cantidad_materia"].Value != null && Convert.ToInt32(fila.Cells["cantidad_materia"].Value) == 0)
+                {
+                    dato = false;
+                    MessageBox.Show("No se puede ingresar una cantidad de 0 a la materia prima utilizada", "Atención");
+                }
+
+            }
+            return dato;
+        }
+
         public Productos()
         {
             InitializeComponent();
@@ -1950,7 +1996,6 @@ namespace programa1
         {
             clb_simple_compuesto.SetItemCheckState(0, CheckState.Checked);
         }
-
 
     }
 }
