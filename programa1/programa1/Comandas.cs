@@ -466,10 +466,15 @@ namespace programa1
             }
             if (tabla_vacia == false)
             {
+                //se va a crear un backgroundworker para hacer que el usuario espere mientras se ejecuta el archivo de excel que se va a guardar cuando se finalice la comanda
                 BackgroundWorker bw = new BackgroundWorker();
+                //el dowork sirve para hacer operaciones mientras se pone en espera al usuario
                 bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+                //el runworkercompleted finaliza el backgroundworker cuando terminan las operaciones necesarias
                 bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+                //se crea un formulario nuevo, que aparecera en pantalla
                 formulario = new Espera();
+                //el runworkerasync hace todo lo necesario para que se ejecuten el dowork y el runworkercompleted
                 bw.RunWorkerAsync();
                 formulario.ShowDialog();
 
@@ -691,11 +696,14 @@ namespace programa1
             }
         }
 
+        //se hace el archivo de excel
         void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
             Exportar_Excel();
         }
+
+        //al finalizar el archivo de excel, se cierra el formulario
         void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             formulario.Close();
