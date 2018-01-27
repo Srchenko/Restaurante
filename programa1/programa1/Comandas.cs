@@ -409,6 +409,7 @@ namespace programa1
             this.Close();
         }
 
+        Espera formulario;
         private void bt_finalizar_comanda_Click(object sender, EventArgs e)
         {
             dgv_comandas_detalle.ClearSelection();
@@ -465,8 +466,13 @@ namespace programa1
             }
             if (tabla_vacia == false)
             {
-                dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
-                Exportar_Excel();
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+                formulario = new Espera();
+                bw.RunWorkerAsync();
+                formulario.ShowDialog();
+
                 MessageBox.Show("Comanda finalizada. Se creará un archivo de Excel en el escritorio para que usted pueda verla completa.", "Atención");
             }
 
@@ -683,6 +689,16 @@ namespace programa1
                 cell_range = null;
                 workbook = null;
             }
+        }
+
+        void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            dgv_archivo_excel.DataSource = Crear_Tabla_Excel();
+            Exportar_Excel();
+        }
+        void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            formulario.Close();
         }
     }
 }

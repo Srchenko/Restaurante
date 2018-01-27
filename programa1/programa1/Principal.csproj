@@ -52,6 +52,12 @@
     <Compile Include="Comandas.Designer.cs">
       <DependentUpon>Comandas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Espera.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Espera.Designer.cs">
+      <DependentUpon>Espera.cs</DependentUpon>
+    </Compile>
     <Compile Include="Mozos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </Compile>
     <EmbeddedResource Include="Comandas.resx">
       <DependentUpon>Comandas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Espera.resx">
+      <DependentUpon>Espera.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Productos.resx">
       <DependentUpon>Productos.cs</DependentUpon>
