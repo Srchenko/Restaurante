@@ -140,6 +140,11 @@ namespace programa1
                 {
                     error += "Ingrese un precio mayor. ";
                 }
+
+                if (cb_categoria.SelectedIndex == -1)
+                {
+                    error += "No existen categorías. ";
+                }
      
             }
 
@@ -986,10 +991,14 @@ namespace programa1
         {
             no_espacios_al_principio(sender, e);
             char nom = e.KeyChar;
-            if (!(Char.IsDigit(nom)) && (e.KeyChar != (char)Keys.Back) )
+            if (!(Char.IsDigit(nom)) && (e.KeyChar != (char)Keys.Back) && (e.KeyChar != ','))
             {
                 e.Handled = true;
-                return;
+            }
+
+            if (e.KeyChar == ',' && (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
             }
         }
 
@@ -1024,6 +1033,11 @@ namespace programa1
                 if (float.Parse(txt_costo.Text) < 0)
                 {
                     error += "Ingrese un costo mayor. ";
+                }
+
+                if (cb_marca.SelectedIndex == -1)
+                {
+                    error += "No existen marcas. ";
                 }
 
             }
@@ -1342,6 +1356,16 @@ namespace programa1
         private void txt_costo_KeyPress(object sender, KeyPressEventArgs e)
         {
             no_espacios_al_principio(sender, e);
+            char nom = e.KeyChar;
+            if (!(Char.IsDigit(nom)) && (e.KeyChar != (char)Keys.Back) && (e.KeyChar != ','))
+            {
+                e.Handled = true;
+            }
+
+            if (e.KeyChar == ',' && (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
+            }
         }
 
 
