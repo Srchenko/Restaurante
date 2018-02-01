@@ -83,14 +83,14 @@
             // mozosToolStripMenuItem
             // 
             this.mozosToolStripMenuItem.Name = "mozosToolStripMenuItem";
-            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mozosToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.mozosToolStripMenuItem.Text = "Productos";
             this.mozosToolStripMenuItem.Click += new System.EventHandler(this.mozosToolStripMenuItem_Click);
             // 
             // mozosToolStripMenuItem1
             // 
             this.mozosToolStripMenuItem1.Name = "mozosToolStripMenuItem1";
-            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.mozosToolStripMenuItem1.Size = new System.Drawing.Size(128, 22);
             this.mozosToolStripMenuItem1.Text = "Mozos";
             this.mozosToolStripMenuItem1.Click += new System.EventHandler(this.mozosToolStripMenuItem1_Click);
             // 
@@ -105,7 +105,7 @@
             // preciosPorCategoríasToolStripMenuItem
             // 
             this.preciosPorCategoríasToolStripMenuItem.Name = "preciosPorCategoríasToolStripMenuItem";
-            this.preciosPorCategoríasToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.preciosPorCategoríasToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.preciosPorCategoríasToolStripMenuItem.Text = "Ver Reportes";
             this.preciosPorCategoríasToolStripMenuItem.Click += new System.EventHandler(this.preciosPorCategoríasToolStripMenuItem_Click);
             // 

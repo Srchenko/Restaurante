@@ -104,6 +104,7 @@ namespace programa1
             dgv_materia_prima.ClearSelection();
             dgv_materia_producto.ClearSelection();
             dgv_productos.ClearSelection();
+            clb_simple_compuesto.SelectedIndex = 0;
             clb_simple_compuesto.SetItemChecked(0, true);
             clb_simple_compuesto.SetItemChecked(1, false);
             cb_categoria.SelectedValue = 1;
@@ -113,7 +114,6 @@ namespace programa1
             dgv_materia_prima.Enabled = false;
             dgv_materia_producto.Rows.Clear();
             dgv_materia_producto.Enabled = false;
-            
         }
 
         //validacion de datos
@@ -900,6 +900,11 @@ namespace programa1
                     //productos compuestos
                     else
                     {
+                        if (revisar_columna_cantidad() == false)
+                        {
+                            conexion.Close();
+                            return;
+                        }
                         //validacion de precio
                         double costo2 = 0;
                         foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
@@ -913,6 +918,7 @@ namespace programa1
                             conexion.Close();
                             return;
                         }
+
                         //borro todas las uniones de ese producto
                         SqlCommand comando2 = new SqlCommand("DELETE FROM Productos_Materia_Prima WHERE id_producto=@Id_producto", conexion);
                         comando2.Parameters.Add("@Id_producto", SqlDbType.Int);
@@ -1150,6 +1156,33 @@ namespace programa1
 
                         conexion.Close();
                         cargarGridMateriasPrimas();
+
+                        if (clb_simple_compuesto.SelectedIndex == 1)
+                        {
+                            cargarGridMaterias();
+                            foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                            {
+                                int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                                foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                                {
+                                    if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                                    {
+                                        dgv_materia_prima.CurrentCell = null;
+                                        fila2.Visible = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                        {
+                            if (Convert.ToInt32(fila.Cells["id_materia_producto"].Value) == id_materia_prima)
+                            {
+                                dgv_materia_producto.Rows.RemoveAt(fila.Index);
+                            }
+                        }
+
                         limpiarTexto2();
                         MessageBox.Show("Se eliminó la materia prima.", "Atención");
                     }
@@ -1285,7 +1318,39 @@ namespace programa1
 
                     conexion.Close();
                     cargarGridMateriasPrimas();
+                    
                     MessageBox.Show("Se modificó el dato.", "Atención");
+
+                    if (clb_simple_compuesto.SelectedIndex == 1)
+                    {
+                        cargarGridMaterias();
+                        foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                        {
+                            int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                            foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                            {
+                                if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                                {
+                                    dgv_materia_prima.CurrentCell = null;
+                                    fila2.Visible = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                    {
+                        if (Convert.ToInt32(fila.Cells["id_materia_producto"].Value) == id_materia_prima)
+                        {
+                            fila.Cells["descripcion_materia"].Value = txt_descripcion2.Text;
+                            fila.Cells["marca_materia"].Value = cb_marca.Text;
+                            fila.Cells["costo_materia"].Value = txt_costo.Text;
+                            break;
+                        }
+
+                    }
+
                     limpiarTexto2();
                 }
                 catch (Exception ex)
@@ -1932,7 +1997,7 @@ namespace programa1
         //tambien se crea un nuevo evento para que en la columna de cantidad se pongan solo numeros
         private void dgv_materia_producto_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (dgv_materia_producto.CurrentCell.ColumnIndex == 2)
+            if (dgv_materia_producto.CurrentCell.ColumnIndex == 4)
             {
                 e.Control.KeyPress -= new KeyPressEventHandler(columna3_cantidad_KeyPress);
                 System.Windows.Forms.TextBox tb = e.Control as System.Windows.Forms.TextBox;
