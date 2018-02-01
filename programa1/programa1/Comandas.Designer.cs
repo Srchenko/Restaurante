@@ -40,6 +40,7 @@
             this.bt_calcular_subtotal_productos = new System.Windows.Forms.Button();
             this.valor_total_comanda = new System.Windows.Forms.Label();
             this.dgv_archivo_excel = new System.Windows.Forms.DataGridView();
+            this.bt_cancelar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_comandas_detalle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_archivo_excel)).BeginInit();
             this.SuspendLayout();
@@ -166,11 +167,23 @@
             this.dgv_archivo_excel.TabIndex = 8;
             this.dgv_archivo_excel.Visible = false;
             // 
+            // bt_cancelar
+            // 
+            this.bt_cancelar.Location = new System.Drawing.Point(97, 195);
+            this.bt_cancelar.Name = "bt_cancelar";
+            this.bt_cancelar.Size = new System.Drawing.Size(125, 30);
+            this.bt_cancelar.TabIndex = 9;
+            this.bt_cancelar.Text = "Cancelar Comanda";
+            this.bt_cancelar.UseVisualStyleBackColor = true;
+            this.bt_cancelar.Visible = false;
+            this.bt_cancelar.Click += new System.EventHandler(this.bt_cancelar_Click);
+            // 
             // Comandas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(844, 381);
+            this.Controls.Add(this.bt_cancelar);
             this.Controls.Add(this.dgv_archivo_excel);
             this.Controls.Add(this.valor_total_comanda);
             this.Controls.Add(this.bt_calcular_subtotal_productos);
@@ -205,5 +218,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Columna_Subtotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID_Renglon;
         private System.Windows.Forms.DataGridView dgv_archivo_excel;
+        private System.Windows.Forms.Button bt_cancelar;
     }
 }

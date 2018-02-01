@@ -108,6 +108,7 @@ namespace programa1
                 SqlDataReader datos = comando.ExecuteReader();
                 if (datos.Read())
                 {
+                    bt_cancelar.Visible = true;
                     id_comanda_general = Convert.ToInt32(datos["id_comanda"]);
                     lista_mozos.SelectedValue = datos["id_mozo"];
                     SqlCommand comando2 = new SqlCommand("SELECT id_renglon, id_producto, cantidad, subtotal FROM Comandas_Detalle WHERE id_comanda=@IDcomanda and baja=0", conexion);
@@ -412,6 +413,11 @@ namespace programa1
         Espera formulario;
         private void bt_finalizar_comanda_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("¿Está seguro?", "Finalizar", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                return;
+            }
+
             dgv_comandas_detalle.ClearSelection();
 
             if (revisar_tabla() == false)
@@ -707,6 +713,29 @@ namespace programa1
         void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             formulario.Close();
+        }
+
+        private void bt_cancelar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Está seguro?", "Cancelar", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                return;
+            }
+
+            conexion.Open();
+
+            SqlCommand comando = new SqlCommand("UPDATE Comandas_Cabecera SET estado=1, baja=1 WHERE id_comanda=@idcomanda", conexion);
+            comando.Parameters.Add("@idcomanda", SqlDbType.Int);
+            comando.Parameters["@idcomanda"].Value = id_comanda_general;
+            comando.ExecuteNonQuery();
+
+            conexion.Close();
+
+            Principal padre = this.MdiParent as Principal;
+            padre.cambiar_color_boton();
+            padre.tabla_visible_si();
+            padre.menustrip_visible_si();
+            this.Close();
         }
     }
 }
