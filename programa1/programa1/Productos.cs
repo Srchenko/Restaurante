@@ -245,39 +245,101 @@ namespace programa1
                     }
                 }
 
-            }
 
-            if (clb_simple_compuesto.SelectedIndex==0)
-            {
-                b_agregarmateria.Enabled = false;
-                b_quitar.Enabled = false;
-                dgv_materia_prima.DataSource=null;
-                dgv_materia_prima.Enabled = false;
-                dgv_materia_producto.Rows.Clear();
-                dgv_materia_producto.Enabled = false;
             }
-            else
+            if (id_producto !=0)
             {
-                b_agregarmateria.Enabled = true;
-                b_quitar.Enabled = true;
-                dgv_materia_prima.Enabled = true;
-                cargarGridMaterias();
-                dgv_materia_producto.Enabled = true;
-                foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                if (clb_simple_compuesto.SelectedIndex == 0)
                 {
-                    int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
-                    foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                    b_agregarmateria.Enabled = false;
+                    b_quitar.Enabled = false;
+                    dgv_materia_prima.DataSource = null;
+                    dgv_materia_prima.Enabled = false;
+                    dgv_materia_producto.Rows.Clear();
+                    dgv_materia_producto.Enabled = false;
+                }
+                else
+                {
+                    int campa = Convert.ToInt32(this.dgv_productos.CurrentRow.Cells["ID"].Value);
+                    b_agregarmateria.Enabled = true;
+                    b_quitar.Enabled = true;
+                    dgv_materia_prima.Enabled = true;
+                    dgv_materia_producto.Enabled = true;
+                    conexion.Close();
+                    cargarGridMaterias();
+                    dgv_materia_producto.Rows.Clear();
+                    conexion.Open();
+                    SqlCommand comando2 = new SqlCommand("SELECT Productos_Materia_Prima.id_materia_prima AS ID, Productos_Materia_Prima.cantidad AS cant, Materia_Prima.descripcion AS descrip, Marca.nombre_marca AS Marca, Materia_Prima.costo AS Costo FROM Productos_Materia_Prima JOIN Materia_Prima ON Materia_Prima.id_materia_prima = Productos_Materia_Prima.id_materia_prima JOIN Marca ON Materia_Prima.id_marca= Marca.id_marca WHERE Productos_Materia_Prima.id_producto=@ID ", conexion);
+                    comando2.Parameters.Add("@ID", SqlDbType.Int);
+                    comando2.Parameters["@ID"].Value = campa;
+                    SqlDataReader datos2 = comando2.ExecuteReader();
+
+                    while (datos2.Read())
                     {
-                        if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                        int id_materia = Convert.ToInt32(datos2["ID"]);
+                        int cantidad = Convert.ToInt32(datos2["cant"]);
+
+                        dgv_materia_producto.Rows.Add(id_materia, datos2["descrip"].ToString(), datos2["Marca"].ToString(), datos2["Costo"].ToString(), cantidad);
+
+                        foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
                         {
-                            dgv_materia_prima.CurrentCell = null;
-                            fila2.Visible = false;
-                            break;
+                            int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                            foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                            {
+                                if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                                {
+                                    dgv_materia_prima.CurrentCell = null;
+                                    fila2.Visible = false;
+                                    break;
+                                }
+
+                            }
                         }
 
                     }
+                    dgv_materia_producto.ClearSelection();
+                    datos2.Close();
+                }
+                
+            }
+            else
+            {
+                if (clb_simple_compuesto.SelectedIndex == 0)
+                {
+                    b_agregarmateria.Enabled = false;
+                    b_quitar.Enabled = false;
+                    dgv_materia_prima.DataSource = null;
+                    dgv_materia_prima.Enabled = false;
+                    dgv_materia_producto.Rows.Clear();
+                    dgv_materia_producto.Enabled = false;
+                }
+                else
+                {
+                    b_agregarmateria.Enabled = true;
+                    b_quitar.Enabled = true;
+                    dgv_materia_prima.Enabled = true;
+                    conexion.Close();
+                    cargarGridMaterias();
+                    dgv_materia_producto.Enabled = true;
+                    foreach (DataGridViewRow fila in dgv_materia_producto.Rows)
+                    {
+                        int id_materia_producto = Convert.ToInt32(fila.Cells["id_materia_producto"].Value);
+                        foreach (DataGridViewRow fila2 in dgv_materia_prima.Rows)
+                        {
+                            if (Convert.ToInt32(fila2.Cells["ID"].Value) == id_materia_producto)
+                            {
+                                dgv_materia_prima.CurrentCell = null;
+                                fila2.Visible = false;
+                                break;
+                            }
+
+                        }
+                    }
                 }
             }
+            conexion.Close();
+            
+            
         }
 
         private void dgv_productos_CellClick(object sender, DataGridViewCellEventArgs e)
