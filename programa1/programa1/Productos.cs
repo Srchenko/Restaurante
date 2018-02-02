@@ -51,6 +51,19 @@ namespace programa1
             }
         }
 
+        // evita que empiece un textbox con comas
+        private void no_comas_al_principio(object sender, KeyPressEventArgs e)
+        {
+            if ((sender as TextBox).SelectionStart == 0)
+            {
+                e.Handled = (e.KeyChar == ',');
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+
         // evita que empiece un textbox con espacios
         private void no_espacios_al_principio(object sender, KeyPressEventArgs e)
         {
@@ -1057,7 +1070,7 @@ namespace programa1
 
         private void txt_precio_KeyPress(object sender, KeyPressEventArgs e)
         {
-            no_espacios_al_principio(sender, e);
+            no_comas_al_principio(sender, e);
             char nom = e.KeyChar;
             if (!(Char.IsDigit(nom)) && (e.KeyChar != (char)Keys.Back) && (e.KeyChar != ','))
             {
@@ -1482,7 +1495,7 @@ namespace programa1
 
         private void txt_costo_KeyPress(object sender, KeyPressEventArgs e)
         {
-            no_espacios_al_principio(sender, e);
+            no_comas_al_principio(sender, e);
             char nom = e.KeyChar;
             if (!(Char.IsDigit(nom)) && (e.KeyChar != (char)Keys.Back) && (e.KeyChar != ','))
             {
